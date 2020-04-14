@@ -1,14 +1,15 @@
 @name Ah yes Elephant
 @inputs 
 @outputs 
-@persist Target:entity
+@persist Target:entity RandInt OldRandInt
 @trigger 
 @model 
 
 interval(111)
 
 if(first()){
-    Target = findPlayerByName("capt")
+    timer("roar",100)
+    Target = findPlayerByName("runic")
     holoCreate(1)
     holoModel(1,"hq_cylinder")
     holoAng(1,entity():toWorld(ang(0,0,0)))
@@ -86,8 +87,11 @@ if(entity():pos():distance(holoEntity(99):pos()) > 100){
 entity():applyForce((entity():forward())*33)
 }
 
-timer("roar",100)
+
 if(clk("roar")){
-    entity():soundPlay(randint(1,99),0,"npc/zombie_poison/pz_throw"+randint(2,3)+".wav")
-    timer("roar",1000)
+    RandInt = randint(1,2)
+    soundStop(1)
+    entity():soundPlay(1,0,"npc/zombie_poison/pz_throw"+randint(2,3)+".wav")
+    OldRandInt = RandInt
+    timer("roar",333)
 }
