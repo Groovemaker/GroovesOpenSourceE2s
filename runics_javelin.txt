@@ -6,7 +6,7 @@
 
 interval(50)
 if(first()){
-    StaffOwner = findPlayerByName("kiax")
+    StaffOwner = findPlayerByName("Enter Your Name Here")
 Doable = 1
 StaffColor1 = vec(255,50,50)
 Mat1 = "sprops/textures/gear_metal"
