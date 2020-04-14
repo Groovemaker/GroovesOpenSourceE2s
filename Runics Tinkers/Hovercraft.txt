@@ -1,0 +1,31 @@
+@name Tinker Toys of the Limping One: Hovercraft
+@inputs Pod:entity Base:entity
+@outputs 
+@persist VelocityUp
+@trigger 
+
+if(first()){
+    VelocityUp = 18.5
+}
+
+interval(10)
+Base:applyForce((Base:up()) * Base:mass() * VelocityUp)
+
+if(Pod:driver():keyForward()){
+    Base:setAng(Base:angles() + ang(0,0,-1))    
+}
+if(Pod:driver():keyBack()){
+    Base:setAng(Base:angles() + ang(0,0,1))    
+}
+if(Pod:driver():keyRight() && !Pod:driver():keyWalk()){
+    Base:setAng(Base:angles() + ang(1,0,0))    
+}
+if(Pod:driver():keyLeft() && !Pod:driver():keyWalk()){
+    Base:setAng(Base:angles() + ang(-1,0,0))    
+}
+if(Pod:driver():keyRight() && Pod:driver():keyWalk()){
+    Base:setAng(Base:angles() + ang(0,-1,0))    
+}
+if(Pod:driver():keyLeft() && Pod:driver():keyWalk()){
+    Base:setAng(Base:angles() + ang(0,1,0))    
+}

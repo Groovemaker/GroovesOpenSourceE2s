@@ -1,0 +1,58 @@
+@name Tinker Toys of the Limping One: Miniteleport
+@inputs  
+@outputs 
+@persist TrgEnt:entity Doable Allps:array
+@trigger 
+@model models/props_lab/miniteleport.mdl
+interval(30)
+if(first()){
+    entity():propNotSolid(0)
+    Doable = 1
+
+    entity():soundPlay(999,0,"ambient/machines/combine_terminal_loop1.wav")
+    soundPitch(999,20)
+}
+findIncludeClass("prop_physics")
+findInSphere(entity():pos() + vec(-3,-33,10),30)
+FindRes = findToArray()
+
+TrgEnt = FindRes[1,entity]
+Allps = players()
+for(I=1,Allps:count()){
+Guy = Allps[I,entity]
+    if(Guy:aimEntity() == entity() && Guy:keyUse()){
+        if(Doable == 1){
+            entity():soundPlay(2,0,"ambient/machines/thumper_startup1.wav")
+            soundPitch(1,150)
+            timer("delay2", 1300)
+            Doable = 0
+        }
+    }
+}
+
+if (clk("delay2")){
+        SpriteSiz = 4
+        holoCreate(3,entity():pos() + vec(-3,33,10),vec(SpriteSiz,SpriteSiz,SpriteSiz),entity():angles() + ang(90,0,0),vec(255,255,255))
+        holoModel(3, "cplane")
+        #holoColor(3,vec(0,100,255))
+        holoAlpha(3,166)
+        holoMaterial(3,"effects/strider_bulge_dudv")
+
+        entity():soundPlay(3,0,"ambient/energy/spark6.wav")
+        soundPitch(1,80)
+        timer("delay3", 900)
+        
+}
+if (clk("delay3")){
+        #Replicant = propSpawn(TrgEnt:model(), TrgEnt:angles(),0)
+        TrgEnt:setPos(entity():pos() + vec(-3,33,10))
+        holoDelete(3)
+        entity():soundPlay(2,0,"items/suitchargeok1.wav")
+        soundPitch(1,220)
+        Doable = 1
+        
+}
+if (clk("delay4")){
+        Doable = 1
+        
+}
