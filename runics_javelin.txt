@@ -1,0 +1,137 @@
+@name Runics Javelin
+@inputs 
+@outputs 
+@persist Doable StaffOwner:entity RD:ranger Fired Shootpos:vector
+@trigger 
+
+interval(50)
+if(first()){
+    StaffOwner = findPlayerByName("kiax")
+Doable = 1
+StaffColor1 = vec(255,50,50)
+Mat1 = "sprops/textures/gear_metal"
+holoCreate(1)
+holoPos(1,entity():toWorld(vec(0,0,60)))
+holoModel(1,"models/props_junk/harpoon002a.mdl")
+holoAng(1,ang(0,0,0))
+holoScale(1,vec(1,1,1))
+holoColor(1,StaffColor1)
+holoMaterial(1,Mat1)
+holoCreate(2)
+holoPos(2,entity():toWorld(vec(0,0,60)))
+holoModel(2,"models/props_junk/harpoon002a.mdl")
+holoAng(2,ang(0,0,0))
+holoScale(2,vec(1.1,1.1,1.1))
+holoColor(2,vec(255,133,0))
+holoMaterial(2,"models/wireframe")
+for(I=2,5){
+    holoParent(I,holoEntity(1))
+}
+holoParentAttachment(1,StaffOwner,"anim_attachment_rh")
+holoPos(1,StaffOwner:attachmentPos("anim_attachment_rh"))
+holoAng(1,StaffOwner:attachmentAng("anim_attachment_rh") + ang(0,90,90))
+#print(owner():eyeAngles())
+
+}
+if(StaffOwner:weapon():type() == "weapon_crowbar"){
+    for(I=1,5){
+        holoAlpha(I,255)
+    }
+    StaffOwner:weapon():setAlpha(0)
+    if(StaffOwner:keyAttack1() && Doable == 1){
+        Shootpos = StaffOwner:eyeTrace():pos()
+        SoundInt = randint(1)
+        SoundInt2 = randint(1)
+        StaffOwner:soundPlay(SoundInt,0,"ambient/energy/zap"+randint(7,9)+".wav")
+        #StaffOwner:soundPlay(SoundInt2,0,"npc/roller/mine/rmine_explode_shock1.wav")
+        
+        soundPitch(SoundInt,randint(80,133))
+        #soundPitch(SoundInt2,222)
+        #for(I=1,10){
+        #    soundPitch(I,111)
+        #}
+
+        holoCreate(338)
+        holoEntity(338):setTrails(222,88,1,"trails/laser",vec(255,144,0), 255)  
+        holoModel(338,"models/props_junk/harpoon002a.mdl")
+        holoPos(338,holoEntity(2):pos())
+        holoAng(338,StaffOwner:eyeAngles())
+        holoDisableShading(338,0)
+        holoMaterial(338,"models/shiny")
+        holoColor(338,vec(255,50,50))
+        holoScale(338,vec(2,2,2))
+        holoCreate(339)
+        #holoEntity(338):setTrails(188,155,0.15,"trails/laser",vec(255,233,0), 255)  
+        holoModel(339,"models/props_junk/harpoon002a.mdl")
+        holoPos(339,holoEntity(2):pos())
+        holoAng(339,StaffOwner:eyeAngles())
+        holoDisableShading(339,0)
+        holoMaterial(339,"models/wireframe")
+        holoColor(339,vec(255,100,50))
+        holoParent(339,338)
+        holoScale(339,vec(2.1,2.1,2.1))
+        holoCreate(344)
+        holoModel(344,"hq_sphere")
+        holoPos(344,holoEntity(338):toWorld(vec(0,0,0)))
+        holoAng(344,StaffOwner:eyeAngles())
+        holoDisableShading(344,0)
+        holoMaterial(344,"models/props_combine/tpballglow")
+        holoColor(344,vec(255,100,50))
+        holoParent(344,338)
+        holoAng(344,holoEntity(344):angles() + ang(90,0,0))
+        holoScale(344,vec(1.3,1.3,55))
+ 
+        holoCreate(355)
+        holoModel(355,"models/sprops/misc/pyramids/rsize_1/rpyr_12x18.mdl")
+        holoPos(355,holoEntity(338):toWorld(vec(0,0,0)))
+        holoAng(355,StaffOwner:eyeAngles())
+        
+        holoDisableShading(355,0)
+        holoMaterial(355,"models/debug/debugwhite")
+        holoColor(355,vec(255,50,50))
+        holoParent(355,338)
+        holoAng(355,holoEntity(355):angles() + ang(90,0,0))
+        holoScale(355,vec(0.5,0.5,5))
+        Fired = 1
+
+        Doable = 0
+        timer("cooldown",700)
+
+    }
+}
+elseif(StaffOwner:weapon():type() != "weapon_crowbar"){
+    for(I=1,5){
+        holoAlpha(I,0)
+    }
+    StaffOwner:weapon():setAlpha(255)
+}
+holoPos(338,holoEntity(338):toWorld(vec(281,0,0)))
+if(clk("cooldown")){
+    #Doable = 1
+}
+if(Doable == 0){
+    holoAlpha(1,0)
+    holoAlpha(2,0)
+}elseif(Doable == 1 && StaffOwner:weapon():type() == "weapon_crowbar"){
+    holoAlpha(1,255)
+    holoAlpha(2,255)
+}
+holoPos(1,StaffOwner:attachmentPos("anim_attachment_rh"))
+#holoAng(1,StaffOwner:attachmentAng("anim_attachment_rh")+ang(-30,50,30))
+#holoAng(1,StaffOwner:eyeAngles()+ang(0,90,90))
+        findIncludeClass("prop_*")
+        findIncludeClass("player")
+        findIncludeClass("npc_*")
+        findInSphere(holoEntity(338):pos(),70)
+        Found = findToArray()
+        #print(Found[1,entity]:type())
+        #print(holoEntity(338):pos():distance(Shootpos))
+        if(holoEntity(338):pos():distance(Shootpos) < 222 && Fired == 1){
+            Ballbuster = propSpawn("models/props_phx/cannonball.mdl",ang(0,0,0),1)
+            Ballbuster:setPos(holoEntity(338):pos())
+            Ballbuster:propBreak()
+            Fired = 0
+            holoDelete(338)
+            Doable = 1
+        }
+

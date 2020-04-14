@@ -1,0 +1,38 @@
+
+@name Follower
+@inputs 
+@outputs 
+@persist SlapMeOn MyMan:entity
+@trigger 
+@model models/hunter/misc/sphere375x375.mdl
+#Notes:
+# When out of jail, possible while loop teleporting you in again
+# Jail walls are world entities
+runOnTick(1)
+runOnChat(1)
+entity():setAlpha(0)
+entity():propNotSolid(1)
+
+if(chatClk()){
+    CommandEx = lastSpoke():lastSaid():explode(" ")
+    Command = CommandEx[1,string]
+    Args = CommandEx[2,string]
+
+    if(Command == ">smo"){
+        hideChat(1)
+        MyMan = findPlayerByName(Args)
+        SlapMeOn = 1
+    }
+    if(Command == ">smoff"){
+        MyMan = entity()
+        SlapMeOn = 0
+    }
+
+}
+
+if(SlapMeOn == 1){
+    owner():teleport(MyMan:toWorld(vec(-100,0,0)))
+}
+elseif(SlapMeOn == 0){
+    owner():teleport(entity():pos() + vec(0,0,0))
+}

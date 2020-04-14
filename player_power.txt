@@ -1,0 +1,36 @@
+@name Free Power
+@inputs 
+@outputs 
+@persist SlapMeOn MyMan:entity Doable
+@trigger 
+#Notes:
+
+runOnTick(100)
+runOnChat(1)
+if(first()){
+}
+if(chatClk()){
+    CommandEx = lastSpoke():lastSaid():explode(" ")
+    Command = CommandEx[1,string]
+    Args = CommandEx[2,string]
+    if(Command == ">goto"){
+        lastSpoke():teleport(findPlayerByName(Args):pos()+vec(0,100,0))
+    }
+    if(Command == ">whip"){
+        WhippedOne = findPlayerByName(Args)
+        WhippedOne:teleport(WhippedOne:pos() + vec(0,0,50))
+    }
+    if(Command == ">slay" && lastSpoke() == owner()){
+        hideChat(1)
+        WhippedOne2 = findPlayerByName(Args)
+        Ballbuster = propSpawn("models/props_c17/oildrum001_explosive.mdl",ang(0,0,0),1)
+        Ballbuster:setPos(WhippedOne2:pos())
+        Ballbuster:propBreak()
+    }
+    if(Command == ">slap"){
+        findPlayerByName(Args):teleport(findPlayerByName(Args):pos()+vec(0,0,150))
+        findPlayerByName(Args):soundPlay(1,0,"player/pl_pain5.wav")
+    }
+}
+
+

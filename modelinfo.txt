@@ -1,0 +1,10 @@
+@name 
+@inputs 
+@outputs 
+@persist 
+@trigger 
+interval(100)
+if(owner():keyUse()){
+    print("Model "+owner():aimEntity():model())
+    print("Mat: "+owner():aimEntity():getMaterial())
+}
