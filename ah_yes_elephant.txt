@@ -8,7 +8,7 @@
 interval(111)
 
 if(first()){
-    Target = findPlayerByName("angel")
+    Target = findPlayerByName("john")
     holoCreate(1)
     holoModel(1,"hq_cylinder")
     holoAng(1,entity():toWorld(ang(0,0,0)))
@@ -86,4 +86,8 @@ if(entity():pos():distance(holoEntity(99):pos()) > 100){
 entity():applyForce((entity():forward())*33)
 }
 
-
+timer("roar",100)
+if(clk("roar")){
+    entity():soundPlay(randint(1,100),0,"npc/zombie_poison/pz_throw"+randint(2,3)+".wav")
+    timer("roar",1000)
+}
