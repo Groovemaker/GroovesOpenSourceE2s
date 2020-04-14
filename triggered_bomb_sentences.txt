@@ -1,0 +1,45 @@
+@name Triggered Bomb Sentences
+@inputs 
+@outputs 
+@persist Words:array Triggers:array People:array
+@trigger 
+interval(1000)
+runOnChat(1)
+if(first()){
+    Words = array(
+        "triggering",
+        "cunt",
+        "cringe",
+        "bunghole",
+        "toilet",
+        "baguette",
+        "cat",
+        "backgit",
+        "wood",
+        "noisy",
+        "elephant",
+        "schlung",
+        "freight",
+        "dick"
+    )
+    Plys = players()
+    for(I=0,Plys:count()){
+        Person = Plys[I,entity]
+        TriggerSent = "" + Words[randint(Words:count()),string] + " " + Words[randint(Words:count()),string] + " " + Words[randint(Words:count()),string] + " " + Words[randint(Words:count()),string] + " " + Words[randint(Words:count()),string]
+        Triggers[I,string] = TriggerSent
+        People[I,entity] = Person
+        print(People[I,entity]:toString() + ":::" + TriggerSent)
+    }
+}
+if(chatClk()){
+    for(I=0,People:count()){
+        #print(Triggers[I,string])
+        #print(lastSpoke():lastSaid())
+        if(lastSpoke():lastSaid():find(Triggers[I,string])){
+            Trg = People[I,entity]
+            Ballbuster = propSpawn("models/props_c17/oildrum001_explosive.mdl",ang(0,0,0),1)
+            Ballbuster:setPos(Trg:pos())
+            Ballbuster:propBreak()
+        }
+    }
+}

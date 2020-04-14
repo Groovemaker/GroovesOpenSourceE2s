@@ -1,0 +1,29 @@
+@name haha buoy lol
+@inputs 
+@outputs 
+@persist 
+@trigger 
+#@model models/props_wasteland/buoy01.mdl
+runOnTick(1)
+if(first()){
+    entity():soundPlay(1,0,"synth/square_880.wav")
+    #entity():soundPlay(2,0,"synth/square_880.wav")       
+    entity():setAlpha(0)
+    entity():propNotSolid(1)
+
+}
+entity():setPos(owner():pos())
+if(owner():vel():length() > 10){
+    #soundPitch(1,(owner():vel():length()) / 15)
+    Sin = (sin(curtime() * (15) * 127 * 2) * 15) + 35
+    print(Sin)
+    soundPitch(1,Sin)
+}
+if(owner():vel():length() < 10){
+    #soundPitch(1,(owner():vel():length()) / 15)
+
+    soundPitch(1,0)
+}
+if(owner():keyJump()){
+    soundPitch(1,10)
+}

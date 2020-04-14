@@ -1,0 +1,37 @@
+@name Sine Text (Greetz to mingebag, lego, cacur, rj and rhyfan)
+@inputs 
+@outputs 
+@persist Number Model:string I ExpS:array Height
+@trigger 
+
+I = 0
+Number = 1
+Siz =1
+Wavyy = 13544
+function char(C:string){
+
+    if(C == (" ")){Size = 0}
+    else{
+        Model = "models/sprops/misc/alphanum/alphanum_"+C+".mdl"
+        Size = Siz
+    }
+    I += Siz * 10 * 2
+    Height = Siz * 10 * 1.3
+    Number++
+    holoCreate(Number,entity():pos() + vec(0,I - 190,Height),vec(Size,Size,Size),entity():angles() + ang(0,-90,0),vec(255,255,255))
+    holoModel(Number,Model)
+    holoParent(Number,entity())
+}
+if(first()){
+    String = "This guy is wood"
+    StringL = String:lower()
+    ExpS = StringL:explode("")
+    for(It=1,ExpS:count()){
+        char(ExpS[It,string])
+    }
+}
+interval(100)
+for(It=1,ExpS:count() + 1){
+    holoPos(It,holoEntity(It):pos()+vec(0,0,((sin(curtime() * (200)+ It * 4) * 120) / 10) ))
+    entity():setPos(findPlayerByName("runic"):pos() + vec(0,0,140))
+}

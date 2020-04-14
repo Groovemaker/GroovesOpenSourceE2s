@@ -1,0 +1,89 @@
+@name Ah yes Elephant
+@inputs 
+@outputs 
+@persist Target:entity
+@trigger 
+@model 
+
+interval(111)
+
+if(first()){
+    Target = findPlayerByName("angel")
+    holoCreate(1)
+    holoModel(1,"hq_cylinder")
+    holoAng(1,entity():toWorld(ang(0,0,0)))
+    holoPos(1,entity():toWorld(vec(20,20,35)))
+    holoColor(1,vec(100,100,100))
+    holoScale(1,vec(1,1,6))
+    holoCreate(2)
+    holoModel(2,"hq_cylinder")
+    holoAng(2,entity():toWorld(ang(0,0,0)))
+    holoPos(2,entity():toWorld(vec(20,-20,35)))
+    holoColor(2,vec(100,100,100))
+    holoScale(2,vec(1,1,6))
+    holoCreate(3)
+    holoModel(3,"hq_cylinder")
+    holoAng(3,entity():toWorld(ang(0,0,0)))
+    holoPos(3,entity():toWorld(vec(-20,20,35)))
+    holoColor(3,vec(100,100,100))
+    holoScale(3,vec(1,1,6))
+    holoCreate(4)
+    holoModel(4,"hq_cylinder")
+    holoAng(4,entity():toWorld(ang(0,0,0)))
+    holoPos(4,entity():toWorld(vec(-20,-20,35)))
+    holoColor(4,vec(100,100,100))
+    holoScale(4,vec(1,1,6))
+    
+    ##Body
+    holoCreate(5)
+    holoModel(5,"hq_sphere")
+    holoAng(5,entity():toWorld(ang(90,0,0)))
+    holoPos(5,entity():toWorld(vec(0,0,65)))
+    holoColor(5,vec(100,100,100))
+    holoScale(5,vec(5,5,7))
+    
+    ##head
+    
+    holoCreate(6)
+    holoModel(6,"hq_sphere")
+    holoAng(6,entity():toWorld(ang(90,0,0)))
+    holoPos(6,entity():toWorld(vec(-30,0,85)))
+    holoColor(6,vec(100,100,100))
+    holoScale(6,vec(4,4,4))
+    holoCreate(7)
+    holoModel(7,"hq_cylinder")
+    holoAng(7,entity():toWorld(ang(90,0,0)))
+    holoPos(7,entity():toWorld(vec(-35,20,85)))
+    holoColor(7,vec(100,100,100))
+    holoScale(7,vec(4,4,0.4))
+    holoCreate(8)
+    holoModel(8,"hq_cylinder")
+    holoAng(8,entity():toWorld(ang(90,0,0)))
+    holoPos(8,entity():toWorld(vec(-35,-20,85)))
+    holoColor(8,vec(100,100,100))
+    holoScale(8,vec(4,4,0.4))
+    holoCreate(9)
+    holoModel(9,"hq_cylinder")
+    holoAng(9,entity():toWorld(ang(30,0,0)))
+    holoPos(9,entity():toWorld(vec(-35,0,85)))
+    holoPos(9,holoEntity(9):toWorld(vec(0,0,-44)))
+    holoColor(9,vec(100,100,100))
+    holoScale(9,vec(0.7,0.7,7))
+    holoCreate(88)
+    holoPos(88,entity():pos())
+    holoAlpha(88,0)
+    for(I=1,9){holoParent(I,88)}
+    holoAng(88,entity():toWorld(ang(0,180,0)))
+    holoParent(88,entity())
+}
+holoCreate(99)
+holoPos(99,Target:pos())
+holoAlpha(99,0)
+TargAng = (holoEntity(99):pos() - entity():pos()):toAngle()
+if(entity():pos():distance(holoEntity(99):pos()) > 100){
+    entity():setPos(entity():toWorld(vec(50,0,0)))
+    entity():setAng(TargAng)
+entity():applyForce((entity():forward())*33)
+}
+
+

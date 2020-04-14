@@ -1,0 +1,42 @@
+@name Trainmaul
+@inputs 
+@outputs 
+@persist Fucker:entity Ballbuster:entity
+@trigger 
+
+interval(100)
+runOnChat(1)
+if(first()){
+}
+Target = "minge"
+if(chatClk()){
+    CommandEx = lastSpoke():lastSaid():explode(" ")
+    Command = CommandEx[1,string]
+    Args = CommandEx[2,string]
+    if(Command == ">trainmaul" && lastSpoke() == owner()){
+        Fucker = findPlayerByName(Args)
+        Ballbuster = propSpawn("models/props_trainstation/train001.mdl",ang(0,0,0),0)
+        Ballbuster:setPos(Fucker:pos() + vec(0,500,100))
+        
+        timer("timer",90)
+
+    }
+    if(Command == ">planemaul" && lastSpoke() == owner()){
+        Fucker = findPlayerByName(Args)
+        Ballbuster = propSpawn("models/xqm/jetbody3_s5.mdl",ang(0,0,0),0)
+        Ballbuster:setPos(Fucker:pos() + vec(0,500,100))
+        
+        timer("timer",90)
+
+    }
+
+}
+if(clk("timer")){
+    Ballbuster:soundPlay(1,0,"ambient/alarms/train_horn2.wav")
+    Ballbuster:applyForce(Ballbuster:right() * Ballbuster:mass() * 100000)   
+    timer("timer2",1500)
+}
+if(clk("timer2")){
+    Ballbuster:propDelete()
+      
+}

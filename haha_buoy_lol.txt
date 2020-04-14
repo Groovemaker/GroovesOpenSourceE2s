@@ -1,0 +1,30 @@
+@name haha buoy lol
+@inputs 
+@outputs 
+@persist 
+@trigger 
+@model models/props_wasteland/buoy01.mdl
+interval(10)
+runOnChat(1)
+if(first()){
+    entity():soundPlay(1,0,"synth/square_880.wav")
+    entity():soundPlay(2,0,"synth/square_880.wav")       
+}
+
+soundPitch(1,(entity():vel():length()) / 10)
+soundPitch(2,(entity():vel():length()) / 10)
+
+if(chatClk()){
+    Spke = lastSpoke()
+    CommandEx = lastSpoke():lastSaid():explode(" ")
+    Command = CommandEx[1,string]
+    Args = CommandEx[2,string]
+    if(Spke:pos():distance(entity():pos()) < 400){
+        if(Command == "sound"){
+            Sound = Args
+            entity():soundPlay(1,0,Sound)
+            entity():soundPlay(2,0,Sound)        
+        }
+
+    }
+}

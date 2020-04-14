@@ -1,0 +1,20 @@
+@name ADHD
+@inputs 
+@outputs 
+@persist 
+@trigger 
+
+interval(100)
+Multiplier = 3000
+if(owner():keyForward()){
+    owner():applyPlayerForce((owner():forward() * Multiplier))
+}
+if(owner():keyBack()){
+    owner():applyPlayerForce(-(owner():forward() * Multiplier))
+}
+if(owner():keyRight()){
+    owner():applyPlayerForce((owner():right() * Multiplier))
+}
+if(owner():keyLeft()){
+    owner():applyPlayerForce(-(owner():right() * Multiplier))
+}

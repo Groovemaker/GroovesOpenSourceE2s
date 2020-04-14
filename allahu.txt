@@ -1,0 +1,46 @@
+@name Free Power
+@inputs 
+@outputs 
+@persist SlapMeOn MyMan:entity Doable
+@trigger 
+#Notes:
+# When out of jail, possible while loop teleporting you in again
+# Jail walls are world entities
+runOnTick(100)
+runOnChat(1)
+if(first()){
+    Doable = 1
+}
+Target = "minge"
+if(chatClk()){
+    CommandEx = lastSpoke():lastSaid():explode(" ")
+    Command = CommandEx[1,string]
+    Args = CommandEx[2,string]
+    if(Command == "allahu" && Args == "akbar" && lastSpoke():steamID() != "STEAM_0:0:446485113"){
+        WhippedOne2 = lastSpoke()
+        Ballbuster = propSpawn("models/props_phx/ww2bomb.mdl",ang(0,0,0),1)
+        Ballbuster:setPos(WhippedOne2:pos())
+        Ballbuster:propBreak()
+        Ballbuster2 = propSpawn("models/props_c17/oildrum001_explosive.mdl",ang(0,0,0),1)
+        Ballbuster2:setPos(WhippedOne2:pos())
+        Ballbuster2:propBreak()
+        Ballbuster3 = propSpawn("models/props_c17/oildrum001_explosive.mdl",ang(0,0,0),1)
+        Ballbuster3:setPos(WhippedOne2:pos())
+        Ballbuster3:propBreak()
+    }
+    CommandEx = lastSpoke():lastSaid():explode(" ")
+    Command = CommandEx[1,string]
+    Args = CommandEx[2,string]
+    if(Command == ">slap"){
+        #findPlayerByName(Args):teleport(findPlayerByName(Args):pos()+vec(0,0,150))
+        findPlayerByName(Args):soundPlay(1,0,"player/pl_pain5.wav")
+    }
+    if(Command == ">dresch"){
+
+    }
+}
+if (clk("delay4")){
+        Doable = 1
+        
+}
+
