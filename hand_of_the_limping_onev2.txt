@@ -1,0 +1,215 @@
+@name Hand of the Limping One
+@inputs 
+@outputs 
+@persist AimPos:vector Doable RingRot2:number RingRad2:number RingSiz:number RingGrow BeamSiz:number RingRot:number EntPos AimEnt:entity
+@trigger 
+@model models/props_combine/combine_mortar01a.mdl
+runOnTick(1)
+
+if(first()){
+
+    Doable = 1
+    ##IMPORTANT!!!!! REMOVE THE TWO POUNDS (#) IN FRONT OF THE FOLLOWING LINE
+    entity():propNotSolid(1)
+}
+if(Doable == 1 & owner():keyAttack1() & owner():weapon():type() == "weapon_pistol"){
+RingSiz = 0.1
+BeamSiz = 0.01
+RingRot = 0
+RingWidth = 10
+RingRad = 220
+RingRad2 = 100
+RingRot2 = 0
+print("Orbital Beacon Planted")
+owner():soundPlay(111,0,"buttons/button17.wav")
+owner():soundPlay(131,0,"npc/overwatch/radiovoice/beginscanning10-0.wav")
+soundPitch(1,100)
+timer("delay2", 100)
+
+soundPitch(2,100)
+if(owner():aimEntity():type():find("player") || owner():aimEntity():type():find("sw") || owner():aimEntity():type():find("lunasflightschool") || owner():aimEntity():type():find("prop") ||  owner():aimEntity():type():find("sim_")){
+    AimPos = owner():aimEntity():pos()
+    AimEnt = owner():aimEntity()
+    print(AimEnt:type())
+    holoCreate(2,AimPos,vec(0.1,0.1,0.1),entity():angles(),vec(255,255,255))
+    holoParent(2,AimEnt)
+    holoAlpha(2,0)
+    holoCreate(11,AimPos,vec(0.1,0.1,0.1),entity():angles(),vec(255,255,255))
+    holoParent(11,AimEnt)
+    holoAlpha(11,0)
+    holoCreate(3,AimPos,vec(0.1,0.1,0.1),entity():angles(),vec(255,255,255))
+    holoAlpha(3,0)
+    holoCreate(22,holoEntity(3):pos() +vec(0,RingRad,1),vec(1,1,1),entity():angles(),vec(255,255,255))
+    holoCreate(23,holoEntity(3):pos() +vec(0,-RingRad,1),vec(1,1,1),entity():angles(),vec(255,255,255))
+    holoCreate(24,holoEntity(3):pos() +vec(RingRad,0,1),vec(1,1,1),entity():angles(),vec(255,255,255))
+    holoCreate(25,holoEntity(3):pos() +vec(-RingRad,0,1),vec(1,1,1),entity():angles(),vec(255,255,255))
+    holoParent(22,holoEntity(3))
+    holoParent(23,holoEntity(3))
+    holoParent(24,holoEntity(3))
+    holoParent(25,holoEntity(3))
+    holoCreate(221,holoEntity(11):pos() +vec(0,RingRad2,1),vec(1,1,1),entity():angles(),vec(255,255,255))
+    holoCreate(232,holoEntity(11):pos() +vec(0,-RingRad2,1),vec(1,1,1),entity():angles(),vec(255,255,255))
+    holoCreate(243,holoEntity(11):pos() +vec(RingRad2,0,1),vec(1,1,1),entity():angles(),vec(255,255,255))
+    holoCreate(254,holoEntity(11):pos() +vec(-RingRad2,0,1),vec(1,1,1),entity():angles(),vec(255,255,255))
+    holoParent(221,holoEntity(11))
+    holoParent(232,holoEntity(11))
+    holoParent(243,holoEntity(11))
+    holoParent(254,holoEntity(11))
+    holoAlpha(22,1)
+    holoAlpha(23,1)
+    holoAlpha(24,1)
+    holoAlpha(25,1)
+    holoAlpha(221,1)
+    holoAlpha(232,1)
+    holoAlpha(243,1)
+    holoAlpha(254,1)
+    holoEntity(22):setTrails(70,50,0.3,"trails/physbeam",vec(0,111,255),255)
+    holoEntity(23):setTrails(70,50,0.3,"trails/physbeam",vec(0,111,255),255)
+    holoEntity(24):setTrails(70,50,0.3,"trails/physbeam",vec(0,111,255),255)
+    holoEntity(25):setTrails(70,50,0.3,"trails/physbeam",vec(0,111,255),255)    
+    holoEntity(221):setTrails(70,50,0.3,"trails/physbeam",vec(0,255,255),255)
+    holoEntity(232):setTrails(70,50,0.3,"trails/physbeam",vec(0,255,255),255)
+    holoEntity(243):setTrails(70,50,0.3,"trails/physbeam",vec(0,255,255),255)
+    holoEntity(254):setTrails(70,50,0.3,"trails/physbeam",vec(0,255,255),255) 
+    #holoAlpha(22,0)
+    holoEntity(2):soundPlay(2,0,"ambient/levels/labs/teleport_mechanism_windup2.wav")
+}else{
+    AimPos = owner():eyeTrace():pos()
+    holoCreate(2,AimPos,vec(0.1,0.1,0.1),entity():angles(),vec(255,255,255))
+    holoAlpha(2,0)
+    holoCreate(11,AimPos,vec(0.1,0.1,0.1),entity():angles(),vec(255,255,255))
+    holoAlpha(11,0)
+    holoCreate(3,AimPos,vec(0.1,0.1,0.1),entity():angles(),vec(255,255,255))
+    holoAlpha(3,0)
+    holoCreate(22,holoEntity(3):pos() +vec(0,RingRad,1),vec(1,1,1),entity():angles(),vec(255,255,255))
+    holoCreate(23,holoEntity(3):pos() +vec(0,-RingRad,1),vec(1,1,1),entity():angles(),vec(255,255,255))
+    holoCreate(24,holoEntity(3):pos() +vec(RingRad,0,1),vec(1,1,1),entity():angles(),vec(255,255,255))
+    holoCreate(25,holoEntity(3):pos() +vec(-RingRad,0,1),vec(1,1,1),entity():angles(),vec(255,255,255))
+    holoParent(22,holoEntity(3))
+    holoParent(23,holoEntity(3))
+    holoParent(24,holoEntity(3))
+    holoParent(25,holoEntity(3))
+    holoCreate(221,holoEntity(11):pos() +vec(0,RingRad2,1),vec(1,1,1),entity():angles(),vec(255,255,255))
+    holoCreate(232,holoEntity(11):pos() +vec(0,-RingRad2,1),vec(1,1,1),entity():angles(),vec(255,255,255))
+    holoCreate(243,holoEntity(11):pos() +vec(RingRad2,0,1),vec(1,1,1),entity():angles(),vec(255,255,255))
+    holoCreate(254,holoEntity(11):pos() +vec(-RingRad2,0,1),vec(1,1,1),entity():angles(),vec(255,255,255))
+    holoParent(221,holoEntity(11))
+    holoParent(232,holoEntity(11))
+    holoParent(243,holoEntity(11))
+    holoParent(254,holoEntity(11))
+    holoAlpha(22,1)
+    holoAlpha(23,1)
+    holoAlpha(24,1)
+    holoAlpha(25,1)
+    holoAlpha(221,1)
+    holoAlpha(232,1)
+    holoAlpha(243,1)
+    holoAlpha(254,1)
+    holoEntity(22):setTrails(70,50,0.3,"trails/physbeam",vec(0,255,255),255)
+    holoEntity(23):setTrails(70,50,0.3,"trails/physbeam",vec(0,255,255),255)
+    holoEntity(24):setTrails(70,50,0.3,"trails/physbeam",vec(0,255,255),255)
+    holoEntity(25):setTrails(70,50,0.3,"trails/physbeam",vec(0,255,255),255)    
+    holoEntity(221):setTrails(70,50,0.3,"trails/physbeam",vec(0,255,255),255)
+    holoEntity(232):setTrails(70,50,0.3,"trails/physbeam",vec(0,255,255),255)
+    holoEntity(243):setTrails(70,50,0.3,"trails/physbeam",vec(0,255,255),255)
+    holoEntity(254):setTrails(70,50,0.3,"trails/physbeam",vec(0,255,255),255) 
+    #holoAlpha(22,0)
+    holoEntity(2):soundPlay(2,0,"ambient/levels/labs/teleport_mechanism_windup2.wav")
+}
+Doable = 0
+
+}
+if (clk("delay2")){
+        holoCreate(3,entity():pos(),vec(3,3,800),entity():angles(),vec(255,255,255))
+        holoModel(3,"hq_cylinder")
+        holoShadow(3,0)
+        holoDisableShading(3,1)
+        holoAlpha(3,255)
+        holoColor(3,vec(0,200,255))
+        holoMaterial(3,"models/debug/debugwhite")
+        #holoMaterial(3,"models/props_combine/portalball001_sheet")
+        
+        #holoColor(3,vec(0,100,255))
+        holoPos(3,holoEntity(2):pos() + vec(0,0,400))
+        holoParent(3,holoEntity(2))
+        holoCreate(4,entity():pos(),vec(3,3,800),entity():angles(),vec(255,255,255))
+        holoModel(4,"cplane")
+        holoAlpha(4,255)
+        holoMaterial(4,"models/props_combine/portalball001_sheet")
+        RingGrow = 1
+        holoPos(4,holoEntity(2):pos() + vec(0,0,5))
+        holoParent(4,holoEntity(2))
+        timer("delay3", 3900)
+        
+}
+if (clk("delay3")){
+    holoDelete(3)
+    holoDelete(4)
+    holoDelete(22)
+    holoDelete(23)
+    holoDelete(24)
+    holoDelete(25)
+    holoDelete(221)
+    holoDelete(222)
+    holoDelete(223)
+    holoDelete(224)
+    holoDelete(11)
+    holoEntity(2):soundPlay(2,0,"beams/beamstart5.wav")
+    WhippedOne2 = findPlayerByName("scp")
+    Ballbuster = propSpawn("models/props_c17/oildrum001_explosive.mdl",ang(0,0,0),1)
+    Ballbuster:setPos(holoEntity(2):pos())
+    Ballbuster:propBreak()
+    Ballbuster2 = propSpawn("models/props_c17/oildrum001_explosive.mdl",ang(0,0,0),1)
+    Ballbuster2:setPos(holoEntity(22):pos())
+    Ballbuster2:propBreak()
+    Ballbuster3 = propSpawn("models/props_phx/mk-82.mdl",ang(0,0,0),1)
+    Ballbuster3:setPos(holoEntity(23):pos())
+    Ballbuster3:propBreak()
+    Ballbuster4 = propSpawn("models/props_phx/ww2bomb.mdl",ang(0,0,0),1)
+    Ballbuster4:setPos(holoEntity(24):pos())
+    Ballbuster4:propBreak()
+    Ballbuster5 = propSpawn("models/props_c17/oildrum001_explosive.mdl",ang(0,0,0),1)
+    Ballbuster5:setPos(holoEntity(25):pos())
+    Ballbuster5:propBreak()
+    Ballbuster6 = propSpawn("models/props_phx/ww2bomb.mdl",ang(0,0,0),1)
+    Ballbuster6:setPos(holoEntity(22):pos())
+    Ballbuster6:propBreak()
+    Ballbuster7 = propSpawn("models/props_c17/oildrum001_explosive.mdl",ang(0,0,0),1)
+    Ballbuster7:setPos(holoEntity(23):pos())
+    Ballbuster7:propBreak()
+    Ballbuster11 = propSpawn("models/props_phx/ww2bomb.mdl",ang(0,0,0),1)
+    Ballbuster11:setPos(holoEntity(24):pos())
+    Ballbuster11:propBreak()
+    Ballbuster12 = propSpawn("models/props_phx/torpedo.mdl",ang(0,0,0),1)
+    Ballbuster12:setPos(holoEntity(25):pos())
+    Ballbuster12:propBreak()
+    Ballbuster13 = propSpawn("models/props_c17/oildrum001_explosive.mdl",ang(0,0,0),1)
+    Ballbuster13:setPos(holoEntity(11):pos())
+    Ballbuster13:propBreak()
+    Ballbuster14 = propSpawn("models/props_c17/oildrum001_explosive.mdl",ang(0,0,0),1)
+    Ballbuster14:setPos(holoEntity(11):pos())
+    Ballbuster14:propBreak()
+    soundPitch(4,70)
+    Doable = 1
+    RingSiz = 0.01
+    RingGrow = 0
+    RingRot = 0
+    RingWidth = 10
+}
+
+if(RingGrow == 1){
+    RingSiz+=1
+    BeamSiz+=0.1
+    RingRot+=10
+    RingRot2-=10
+    holoAng(3,ang(0,RingRot,0))
+    holoPos(3,holoEntity(2):pos())
+    holoAng(11,ang(0,RingRot2,0))
+    holoPos(11,holoEntity(2):pos())
+    holoScale(4,vec(0,0,1))
+    holoScale(3,vec(BeamSiz,BeamSiz,800))
+}
+
+    holoEntity(2):setPos(AimPos)
+    holoParent(2,AimEnt)
+
