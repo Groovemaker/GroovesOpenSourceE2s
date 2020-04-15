@@ -161,9 +161,15 @@ if(owner():weapon():type() == "weapon_pistol"){
         holoAlpha(I,255)
         #holoColor(I,"")
     }
-    if(changed(owner():weapon():clip1()) && owner():weapon():clip1() < 18){
-        soundPurge()
-        timer("snd",66)
+    if(changed(owner():weapon():clip1()) && owner():weapon():clip1() < 18 && owner():weapon():clip1() > 0){
+    soundStop(2)
+    owner():soundPlay(1,0.4,"weapons/deagle/deagle-1.wav")
+    soundPitch(1,133)
+    soundVolume(1,0.3)
+    owner():soundPlay(2,0.4,"npc/waste_scanner/grenade_fire.wav")
+    soundPitch(2,155)
+    soundVolume(2,1)
+        #timer("snd",11)
 
     }
 }else{
@@ -174,10 +180,5 @@ if(owner():weapon():type() == "weapon_pistol"){
     }
 }
 if(clk("snd")){
-    owner():soundPlay(1,0,"weapons/deagle/deagle-1.wav")
-    soundPitch(1,133)
-    soundVolume(1,0.3)
-    owner():soundPlay(2,0,"npc/waste_scanner/grenade_fire.wav")
-    soundPitch(2,155)
-    soundVolume(2,0.4)
+
 }
