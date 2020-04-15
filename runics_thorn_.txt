@@ -162,6 +162,9 @@ if(owner():weapon():type() == "weapon_pistol"){
         #holoColor(I,"")
     }
     if(changed(owner():weapon():clip1()) && owner():weapon():clip1() < 18 && owner():weapon():clip1() > 0){
+    holoDelete(338)
+
+    timer("Trails",2)
     soundStop(2)
     owner():soundPlay(1,0.4,"weapons/deagle/deagle-1.wav")
     soundPitch(1,133)
@@ -179,6 +182,13 @@ if(owner():weapon():type() == "weapon_pistol"){
         #holoColor(I,"")
     }
 }
-if(clk("snd")){
+if(clk("Trails")){
+holoCreate(338)
+holoPos(338,holoEntity(5):pos())
+holoModel(338,"hq_sphere")
 
+holoAng(338,owner():eyeAngles())
+holoAlpha(338,0)
+holoEntity(338):setTrails(15,15,0.15,"trails/laser",vec(50,255,50), 255)  
 }
+holoPos(338,holoEntity(338):toWorld(vec(222,0,0)))
