@@ -154,6 +154,7 @@ if(first()){
     holoAng(555,owner():attachmentAng("anim_attachment_rh"))
     holoParentAttachment(555,owner(),"anim_attachment_rh")
     holoAng(1,holoEntity(555):toWorld(ang(0,-90,0)))
+    holoPos(1,holoEntity(555):toWorld(vec(0,0,-3)))
 if(owner():weapon():type() == "weapon_pistol"){
     owner():weapon():setAlpha(0)
     for(I=2,22){
