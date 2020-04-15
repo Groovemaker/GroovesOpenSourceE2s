@@ -6,7 +6,10 @@
 
 interval(50)
 if(first()){
-    StaffOwner = findPlayerByName("Enter Your Name Here")
+
+## Enter the name of the player to grant the javelin to below!
+StaffOwner = findPlayerByName("runic")
+##############################################################
 Doable = 1
 StaffColor1 = vec(255,50,50)
 Mat1 = "sprops/textures/gear_metal"
@@ -40,12 +43,15 @@ if(StaffOwner:weapon():type() == "weapon_crowbar"){
     StaffOwner:weapon():setAlpha(0)
     if(StaffOwner:keyAttack1() && Doable == 1){
         Shootpos = StaffOwner:eyeTrace():pos()
-        SoundInt = randint(1)
-        SoundInt2 = randint(1)
-        StaffOwner:soundPlay(SoundInt,0,"ambient/energy/zap"+randint(7,9)+".wav")
+        SoundInt = randint(1,11)
+        SoundInt2 = randint(12,22)
+        StaffOwner:soundPlay(SoundInt,0,"ambient/fire/ignite.wav")
+        StaffOwner:soundPlay(SoundInt2,0,"npc/waste_scanner/grenade_fire.wav")
         #StaffOwner:soundPlay(SoundInt2,0,"npc/roller/mine/rmine_explode_shock1.wav")
-        
-        soundPitch(SoundInt,randint(80,133))
+      # weapons/fokku_tc_deagle/deagle-1.wav at 60 pitch volume 0.7  
+        soundPitch(SoundInt,90)
+        soundPitch(SoundInt2,222)
+        soundVolume(SoundInt2,0.3)
         #soundPitch(SoundInt2,222)
         #for(I=1,10){
         #    soundPitch(I,111)
