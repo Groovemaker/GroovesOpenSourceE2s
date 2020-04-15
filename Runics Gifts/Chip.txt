@@ -1,0 +1,12 @@
+@name Gifts of the Limping One: The BLARG-Chip
+@inputs 
+@outputs 
+@persist 
+@trigger 
+
+findByClass("npc*")
+NPCs = findToArray()
+for(I = 1,NPCs:count()){
+    Machine = NPCs[I,entity]
+    Machine:npcRelationship(owner(),"like",9999)
+}

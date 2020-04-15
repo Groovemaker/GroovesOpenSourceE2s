@@ -1,0 +1,77 @@
+@name Gifts of the Limping One: A-83 Atomizer
+@inputs Btn Socket
+@outputs Plug
+@persist Btn TrgEnt:entity Doable
+@trigger 
+@model models/props_lab/workspace002.mdl
+interval(10)
+if(first()){
+    Plug = 1
+    Btn = 0
+    Doable = 1
+    #Machine part 1 - Pad
+    holoCreate(1,entity():pos() + vec(-200,0,0),vec(1,1,1),entity():angles(),vec(255,255,255))
+    holoModel(1, "models/props_lab/teleplatform.mdl")
+    entity():soundPlay(999,0,"ambient/machines/combine_terminal_loop1.wav")
+    soundPitch(999,20)
+}
+timer("delay0", 20)
+if (clk("delay0")){
+    #print("tick")
+    findIncludeClass("prop_physics")
+    findIncludeClass("player")
+    findIncludeClass("npc_*")
+    findIncludeClass("prop_*")
+    findInSphere(entity():pos() + vec(-200,0,50),40)
+    FindRes = findToArray()
+    TrgEnt = FindRes[1,entity]
+    timer("delay0", 20)
+}
+timer("delay1", 10)
+if (clk("delay1")){
+    if(Socket == 1 && Btn == 1 && Doable == 1){
+
+        entity():soundPlay(1,0,"buttons/combine_button1.wav")
+        soundPitch(1,120)
+        timer("delay2", 5900)
+        entity():soundPlay(2,0,"ambient/levels/labs/teleport_mechanism_windup2.wav")
+        soundPitch(2,100)
+        Doable = 0
+    }
+    if(Socket == 0 && Btn == 1 && Doable == 1){
+        entity():soundPlay(1,0,"buttons/button8.wav")
+        soundPitch(1,120)
+        timer("delay4", 1300)
+        Doable = 0
+
+    }
+    timer("delay1", 10)
+}
+if (clk("delay2")){
+        holoCreate(3,entity():pos() + vec(-200,0,50),vec(6,6,6),entity():angles(),vec(255,255,255))
+        holoModel(3, "hq_sphere")
+        holoColor(3,vec(0,100,255))
+        holoAlpha(3,254)
+        holoMaterial(3,"effects/strider_bulge_dudv")
+        entity():soundPlay(3,0,"ambient/levels/labs/electric_explosion1.wav")
+        soundStop(2)
+        print(TrgEnt:getMaterial())
+        if(TrgEnt:getMaterial() == ""){
+            TrgEnt:setMaterial("models/effects/vol_light002")
+        }elseif(TrgEnt:getMaterial() == "models/effects/vol_light002"){
+            TrgEnt:setMaterial("")
+        }
+        timer("delay3", 900)
+        
+}
+if (clk("delay3")){
+        holoDelete(3)
+        entity():soundPlay(4,0,"items/suitchargeok1.wav")
+        soundPitch(4,70)
+        Doable = 1
+        
+}
+if (clk("delay4")){
+        Doable = 1
+        
+}

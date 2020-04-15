@@ -1,0 +1,50 @@
+@name Gifts of the Limping one: Angelic Liberty
+@inputs 
+@outputs 
+@persist Welder:entity Speed Wing2 Wing1
+@trigger 
+
+if(first()){
+    Wing1 = 180
+    Wing2 = 0
+    Welder = entity():isWeldedTo()
+    Speed = 403 *33
+    WingSiz = 0.5
+    entity():setAlpha(0)
+    Welder:setAlpha(0)
+    #right wings
+    holoCreate(1,Welder:pos() + vec(0,10,60),vec(1,1,1),Welder:angles() + ang(-270,180,0),vec(255,255,255))
+    holoModel(1, "hq_sphere")
+    holoAlpha(1,0)
+    holoMaterial(1,"phoenix_storms/fender_white")
+    holoCreate(11,Welder:pos() + vec(-60,10,60),vec(WingSiz,WingSiz,WingSiz),Welder:angles() + ang(-270,180,0),vec(255,255,255))
+    holoModel(11, "models/props_junk/garbage256_composite002b.mdl")
+    holoMaterial(11,"phoenix_storms/fender_white")
+    holoParent(11,holoEntity(1))
+    #left wings
+    holoCreate(2,Welder:pos() + vec(0,10,60),vec(1,1,1),Welder:angles() + ang(270,0,0),vec(255,255,255))
+    holoModel(2, "hq_sphere")
+    holoAlpha(2,0)
+    holoMaterial(2,"phoenix_storms/fender_white")
+    holoCreate(22,Welder:pos() + vec(60,10,60),vec(WingSiz,WingSiz,WingSiz),Welder:angles() + ang(-270,0,0),vec(255,255,255))
+    holoModel(22, "models/props_junk/garbage256_composite002b.mdl")
+    holoMaterial(22,"phoenix_storms/fender_white")
+    holoParent(22,holoEntity(2))
+    holoParent(1,Welder)
+    holoParent(2,Welder)
+
+}
+interval(110)
+if(Welder:driver():keyForward()){Welder:setPos(Welder:pos() + Welder:driver():eye() * Speed)}
+if(Welder:driver():keySprint()){Speed = 20}elseif(!Welder:driver():keySprint()){Speed = 30}
+Welder:propFreeze(1)
+timer("delay0", 120)
+if (clk("delay0")){
+    holoAng(1,Welder:angles()+ang(-270,180,(sin(curtime() * 180) * 80) / 2))
+    holoAng(2,Welder:angles()+ang(270,0,(sin(curtime() * -180) * -80) / 2))
+    timer("delay0", 120)
+}
+
+
+#Welder:setAlpha(0)
+

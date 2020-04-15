@@ -1,0 +1,15 @@
+@name Limping Machinary Base
+@inputs Btn Socket
+@outputs Plug
+@persist Btn TrgEnt:entity Doable
+@trigger 
+@model models/props_lab/workspace002.mdl
+interval(10)
+if(first()){
+    Plug = 1
+    Btn = 0
+    Doable = 1
+    entity():soundPlay(999,0,"ambient/machines/combine_terminal_loop1.wav")
+    soundPitch(999,70)
+}
+

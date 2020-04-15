@@ -1,0 +1,100 @@
+@name Gifts of the Limping one: A-84 Genesis Cannon
+@inputs Btn Socket
+@outputs Plug
+@persist Btn TrgEnt:entity Doable GravityMod
+@trigger 
+@model models/props_lab/workspace002.mdl
+interval(10)
+if(first()){
+    GravityMod = 1
+    Plug = 1
+    Btn = 0
+    Doable = 1
+    Angler = ang(0,-45,0)
+    Angler2 = ang(90,0,0)
+    Scal = 1.3
+    #Machine part 1 - Right Stone
+    holoCreate(1,entity():pos() + vec(-200,100,0),vec(1,1,1),entity():angles(),vec(255,255,255))
+    holoModel(1, "models/phxtended/trieq1x1x2.mdl")
+    holoAng(1,Angler)
+    #Machine part 2 - Left Stone
+    holoCreate(11,entity():pos() + vec(-200,-100,0),vec(1,1,1),entity():angles(),vec(255,255,255))
+    holoModel(11, "models/phxtended/trieq1x1x2.mdl")
+    holoAng(11,Angler)
+    #Machine part 3 - Tube 1
+    holoCreate(112,entity():pos() + vec(-290,0,30),vec(1*Scal,1*Scal,1*Scal),entity():angles(),vec(255,255,255))
+    holoModel(112, "models/props_phx/construct/metal_wire_angle360x2.mdl")
+    holoAng(112,Angler2)
+    entity():soundPlay(999,0,"ambient/machines/combine_terminal_loop1.wav")
+    soundPitch(999,20)
+    
+}
+timer("delay0", 20)
+if (clk("delay0")){
+    #print("tick")
+    #findIncludeClass("prop_physics")
+    findIncludeClass("player")
+    #findIncludeClass("npc_*")
+    findIncludeClass("prop_*")
+    findIncludeClass("gmod_wire_expression*")
+    findInSphere(entity():pos() + vec(-270,0,30),130)
+    FindRes = findToArray()
+    TrgEnt = FindRes[1,entity]
+    #print(TrgEnt:model())
+    timer("delay0", 20)
+}
+timer("delay1", 10)
+if (clk("delay1")){
+    if(Socket == 1 && Btn == 1 && Doable == 1){
+
+        entity():soundPlay(1,0,"buttons/combine_button1.wav")
+        soundPitch(1,120)
+        timer("delay2", 5900)
+        entity():soundPlay(2,0,"ambient/levels/labs/teleport_mechanism_windup2.wav")
+        soundPitch(2,100)
+        Doable = 0
+    }
+    if(Socket == 0 && Btn == 1 && Doable == 1){
+        entity():soundPlay(1,0,"buttons/button8.wav")
+        soundPitch(1,120)
+        timer("delay4", 1300)
+        Doable = 0
+
+    }
+    timer("delay1", 10)
+}
+if (clk("delay2")){
+        holoCreate(3,entity():pos() + vec(-200,0,50),vec(6,6,6),entity():angles(),vec(255,255,255))
+        holoModel(3, "hq_sphere")
+        holoColor(3,vec(0,100,255))
+        holoAlpha(3,254)
+        holoMaterial(3,"effects/strider_bulge_dudv")
+        entity():soundPlay(3,0,"ambient/levels/labs/electric_explosion1.wav")
+        soundStop(2)
+        #print(TrgEnt:type())
+        if(GravityMod == 1){
+            TrgEnt:propGravity(0)
+        }
+        if(TrgEnt:type() != "player"){
+        TrgEnt:propFreeze(0)
+        TrgEnt:applyForce(vec(-11190,0,0) * 222e9939 * TrgEnt:mass())
+        }elseif(TrgEnt:type() == "player"){
+        print(TrgEnt)
+        #TrgEnt:propFreeze(0)
+        TrgEnt:applyPlayerForce(TrgEnt:up() * 3000)
+        TrgEnt:applyPlayerForce(vec(-1,0,0) * 99e10)
+        }
+        timer("delay3", 900)
+        
+}
+if (clk("delay3")){
+        holoDelete(3)
+        entity():soundPlay(4,0,"items/suitchargeok1.wav")
+        soundPitch(4,70)
+        Doable = 1
+        
+}
+if (clk("delay4")){
+        Doable = 1
+        
+}

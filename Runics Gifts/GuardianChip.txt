@@ -1,0 +1,48 @@
+@name Gifts of the Limping One: The Guardian-Chip
+@inputs 
+@outputs 
+@persist NPCs:array Machine:entity
+@trigger 
+@model models/holograms/pyramid.mdl
+timer("delay0", 100)
+if (clk("delay0")){
+    entity():setColor(vec(0,0,0))
+    findByClass("npc_*")
+    NPCs = findToArray()
+    for(I = 1,NPCs:count()){
+        Machine = NPCs[I,entity]
+
+        Machine:npcRelationship("player","hate",0)
+        Machine:npcRelationship("player","like",9999)
+        Machine:npcGoRun(owner():pos() + vec(0,100,0))
+    }
+    timer("delay0", 1900)
+}
+if (clk("delay02")){
+    entity():setColor(vec(0,0,0))
+    findByClass("npc_*")
+    NPCs = findToArray()
+    for(I = 1,NPCs:count()){
+        Machine = NPCs[I,entity]
+
+        Machine:npcRelationship("player","hate",0)
+        Machine:npcRelationship("player","like",9999)
+    }
+    timer("delay02", 100)
+}
+timer("delay01", 100)
+if (clk("delay01")){
+    if(owner():keyUse()){
+        for(I = 1,NPCs:count()){
+            Machine = NPCs[I,entity]
+            Machine:npcSetTarget(owner():aimEntity())
+            Machine:npcRelationship(owner():aimEntity(),"hate",9999)
+            #Machine:npcShoot()
+        }
+    }
+    timer("delay01", 100)
+}
+
+
+
+
