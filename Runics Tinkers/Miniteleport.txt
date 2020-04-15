@@ -13,6 +13,7 @@ if(first()){
     soundPitch(999,20)
 }
 findIncludeClass("prop_physics")
+findExcludeEntity(entity():isWeldedTo())
 findInSphere(entity():pos() + vec(-3,-33,10),30)
 FindRes = findToArray()
 
