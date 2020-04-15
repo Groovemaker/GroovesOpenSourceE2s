@@ -140,6 +140,37 @@ if(first()){
     holoAng(22,Bod:toWorld(ang(0,0,90)))
     holoColor(22,vec(55,133,55))
     holoParent(22,1)
+    
+    holoCreate(110)
+    holoModel(110,"cylinder")
+    holoScale(110,vec(0.5,0.5,0.2) * 0.92 * Mult)
+    holoPos(110,Bod:toWorld(vec(0,14.5,13) * Mult) )
+    holoAng(110,Bod:toWorld(ang(0,0,90)))
+    holoParent(110,1)
+    holoCreate(111)
+    holoModel(111,"cylinder")
+    holoScale(111,vec(0.5,0.5,0.2) * 0.82 * Mult)
+    holoPos(111,Bod:toWorld(vec(0,12.5,13) * Mult) )
+    holoAng(111,Bod:toWorld(ang(0,0,90)))
+    holoParent(111,1)
+    holoCreate(112)
+    holoModel(112,"cylinder")
+    holoScale(112,vec(0.5,0.5,0.25) * 0.72 * Mult)
+    holoPos(112,Bod:toWorld(vec(0,10.8,13) * Mult) )
+    holoAng(112,Bod:toWorld(ang(0,0,90)))
+    holoParent(112,1)
+    holoCreate(113)
+    holoModel(113,"cylinder")
+    holoScale(113,vec(0.5,0.5,0.7) * 0.62 * Mult)
+    holoPos(113,Bod:toWorld(vec(0,9.8,13) * Mult))
+    holoAng(113,Bod:toWorld(ang(0,0,90)))
+    holoParent(113,1)
+    for(I=110,113){
+        holoMaterial(I,"models/props_combine/tpballglow")
+        holoAlpha(I,0)
+        holoColor(I,vec(0,255,0))
+        #holoColor(I,"")
+    }
     for(I=1,18){
         holoMaterial(I,"models/props_combine/metal_combinebridge001")
         #holoColor(I,"")
@@ -165,6 +196,12 @@ if(owner():weapon():type() == "weapon_pistol"){
     holoDelete(338)
 
     timer("Trails",2)
+    for(I=110,113){
+        #holoMaterial(I,"models/props_combine/portalball001_sheet")
+        holoAlpha(I,254)
+        #holoColor(I,"")
+    }
+    timer("Shot",444)
     soundStop(2)
     owner():soundPlay(1,0.4,"weapons/deagle/deagle-1.wav")
     soundPitch(1,133)
@@ -192,3 +229,10 @@ holoAlpha(338,0)
 holoEntity(338):setTrails(15,15,0.15,"trails/laser",vec(50,255,50), 255)  
 }
 holoPos(338,holoEntity(338):toWorld(vec(222,0,0)))
+if(clk("Shot")){
+    for(I=110,113){
+        #holoMaterial(I,"models/props_combine/portalball001_sheet")
+        holoAlpha(I,0)
+        #holoColor(I,"")
+    }
+}
