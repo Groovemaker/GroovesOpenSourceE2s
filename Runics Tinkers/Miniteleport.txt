@@ -1,18 +1,20 @@
 @name Tinker Toys of the Limping One: Miniteleport
-@inputs  
-@outputs 
-@persist TrgEnt:entity Doable Allps:array
+@inputs Btn Socket
+@outputs Plug
+@persist Btn TrgEnt:entity Doable
 @trigger 
 @model models/props_lab/miniteleport.mdl
-interval(30)
+runOnTick(1)
 if(first()){
-    entity():propNotSolid(0)
+    Plug = 1
+    Btn = 0
     Doable = 1
 
     entity():soundPlay(999,0,"ambient/machines/combine_terminal_loop1.wav")
     soundPitch(999,20)
 }
 findIncludeClass("prop_physics")
+findIncludeClass("npc_rollermine")
 findExcludeEntity(entity():isWeldedTo())
 findInSphere(entity():pos() + vec(-3,-33,10),30)
 FindRes = findToArray()
@@ -23,8 +25,9 @@ for(I=1,Allps:count()){
 Guy = Allps[I,entity]
     if(Guy:aimEntity() == entity() && Guy:keyUse()){
         if(Doable == 1){
-            entity():soundPlay(2,0,"ambient/machines/thumper_startup1.wav")
-            soundPitch(1,150)
+            print(TrgEnt)
+            entity():soundPlay(2,0,"hl1/ambience/particle_suck1.wav")
+            soundPitch(1,120)
             timer("delay2", 1300)
             Doable = 0
         }
@@ -37,10 +40,10 @@ if (clk("delay2")){
         holoModel(3, "cplane")
         #holoColor(3,vec(0,100,255))
         holoAlpha(3,166)
-        holoMaterial(3,"effects/strider_bulge_dudv")
+        holoMaterial(3,"sprites/heatwave")
 
-        entity():soundPlay(3,0,"ambient/energy/spark6.wav")
-        soundPitch(1,80)
+        entity():soundPlay(3,0,"ambient/energy/weld1.wav")
+        soundPitch(1,220)
         timer("delay3", 900)
         
 }
