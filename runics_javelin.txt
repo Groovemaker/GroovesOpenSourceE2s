@@ -1,13 +1,18 @@
 @name Runics Javelin
 @inputs 
 @outputs 
-@persist Doable StaffOwner:entity RD:ranger Fired Shootpos:vector
+@persist Doable StaffOwner:entity RD:ranger Fired Shootpos:vector Doable2
 @trigger 
 
 interval(50)
 if(first()){
+hint("Javelin Subroutine v2.0 by Runic Loaded",11)
+hint("Change StaffOwner in the code to grant to other players",11)
+hint("Mouse1 -> Throw Javelin",11)
+hint("Mouse2 -> SuperJump",11)
     StaffOwner = findPlayerByName("runic")
 Doable = 1
+Doable2 = 1
 StaffColor1 = vec(255,50,50)
 Mat1 = "sprops/textures/gear_metal"
 holoCreate(1)
@@ -101,6 +106,13 @@ if(StaffOwner:weapon():type() == "weapon_crowbar"){
         timer("cooldown",700)
 
     }
+    if(StaffOwner:keyAttack2() && Doable2 == 1){
+        Multi = 11
+        StaffOwner:applyPlayerForce(vec(0,0,90) * Multi)
+        #print("sdf")
+        Doable2 = 0
+        timer("cooldown2",1111)
+    }
 }
 elseif(StaffOwner:weapon():type() != "weapon_crowbar"){
     for(I=1,5){
@@ -111,6 +123,9 @@ elseif(StaffOwner:weapon():type() != "weapon_crowbar"){
 holoPos(338,holoEntity(338):toWorld(vec(281,0,0)))
 if(clk("cooldown")){
     #Doable = 1
+}
+if(clk("cooldown2")){
+    Doable2 = 1
 }
 if(Doable == 0){
     holoAlpha(1,0)
@@ -137,4 +152,7 @@ holoPos(1,StaffOwner:attachmentPos("anim_attachment_rh"))
             holoDelete(338)
             Doable = 1
         }
+
+
+
 
