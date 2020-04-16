@@ -4,7 +4,7 @@
 @persist Doable StaffOwner:entity RD:ranger Fired Shootpos:vector Doable2
 @trigger 
 
-interval(50)
+interval(150)
 if(first()){
 hint("Javelin Subroutine v2.0 by Runic Loaded",11)
 hint("Change StaffOwner in the code to grant to other players",11)
@@ -15,26 +15,30 @@ Doable = 1
 Doable2 = 1
 StaffColor1 = vec(255,50,50)
 Mat1 = "sprops/textures/gear_metal"
+holoCreate(888)
+holoAlpha(888,0)
+
+Bod = holoEntity(888)
 holoCreate(1)
-holoPos(1,entity():toWorld(vec(0,0,60)))
+holoPos(1,Bod:toWorld(vec(0,0,0)))
 holoModel(1,"models/props_junk/harpoon002a.mdl")
 holoAng(1,ang(0,0,0))
 holoScale(1,vec(1,1,1))
 holoColor(1,StaffColor1)
 holoMaterial(1,Mat1)
 holoCreate(2)
-holoPos(2,entity():toWorld(vec(0,0,60)))
+holoPos(2,Bod:toWorld(vec(0,0,0)))
 holoModel(2,"models/props_junk/harpoon002a.mdl")
 holoAng(2,ang(0,0,0))
 holoScale(2,vec(1.1,1.1,1.1))
 holoColor(2,vec(255,133,0))
 holoMaterial(2,"models/wireframe")
-for(I=2,5){
-    holoParent(I,holoEntity(1))
-}
-holoParentAttachment(1,StaffOwner,"anim_attachment_rh")
-holoPos(1,StaffOwner:attachmentPos("anim_attachment_rh"))
-holoAng(1,StaffOwner:attachmentAng("anim_attachment_rh") + ang(0,90,90))
+holoParent(2,1)
+holoParent(1,Bod)
+holoPos(888,StaffOwner:attachmentPos("anim_attachment_rh"))
+holoAng(888,StaffOwner:attachmentAng("anim_attachment_rh"))
+holoParentAttachment(888,StaffOwner,"anim_attachment_rh")
+holoAng(1,Bod:toWorld(ang(0,90,0)))
 #print(owner():eyeAngles())
 
 }
@@ -120,7 +124,7 @@ elseif(StaffOwner:weapon():type() != "weapon_crowbar"){
     }
     StaffOwner:weapon():setAlpha(255)
 }
-holoPos(338,holoEntity(338):toWorld(vec(281,0,0)))
+holoPos(338,holoEntity(338):toWorld(vec(444,0,0)))
 if(clk("cooldown")){
     #Doable = 1
 }
@@ -134,7 +138,7 @@ if(Doable == 0){
     holoAlpha(1,255)
     holoAlpha(2,255)
 }
-holoPos(1,StaffOwner:attachmentPos("anim_attachment_rh"))
+#holoPos(1,StaffOwner:attachmentPos("anim_attachment_rh"))
 #holoAng(1,StaffOwner:attachmentAng("anim_attachment_rh")+ang(-30,50,30))
 #holoAng(1,StaffOwner:eyeAngles()+ang(0,90,90))
         findIncludeClass("prop_*")

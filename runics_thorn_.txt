@@ -3,7 +3,7 @@
 @outputs 
 @persist Mult
 @trigger 
-runOnTick(1)
+interval(300)
 if(first()){
     Mult = 0.5
     #Create a Hologram
@@ -228,7 +228,7 @@ holoAng(338,owner():eyeAngles())
 holoAlpha(338,0)
 holoEntity(338):setTrails(15,15,0.15,"trails/laser",vec(50,255,50), 255)  
 }
-holoPos(338,holoEntity(338):toWorld(vec(222,0,0)))
+holoPos(338,holoEntity(338):toWorld(vec(888,0,0)))
 if(clk("Shot")){
     for(I=110,113){
         #holoMaterial(I,"models/props_combine/portalball001_sheet")
