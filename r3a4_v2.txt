@@ -1,7 +1,7 @@
 @name r3-a4
 @inputs 
 @outputs 
-@persist Target:entity RandInt OldRandInt Beeps:array Pitches:array Follow LaserTrg:entity Randomizer
+@persist Target:entity RandInt OldRandInt Beeps:array Pitches:array Follow LaserTrg:entity Randomizer Protection
 @trigger 
 @model 
 
@@ -9,6 +9,7 @@ interval(111)
 runOnChat(1)
 
 if(first()){
+    Protection = 0
     Randomizer = randint(33,66)
     ####### CHANGE COLORS HERE!!! #######
     #Default Head Color = vec(255,103,103)
@@ -163,19 +164,44 @@ if(chatClk(owner())){
         if(Command:lower() == "wait"){
             Follow = 0
         }
+        if(Command:lower() == "protection"){
+
+            if(Args:lower() == "on"){
+                Protection = 1
+                print("[DROID] Protection Online!")
+            }
+            elseif(Args:lower() == "off"){
+                Protection = 0
+                print("[DROID] Protection Offline!")
+            }
+        }
     }
 }
 if(clk("laser1")){
     if(LaserTrg){
         holoPos(91,LaserTrg:toWorld(vec(0,0,30)))
-        Ballbuster = propSpawn("models/props_phx/cannonball.mdl",ang(0,0,0),1)
+        Ballbuster = propSpawn("models/props_phx/ww2bomb.mdl",ang(0,0,0),1)
         Ballbuster:setPos(LaserTrg:pos())
         Ballbuster:propBreak()
-        Ballbuster = propSpawn("models/props_phx/cannonball.mdl",ang(0,0,0),1)
+        Ballbuster = propSpawn("models/props_phx/ww2bomb.mdl",ang(0,0,0),1)
         Ballbuster:setPos(LaserTrg:pos())
         Ballbuster:propBreak()
-        Ballbuster = propSpawn("models/props_phx/cannonball.mdl",ang(0,0,0),1)
+        Ballbuster = propSpawn("models/props_phx/ww2bomb.mdl",ang(0,0,0),1)
         Ballbuster:setPos(LaserTrg:pos())
         Ballbuster:propBreak()
+    }
+}
+if(Protection == 1){
+    Plys = players()
+    for(I=1,Plys:count()){
+        Ply = Plys[I,entity]
+        if(Ply:aimEntity() == Target && Ply:keyAttack1()){
+            LaserTrg = Ply
+            holoCreate(91)
+            holoPos(91,holoEntity(1):pos())
+            holoAlpha(91,0)
+            holoEntity(91):setTrails(20,20,120,"trails/laser",vec(11,133,255), 255)
+            timer("laser1",111)   
+        }
     }
 }
