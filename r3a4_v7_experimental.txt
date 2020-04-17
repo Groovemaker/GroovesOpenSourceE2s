@@ -172,7 +172,7 @@ if(chatClk(owner())){
             holoPos(91,holoEntity(1):pos())
             holoAlpha(91,0)
             holoEntity(91):setTrails(20,20,120,"trails/laser",vec(11,133,255), 255)
-            timer("laser1",111)   
+            timer("laser1",444)   
         }
         if(ArgsLineC:lower() == "what material is this"){
             print("[DROID] Material is: "+ owner():aimEntity():getMaterial())
@@ -224,13 +224,13 @@ if(Protection == 1){
             holoPos(91,holoEntity(1):pos())
             holoAlpha(91,0)
             holoEntity(91):setTrails(20,20,120,"trails/laser",vec(11,133,255), 255)
-            timer("laser1",111)
+            timer("laser1",444)
             LaserTrg = Results[I,entity]:owner()
             holoCreate(91)
             holoPos(91,holoEntity(1):pos())
             holoAlpha(91,0)
             holoEntity(91):setTrails(20,20,120,"trails/laser",vec(11,133,255), 255)
-            timer("laser1",111)   
+            timer("laser1",444)   
             }         
         }        
     }
@@ -238,7 +238,7 @@ if(Protection == 1){
 if(clk("SecLoop1")){
     if(Protection == 1){
         Plys = players()
-        print("protect")
+        #print("protect")
         for(I=1,Plys:count()){
             Ply = Plys[I,entity]
             if(Ply:aimEntity() == Target && Ply:keyAttack1() && Ply:weapon():type() != "weapon_physgun" && Ply:weapon():type() != "weapon_physcannon"){
