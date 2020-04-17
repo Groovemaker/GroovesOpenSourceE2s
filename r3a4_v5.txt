@@ -100,7 +100,7 @@ if(entity():pos():distance(holoEntity(99):pos()) > 100 && Follow == 1){
         holoAlpha(1,255)
         holoAng(1,holoEntity(1):toWorld(ang(-33,0,0)))
     }else{
-        entity():soundPlay(3,0,"thrusters/mh1.wav")
+        entity():soundPlay(3,0,"ambient/energy/force_field_loop1.wav")
         holoAlpha(44,255)
         holoAlpha(1,0)
     }
