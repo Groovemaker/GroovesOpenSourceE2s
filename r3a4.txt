@@ -1,7 +1,7 @@
 @name r3-a4
 @inputs 
 @outputs 
-@persist Target:entity RandInt OldRandInt Beeps:array Pitches:array Follow
+@persist Target:entity RandInt OldRandInt Beeps:array Pitches:array Follow LaserTrg:entity
 @trigger 
 @model 
 
@@ -61,6 +61,7 @@ if(first()){
     holoCreate(88)
     holoPos(88,entity():pos())
     holoAlpha(88,0)
+
     for(I=1,2){holoParent(I,88)}
     holoAng(88,entity():toWorld(ang(0,180,0)))
     holoParent(88,entity())
@@ -104,7 +105,7 @@ if(chatClk(owner())){
     ArgsLine = CommandEx
     ArgsLine:remove(1)
     ArgsLineC = ArgsLine:concat(" ")
-    if(Prefix == "r4"){
+    if(Prefix == "r3"){
         RandInt = randint(1,Beeps:count())
         #print(RandInt)
         RandSnd = randint(2,3)
@@ -138,11 +139,33 @@ if(chatClk(owner())){
         if(ArgsLineC:lower() == "what model is this"){
             print("[DROID] Model is: "+ owner():aimEntity():model())
         }
+        if(Command:lower() == "raygun"){
+            LaserTrg = findPlayerByName(Args)
+            holoCreate(91)
+            holoPos(91,holoEntity(1):pos())
+            holoAlpha(91,0)
+            holoEntity(91):setTrails(20,20,120,"trails/laser",vec(11,133,255), 255)
+            timer("laser1",111)   
+        }
         if(ArgsLineC:lower() == "what material is this"){
             print("[DROID] Material is: "+ owner():aimEntity():getMaterial())
         }
         if(Command:lower() == "wait"){
             Follow = 0
         }
+    }
+}
+if(clk("laser1")){
+    if(LaserTrg){
+        holoPos(91,LaserTrg:toWorld(vec(0,0,30)))
+        Ballbuster = propSpawn("models/props_phx/cannonball.mdl",ang(0,0,0),1)
+        Ballbuster:setPos(LaserTrg:pos())
+        Ballbuster:propBreak()
+        Ballbuster = propSpawn("models/props_phx/cannonball.mdl",ang(0,0,0),1)
+        Ballbuster:setPos(LaserTrg:pos())
+        Ballbuster:propBreak()
+        Ballbuster = propSpawn("models/props_phx/cannonball.mdl",ang(0,0,0),1)
+        Ballbuster:setPos(LaserTrg:pos())
+        Ballbuster:propBreak()
     }
 }
