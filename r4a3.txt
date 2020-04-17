@@ -9,6 +9,10 @@ interval(111)
 runOnChat(1)
 
 if(first()){
+    ####### CHANGE COLORS HERE!!! #######
+    HeadColor = vec(255,103,103)
+    BodyColor = vec(11,155,255)
+    #####################################
     Follow = 1
     Beeps[1,string] = "npc/dog/dog_playfull1.wav"
     Pitches[1,number] = 222
@@ -28,14 +32,14 @@ if(first()){
     holoMaterial(1,"sprops/sprops_grid_12x12")
     holoAng(1,entity():toWorld(ang(0,0,0)))
     holoPos(1,entity():toWorld(vec(0,0,13)))
-    holoColor(1,vec(11,155,255))
+    holoColor(1,BodyColor)
     holoScale(1,vec(2.3,2.3,2.3))
     holoCreate(2)
     holoModel(2,"hq_dome")
     holoColor(2,vec(255,103,103))
     holoAng(2,entity():toWorld(ang(0,0,0)))
     holoPos(2,entity():toWorld(vec(0,0,26.5)))
-    holoColor(2,vec(255,103,103))
+    holoColor(2,HeadColor)
     holoMaterial(2,"sprops/sprops_grid_12x12")
     holoScale(2,vec(1.5,1.5,1.4))
     holoCreate(3)
