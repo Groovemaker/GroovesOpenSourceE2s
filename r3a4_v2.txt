@@ -81,7 +81,7 @@ if(entity():pos():distance(holoEntity(99):pos()) > 100 && Follow == 1){
     holoAlpha(92,0)
     holoCreate(99)
     holoAlpha(99,0)
-    holoPos(99,holoEntity(92):toWorld(vec(0,((sin(curtime() * (MaxSeed) +Randomizer) * 120) / 1),0)))
+    holoPos(99,holoEntity(92):toWorld(vec(0,((sin(curtime() * (155) +Randomizer) * MaxSeed) / 1),0)))
     entity():setPos(entity():toWorld(vec(22* (entity():pos():distance(holoEntity(99):pos()) / 155) ,0,0)))
     entity():setAng(TargAng)
 
