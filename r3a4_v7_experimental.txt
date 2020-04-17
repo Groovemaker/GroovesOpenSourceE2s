@@ -99,7 +99,7 @@ if(entity():pos():distance(holoEntity(99):pos()) > 100 && Follow == 1){
         entity():soundPlay(3,0,"npc/roller/mine/rmine_movefast_loop1.wav")
         holoAlpha(44,0)
         holoAlpha(1,255)
-        holoAng(1,holoEntity(1):toWorld(ang(-33,0,0)))
+        holoAng(1,holoEntity(1):toWorld(ang(-15,0,0)))
     }else{
         entity():soundPlay(3,0,"ambient/energy/force_field_loop1.wav")
         holoAlpha(44,255)
@@ -150,6 +150,7 @@ if(chatClk(owner())){
         }
         if(Command:lower() == "identify"){
             Target2 = findPlayerByName(Args)
+            print(Args)
             print("[DROID] Info about "+Target2:name())
             print("SteamID:  "+Target2:steamID())
             print("SteamID64:  "+Target2:steamID64())
