@@ -1,7 +1,7 @@
 # RunicsOpenSourceE2s
 Expression 2 for Everyone!
 
-#License
+
  GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
