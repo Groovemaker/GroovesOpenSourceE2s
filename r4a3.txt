@@ -75,14 +75,15 @@ TargAng2 = (holoEntity(99):pos() - holoEntity(2):pos()):toAngle() + ang(0,180,0)
 if(entity():pos():distance(holoEntity(99):pos()) > 150 && Follow == 1){
     entity():setPos(entity():toWorld(vec(22* (entity():pos():distance(holoEntity(99):pos()) / 155) ,0,0)))
     entity():setAng(TargAng)
+
     entity():applyForce((entity():forward())*33)
     entity():soundPlay(3,0,"npc/roller/mine/rmine_movefast_loop1.wav")
     holoAng(1,holoEntity(1):toWorld(ang(-33,0,0)))
 }else{
     soundStop(3)
-    holoAng(2,ang(TargAng2:pitch(),TargAng2:yaw(),TargAng2:roll()))
-}
 
+}
+    holoAng(2,ang(TargAng2:pitch(),TargAng2:yaw(),TargAng2:roll()))
 
 if(clk("beep")){
     RandInt = randint(1,Beeps:count())
