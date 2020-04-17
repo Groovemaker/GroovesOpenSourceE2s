@@ -121,7 +121,6 @@ if(chatClk(owner())){
             print("[DROID] Info about "+Target2:name())
             print("SteamID:  "+Target2:steamID())
             print("SteamID64:  "+Target2:steamID64())
-            print("SteamID:  "+Target2:steamID())
             print("[SBOX INFO]")
             print("SteamID64:  "+Target2:steamID64())
             print("Godmode?:  "+Target2:inGodMode())
