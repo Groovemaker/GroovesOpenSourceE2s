@@ -1,7 +1,7 @@
 @name r3-a4
 @inputs 
 @outputs 
-@persist Target:entity RandInt OldRandInt Beeps:array Pitches:array Follow LaserTrg:entity Randomizer Protection IsInAir Blacklist:array
+@persist Target:entity RandInt OldRandInt Beeps:array Pitches:array Follow LaserTrg:entity Randomizer Protection IsInAir Blacklist:array LaserTrg2:entity
 @trigger 
 @model 
 
@@ -10,6 +10,7 @@ runOnChat(1)
 
 if(first()){
     IsInAir = 0
+    LaserTrg = entity(0)
     Protection = 0
     Randomizer = randint(33,66)
     ####### CHANGE COLORS HERE!!! #######
@@ -148,7 +149,7 @@ if(chatClk(owner())){
                 Target = findPlayerByName(Args)
             }
         }
-        if(Command:lower() == "identify"){
+        elseif(Command:lower() == "identify"){
             Target2 = findPlayerByName(Args)
             print(Args)
             print("[DROID] Info about "+Target2:name())
@@ -164,30 +165,35 @@ if(chatClk(owner())){
             print("[LIST OF STEAM FRIENDS]")
             printTable(Target2:steamFriends())
         }
-        if(ArgsLineC:lower() == "what model is this"){
+        elseif(ArgsLineC:lower() == "what model is this"){
             print("[DROID] Model is: "+ owner():aimEntity():model())
         }
-        if(Command:lower() == "raygun"){
-            LaserTrg = findPlayerByName(Args)
+        elseif(Command:lower() == "ray"){
+            #Protection = 0
+            LaserTrg = findPlayerByName(Args)            
+            #print(Args)
+
             holoCreate(91)
             holoPos(91,holoEntity(1):pos())
             holoAlpha(91,0)
             holoEntity(91):setTrails(20,20,120,"trails/laser",vec(11,133,255), 255)
-            timer("laser1",1000)   
+            timer("laser1",100)
+            #Protection = 1
+
         }
-        if(ArgsLineC:lower() == "what material is this"){
+        elseif(ArgsLineC:lower() == "what material is this"){
             print("[DROID] Material is: "+ owner():aimEntity():getMaterial())
         }
-        if(Command:lower() == "wait"){
+        elseif(Command:lower() == "wait"){
             Follow = 0
         }
-        if(Command:lower() == "protection"){
+        elseif(Command:lower() == "sec"){
 
-            if(Args:lower() == "on"){
+            if(Protection == 0){
                 Protection = 1
                 print("[DROID] Protection Online!")
             }
-            elseif(Args:lower() == "off"){
+            elseif(Protection == 1){
                 Protection = 0
                 print("[DROID] Protection Offline!")
             }
@@ -208,6 +214,20 @@ if(clk("laser1")){
         Ballbuster:propBreak()
     }
 }
+if(clk("laser12")){
+    if(LaserTrg2){
+        holoPos(91,LaserTrg2:toWorld(vec(0,0,30)))
+        Ballbuster = propSpawn("models/props_phx/ww2bomb.mdl",ang(0,0,0),1)
+        Ballbuster:setPos(LaserTrg2:pos())
+        Ballbuster:propBreak()
+        Ballbuster = propSpawn("models/props_phx/ww2bomb.mdl",ang(0,0,0),1)
+        Ballbuster:setPos(LaserTrg2:pos())
+        Ballbuster:propBreak()
+        Ballbuster = propSpawn("models/props_phx/ww2bomb.mdl",ang(0,0,0),1)
+        Ballbuster:setPos(LaserTrg2:pos())
+        Ballbuster:propBreak()
+    }
+}
 if(Protection == 1){
 
     for(I=1,Blacklist:count()){
@@ -220,18 +240,19 @@ if(Protection == 1){
         for(I=1,Results:count()){
             if(Results[I,entity]:owner() != Target){
             #print(Blacklist[I,string])
-            LaserTrg = Results[I,entity]
+            LaserTrg2 = Results[I,entity]
             holoCreate(91)
             holoPos(91,holoEntity(1):pos())
             holoAlpha(91,0)
             holoEntity(91):setTrails(20,20,120,"trails/laser",vec(11,133,255), 255)
-            timer("laser1",666)
-            LaserTrg = Results[I,entity]:owner()
+            timer("laser12",666)
+            LaserTrg2 = Results[I,entity]:owner()
             holoCreate(91)
             holoPos(91,holoEntity(1):pos())
             holoAlpha(91,0)
             holoEntity(91):setTrails(20,20,120,"trails/laser",vec(11,133,255), 255)
-            timer("laser1",111)   
+            timer("laser12",111)   
+            entity():soundPlay(56 - I,0,"ambient/alarms/klaxon1.wav")
             }         
         }        
     }
@@ -243,20 +264,22 @@ if(clk("SecLoop1")){
         for(I=1,Plys:count()){
             Ply = Plys[I,entity]
             if(Ply:aimEntity() == Target && Ply:keyAttack1() && Ply:weapon():type() != "weapon_physgun" && Ply:weapon():type() != "weapon_physcannon"){
-                LaserTrg = Ply
+                LaserTrg2 = Ply
                 holoCreate(91)
                 holoPos(91,holoEntity(1):pos())
                 holoAlpha(91,0)
                 holoEntity(91):setTrails(20,20,120,"trails/laser",vec(11,133,255), 255)
                 timer("laser1",111)   
+                entity():soundPlay(56,0,"ambient/alarms/klaxon1.wav")
             }
             if(Ply:aimEntity() == Target && Ply:keyAttack2() && Ply:weapon():type() != "weapon_physgun" && Ply:weapon():type() != "weapon_physcannon"){
-                LaserTrg = Ply
+                LaserTrg2 = Ply
                 holoCreate(91)
                 holoPos(91,holoEntity(1):pos())
                 holoAlpha(91,0)
                 holoEntity(91):setTrails(20,20,120,"trails/laser",vec(11,133,255), 255)
-                timer("laser1",111)   
+                timer("laser1",111)
+                entity():soundPlay(56,0,"ambient/alarms/klaxon1.wav")   
             }
         }
     }
@@ -264,6 +287,7 @@ if(clk("SecLoop1")){
 }
 if(Dist > 22){
     IsInAir = 1
+    #print(LaserTrg)
 }else{
     IsInAir = 0
 }
