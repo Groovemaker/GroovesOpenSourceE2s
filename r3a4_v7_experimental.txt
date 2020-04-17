@@ -20,7 +20,7 @@ if(first()){
     Blacklist = array("models/props_c17/oildrum001_explosive.mdl","models/props_c17/canister02a.mdl","models/props_junk/gascan001a.mdl","models/props_phx/ball.mdl","models/props_phx/cannon.mdl","models/props_phx/cannonball.mdl","models/props_phx/cannonball_solid.mdl","models/props_phx/facepunch_barrel.mdl","models/props_phx/oildrum001.mdl","models/props_phx/oildrum001_explosive.mdl","models/props_phx/torpedo.mdl","models/props_phx/ww2bomb.mdl")
     HeadColor = vec(255,255,255)
     BodyColor = vec(11,155,255)
-    HeadMaterial = "sprops/sprops_grid_12x12"
+    HeadMaterial = ""
     BodyMaterial = "sprops/sprops_grid_12x12"
     #####################################
     Follow = 1
@@ -251,7 +251,33 @@ if(clk("SecLoop1")){
                 timer("laser1",111)   
             }
         }
+        for(I=1,Blacklist:count()){
+            #print(Blacklist[I,string])
+            findIncludeModel(Blacklist[I,string])
+        }
+        findInSphere(Target:pos(),444)
+        Results = findToArray()
+        if(Results[1,entity]){
+            for(I=1,Results:count()){
+                if(Results[I,entity]:owner() != Target){
+                #print(Blacklist[I,string])
+                LaserTrg = Results[I,entity]
+                holoCreate(91)
+                holoPos(91,holoEntity(1):pos())
+                holoAlpha(91,0)
+                holoEntity(91):setTrails(20,20,120,"trails/laser",vec(11,133,255), 255)
+                timer("laser1",444)
+                LaserTrg = Results[I,entity]:owner()
+                holoCreate(91)
+                holoPos(91,holoEntity(1):pos())
+                holoAlpha(91,0)
+                holoEntity(91):setTrails(20,20,120,"trails/laser",vec(11,133,255), 255)
+                timer("laser1",444)   
+                }         
+            }        
+        }
     }
+
     timer("SecLoop1",10)
 }
 if(Dist > 22){
