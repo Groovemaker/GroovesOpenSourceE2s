@@ -1,4 +1,4 @@
-@name Runics Droid
+@name r3-a4
 @inputs 
 @outputs 
 @persist Target:entity RandInt OldRandInt Beeps:array Pitches:array Follow
@@ -86,6 +86,9 @@ if(chatClk(owner())){
     Prefix = CommandEx[1,string]
     Command = CommandEx[2,string]
     Args = CommandEx[3,string]
+    ArgsLine = CommandEx
+    ArgsLine:remove(1)
+    ArgsLineC = ArgsLine:concat(" ")
     if(Prefix == "r4"){
         RandInt = randint(1,Beeps:count())
         #print(RandInt)
@@ -93,8 +96,8 @@ if(chatClk(owner())){
         soundStop(1)
         entity():soundPlay(1,0,Beeps[RandInt,string])
         soundPitch(1,Pitches[RandInt,number])
-        if(Command == "follow"){
-            if(Args == "me"){
+        if(Command:lower() == "follow"){
+            if(Args:lower() == "me"){
                 Follow = 1
                 Target = owner()                
             }else{
@@ -102,7 +105,13 @@ if(chatClk(owner())){
                 Target = findPlayerByName(Args)
             }
         }
-        if(Command == "wait"){
+        if(ArgsLineC:lower() == "what model is this"){
+            print("[DROID] Model is: "+ owner():aimEntity():model())
+        }
+        if(ArgsLineC:lower() == "what material is this"){
+            print("[DROID] Material is: "+ owner():aimEntity():getMaterial())
+        }
+        if(Command:lower() == "wait"){
             Follow = 0
         }
     }
