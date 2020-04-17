@@ -57,10 +57,11 @@ if(first()){
     holoColor(3,vec(0,0,0))
     holoMaterial(3,"models/shiny")
     holoScale(3,vec(0.3,0.3,0.3))
+    holoParent(3,2)
     holoCreate(88)
     holoPos(88,entity():pos())
     holoAlpha(88,0)
-    for(I=1,9){holoParent(I,88)}
+    for(I=1,2){holoParent(I,88)}
     holoAng(88,entity():toWorld(ang(0,180,0)))
     holoParent(88,entity())
 }
@@ -70,6 +71,7 @@ holoAlpha(99,0)
 MinSeed = -33
 MaxSeed = 33
 TargAng = (holoEntity(99):pos() - entity():pos()):toAngle() + ang(0,0,0)
+TargAng2 = (holoEntity(99):pos() - holoEntity(2):pos()):toAngle() + ang(0,180,0)
 if(entity():pos():distance(holoEntity(99):pos()) > 150 && Follow == 1){
     entity():setPos(entity():toWorld(vec(22* (entity():pos():distance(holoEntity(99):pos()) / 155) ,0,0)))
     entity():setAng(TargAng)
@@ -78,6 +80,7 @@ if(entity():pos():distance(holoEntity(99):pos()) > 150 && Follow == 1){
     holoAng(1,holoEntity(1):toWorld(ang(-33,0,0)))
 }else{
     soundStop(3)
+    holoAng(2,ang(TargAng2:pitch(),TargAng2:yaw(),TargAng2:roll()))
 }
 
 
