@@ -116,6 +116,20 @@ if(chatClk(owner())){
                 Target = findPlayerByName(Args)
             }
         }
+        if(Command:lower() == "identify"){
+            Target2 = findPlayerByName(Args)
+            print("[DROID] Info about "+Target2:name())
+            print("SteamID:  "+Target2:steamID())
+            print("SteamID64:  "+Target2:steamID64())
+            print("SteamID:  "+Target2:steamID())
+            print("[SBOX INFO]")
+            print("SteamID64:  "+Target2:steamID64())
+            print("Godmode?:  "+Target2:inGodMode())
+            print("Admin?:  "+Target2:isAdmin())
+            print("SuperAdmin?:  "+Target2:isSuperAdmin())
+            print("[LIST OF STEAM FRIENDS]")
+            printTable(Target2:steamFriends())
+        }
         if(ArgsLineC:lower() == "what model is this"){
             print("[DROID] Model is: "+ owner():aimEntity():model())
         }
