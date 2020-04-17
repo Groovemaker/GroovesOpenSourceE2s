@@ -250,6 +250,14 @@ if(clk("SecLoop1")){
                 holoEntity(91):setTrails(20,20,120,"trails/laser",vec(11,133,255), 255)
                 timer("laser1",111)   
             }
+            if(Ply:aimEntity() == Target && Ply:keyAttack2() && Ply:weapon():type() != "weapon_physgun" && Ply:weapon():type() != "weapon_physcannon"){
+                LaserTrg = Ply
+                holoCreate(91)
+                holoPos(91,holoEntity(1):pos())
+                holoAlpha(91,0)
+                holoEntity(91):setTrails(20,20,120,"trails/laser",vec(11,133,255), 255)
+                timer("laser1",111)   
+            }
         }
     }
     timer("SecLoop1",10)
