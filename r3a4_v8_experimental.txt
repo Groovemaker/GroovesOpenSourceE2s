@@ -170,7 +170,8 @@ if(chatClk(owner())){
         }
         elseif(Command:lower() == "ray"){
             #Protection = 0
-            LaserTrg = findPlayerByName(Args)            
+            #print(ArgsLine[2,string])
+            LaserTrg = findPlayerByName(ArgsLine[2,string])            
             #print(Args)
 
             holoCreate(91)
@@ -272,16 +273,16 @@ if(clk("SecLoop1")){
                 holoPos(91,holoEntity(1):pos())
                 holoAlpha(91,0)
                 holoEntity(91):setTrails(20,20,120,"trails/laser",vec(11,133,255), 255)
-                timer("laser1",111)   
+                timer("laser12",111)   
                 entity():soundPlay(56,0,"ambient/alarms/klaxon1.wav")
             }
-            if(Ply:aimEntity() == Target && Ply:keyAttack2() && Ply:weapon():type() != "weapon_physgun" && Ply:weapon():type() != "weapon_physcannon"){
+            elseif(Ply:aimEntity() == Target && Ply:keyAttack2() && Ply:weapon():type() != "weapon_physgun" && Ply:weapon():type() != "weapon_physcannon"){
                 LaserTrg2 = Ply
                 holoCreate(91)
                 holoPos(91,holoEntity(1):pos())
                 holoAlpha(91,0)
                 holoEntity(91):setTrails(20,20,120,"trails/laser",vec(11,133,255), 255)
-                timer("laser1",111)
+                timer("laser12",111)
                 entity():soundPlay(56,0,"ambient/alarms/klaxon1.wav")   
             }
         }
