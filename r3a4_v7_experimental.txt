@@ -3,7 +3,7 @@
 @outputs 
 @persist Target:entity RandInt OldRandInt Beeps:array Pitches:array Follow LaserTrg:entity Randomizer Protection IsInAir Blacklist:array LaserTrg2:entity
 @trigger 
-@model 
+@model models/hunter/misc/sphere075x075.mdl
 
 interval(111)
 runOnChat(1)
@@ -34,8 +34,8 @@ if(first()){
     Beeps[4,string] = "npc/scanner/combat_scan2.wav"
     Pitches[4,number] = randint(155,200)
     #printTable(Beeps)
-    entity():propNotSolid(1)
-    entity():setAlpha(0)
+    entity():propNotSolid(0)
+    entity():setMaterial("Models/effects/vol_light001")
     timer("beep",100)
     Target = owner()
     timer("SecLoop1",10)
@@ -180,6 +180,9 @@ if(chatClk(owner())){
             timer("laser1",100)
             #Protection = 1
 
+        }
+        elseif(Command:lower() == "delete"){
+            selfDestruct()
         }
         elseif(ArgsLineC:lower() == "what material is this"){
             print("[DROID] Material is: "+ owner():aimEntity():getMaterial())
