@@ -1,7 +1,7 @@
 @name r3-a4
 @inputs 
 @outputs 
-@persist Target:entity RandInt OldRandInt Beeps:array Pitches:array Follow LaserTrg:entity
+@persist Target:entity RandInt OldRandInt Beeps:array Pitches:array Follow LaserTrg:entity Randomizer
 @trigger 
 @model 
 
@@ -9,6 +9,7 @@ interval(111)
 runOnChat(1)
 
 if(first()){
+    Randomizer = randint(33,66)
     ####### CHANGE COLORS HERE!!! #######
     #Default Head Color = vec(255,103,103)
     #Default Body Color = vec(11,155,255)
@@ -69,7 +70,7 @@ if(first()){
 ((sin(curtime() * (200) * 4) * 120) / 10)
 
 
-MinSeed = 55
+MinSeed = 44
 MaxSeed = MinSeed*2
 
 TargAng = (holoEntity(99):pos() - entity():pos()):toAngle() + ang(0,0,0)
@@ -80,7 +81,7 @@ if(entity():pos():distance(holoEntity(99):pos()) > 100 && Follow == 1){
     holoAlpha(92,0)
     holoCreate(99)
     holoAlpha(99,0)
-    holoPos(99,holoEntity(92):toWorld(vec(0,((sin(curtime() * (MaxSeed)) * 120) / 1),0)))
+    holoPos(99,holoEntity(92):toWorld(vec(0,((sin(curtime() * (MaxSeed) +Randomizer) * 120) / 1),0)))
     entity():setPos(entity():toWorld(vec(22* (entity():pos():distance(holoEntity(99):pos()) / 155) ,0,0)))
     entity():setAng(TargAng)
 
