@@ -387,4 +387,4 @@ for(I=1,Plys:count()){
 holoModel(110,HoloTarget:model())
 holoAnim(110,HoloTarget:getAnimation(),1,0.1)
 holoAng(110,ang(0,HoloTarget:eyeAngles():yaw(),Target:eyeAngles():roll()))
-
+entity():propFreeze(1)
