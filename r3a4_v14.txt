@@ -112,7 +112,12 @@ MinSeed = 44
 MaxSeed = MinSeed*2
 
 TargAng = (holoEntity(99):pos() - entity():pos()):toAngle() + ang(0,0,0)
-TargAng2 = (Target:attachmentPos("eyes") - holoEntity(2):pos()):toAngle() + ang(0,180,0)
+if(Target:attachmentPos("eyes")){
+    TargAng2 = (Target:attachmentPos("eyes") - holoEntity(2):pos()):toAngle() + ang(0,180,0)
+}else{
+    TargAng2 = (Target:pos() - holoEntity(2):pos()):toAngle() + ang(0,180,0)
+}
+
 if(entity():pos():distance(holoEntity(99):pos()) > 100 && Follow == 1){
     holoCreate(92)
     holoPos(92,Target:toWorld(vec(0,-MinSeed,0)))
@@ -171,7 +176,11 @@ if(chatClk(owner())){
         if(Command:lower() == "follow"){
             if(Args:lower() == "me"){
                 Follow = 1
-                Target = owner()                
+                Target = owner()
+            }
+            elseif(Args:lower() == "this"){
+                Follow = 1
+                Target = owner():aimEntity()            
             }else{
                 Follow = 1
                 Target = findPlayerByName(Args)
@@ -346,9 +355,6 @@ if(chatClk(owner())){
                 printColor(vec(255,255,0),">> identify <player> - prints infos about a player")
                 printColor(vec(255,255,0),">> holo <player> or <model> or off - holo functions")
             }
-
-
-
         }
     }
 }
