@@ -1,7 +1,7 @@
 @name r3-a4
 @inputs 
 @outputs 
-@persist Target:entity RandInt OldRandInt Beeps:array Pitches:array Follow LaserTrg:entity Randomizer Protection IsInAir Blacklist:array LaserTrg2:entity
+@persist Target:entity RandInt OldRandInt Beeps:array Pitches:array Follow LaserTrg:entity Randomizer Protection IsInAir Blacklist:array LaserTrg2:entity HoloTarget:entity
 @trigger 
 @model models/hunter/misc/sphere075x075.mdl
 
@@ -23,6 +23,7 @@ if(first()){
     BodyColor = vec(11,155,255)
     HeadMaterial = "sprops/sprops_grid_12x12"
     BodyMaterial = "sprops/sprops_grid_12x12"
+    HoloTarget = owner()
     #####################################
     Follow = 1
     Beeps[1,string] = "buttons/button24.wav"
@@ -77,6 +78,28 @@ if(first()){
     for(I=1,2){holoParent(I,88)}
     holoAng(88,entity():toWorld(ang(0,180,0)))
     holoParent(88,entity())
+    holoCreate(110)
+    holoModel(110,Target:model())
+    holoAng(110,holoEntity(3):toWorld(ang(90,0,0)))
+    holoPos(110,holoEntity(3):toWorld(vec(-10,0,55)))
+    holoRenderFX(110,0)
+    #print(holoEntity(110):model())
+    holoScale(110,vec(0.25))
+    #holoMaterial(110,"models/debug/debugwhite")
+    holoColor(110,vec(0,133,255))
+    holoParent(110,3)
+    holoColor(110,vec(0,133,255))
+    holoCreate(112)
+    holoModel(112,"hq_cone")
+    holoAng(112,holoEntity(3):toWorld(ang(180,0,0)))
+    holoPos(112,holoEntity(3):toWorld(vec(0,0,0)))
+    holoRenderFX(112,0)
+    holoColor(112,vec(0,133,255))
+    holoScale(112,vec(0.6,0.6,6))
+    holoParent(112,3)
+    holoAlpha(112,0)
+    holoAlpha(110,0)
+
 }
 ((sin(curtime() * (200) * 4) * 120) / 10)
 RD = rangerOffset(entity():pos(),entity():pos() + vec(0,0,-99999))
@@ -237,6 +260,27 @@ if(chatClk(owner())){
             #Protection = 1
 
         }
+        elseif(Command:lower() == "holo"){
+            #Protection = 0
+            #print(ArgsLine[2,string])
+            Prop = Target:aimEntity()
+            SubCmd = ArgsLine[2,string]
+            if(findPlayerByName(SubCmd):isPlayer()){
+                HoloTarget = findPlayerByName(SubCmd)
+                holoAlpha(112,1)
+                holoAlpha(110,1)
+                holoRenderFX(112,16)
+                holoRenderFX(110,16)
+            }
+            if(SubCmd == "off"){
+                holoAlpha(112,0)
+                holoAlpha(110,0)
+                holoRenderFX(112,0)
+                holoRenderFX(110,0)
+            }
+            #Protection = 1
+
+        }
         elseif(Command:lower() == "delete"){
             selfDestruct()
         }
@@ -286,6 +330,7 @@ if(chatClk(owner())){
                 printColor(vec(255,255,0),">> what material is this - prints material of a prop")
                 printColor(vec(255,255,0),">> delete - killswitch")
                 printColor(vec(255,255,0),">> identify <player> - prints infos about a player")
+                printColor(vec(255,255,0),">> holo <player> or off - holo functions")
             }
 
 
@@ -337,4 +382,6 @@ for(I=1,Plys:count()){
     }
 
 }
-
+holoModel(110,HoloTarget:model())
+holoAnim(110,HoloTarget:getAnimation(),1,0.1)
+holoAng(110,ang(0,HoloTarget:eyeAngles():yaw(),Target:eyeAngles():roll()))
