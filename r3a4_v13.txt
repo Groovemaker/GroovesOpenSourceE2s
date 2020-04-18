@@ -1,0 +1,340 @@
+@name r3-a4
+@inputs 
+@outputs 
+@persist Target:entity RandInt OldRandInt Beeps:array Pitches:array Follow LaserTrg:entity Randomizer Protection IsInAir Blacklist:array LaserTrg2:entity
+@trigger 
+@model models/hunter/misc/sphere075x075.mdl
+
+interval(111)
+runOnChat(1)
+
+if(first()){
+    IsInAir = 0
+    LaserTrg = entity(0)
+    Protection = 0
+    Randomizer = randint(33,66)
+    ####### CHANGE COLORS HERE!!! #######
+    #Default Head Color = vec(255,103,103)
+    #Default Body Color = vec(11,155,255)
+    #Default Head Material = "sprops/sprops_grid_12x12"
+    #Default Body Material = "sprops/sprops_grid_12x12"
+    Blacklist = array("models/props_c17/oildrum001_explosive.mdl","models/props_c17/canister02a.mdl","models/props_junk/gascan001a.mdl","models/props_phx/ball.mdl","models/props_phx/cannon.mdl","models/props_phx/cannonball.mdl","models/props_phx/cannonball_solid.mdl","models/props_phx/facepunch_barrel.mdl","models/props_phx/oildrum001.mdl","models/props_phx/oildrum001_explosive.mdl","models/props_phx/torpedo.mdl","models/props_phx/ww2bomb.mdl")
+    HeadColor = vec(255,255,255)
+    BodyColor = vec(11,155,255)
+    HeadMaterial = "sprops/sprops_grid_12x12"
+    BodyMaterial = "sprops/sprops_grid_12x12"
+    #####################################
+    Follow = 1
+    Beeps[1,string] = "buttons/button24.wav"
+    Pitches[1,number] = 88
+    Beeps[2,string] = "npc/scanner/scanner_scan5.wav"
+    Pitches[2,number] = 155
+    Beeps[3,string] = "npc/scanner/cbot_servoscared.wav"
+    Pitches[3,number] = randint(122,144)
+    Beeps[6,string] = "npc/dog/dog_servo7.wav"
+    Pitches[6,number] = 122
+    Beeps[7,string] = "npc/dog/dog_playfull4.wav"
+    Beeps[7,number] = 133
+    #printTable(Beeps)
+    entity():propNotSolid(0)
+    entity():setMaterial("Models/effects/vol_light001")
+    timer("beep",100)
+    Target = owner()
+    timer("SecLoop1",10)
+    holoCreate(1)
+    holoModel(1,"hq_sphere")
+    holoMaterial(1,BodyMaterial)
+    holoAng(1,entity():toWorld(ang(0,0,0)))
+    holoPos(1,entity():toWorld(vec(0,0,13)))
+    holoColor(1,BodyColor)
+    holoScale(1,vec(2.3,2.3,2.3))
+    holoCreate(2)
+    holoModel(2,"hq_dome")
+    holoColor(2,vec(255,103,103))
+    holoAng(2,entity():toWorld(ang(0,0,0)))
+    holoPos(2,entity():toWorld(vec(0,0,26.5)))
+    holoColor(2,HeadColor)
+    holoMaterial(2,HeadMaterial)
+    holoScale(2,vec(1.5,1.5,1.4))
+    holoCreate(3)
+    holoModel(3,"hq_dome")
+    holoColor(3,vec(255,103,103))
+    holoAng(3,entity():toWorld(ang(-90,0,0)))
+    holoPos(3,entity():toWorld(vec(-7.5,0,29)))
+    holoColor(3,vec(0,0,0))
+    holoMaterial(3,"models/shiny")
+    holoScale(3,vec(0.3,0.3,0.3))
+    holoParent(3,2)
+    holoCreate(88)
+    holoPos(88,entity():pos())
+    holoAlpha(88,0)
+    holoCreate(44)
+    holoModel(44,"models/xqm/afterburner1.mdl")
+    holoAng(44,entity():angles() + ang(180,0,0))
+    holoPos(44,entity():toWorld(vec(0,0,7)))
+    holoScale(44,vec(1))
+    holoParent(44,entity())
+    for(I=1,2){holoParent(I,88)}
+    holoAng(88,entity():toWorld(ang(0,180,0)))
+    holoParent(88,entity())
+}
+((sin(curtime() * (200) * 4) * 120) / 10)
+RD = rangerOffset(entity():pos(),entity():pos() + vec(0,0,-99999))
+Dist = RD:distance()
+
+MinSeed = 44
+MaxSeed = MinSeed*2
+
+TargAng = (holoEntity(99):pos() - entity():pos()):toAngle() + ang(0,0,0)
+TargAng2 = (Target:attachmentPos("eyes") - holoEntity(2):pos()):toAngle() + ang(0,180,0)
+if(entity():pos():distance(holoEntity(99):pos()) > 100 && Follow == 1){
+    holoCreate(92)
+    holoPos(92,Target:toWorld(vec(0,-MinSeed,0)))
+    holoAlpha(92,0)
+    holoCreate(99)
+    holoAlpha(99,0)
+    holoPos(99,holoEntity(92):toWorld(vec(0,((sin(curtime() * (155) +Randomizer) * MaxSeed) / 1),0)))
+    entity():setPos(entity():toWorld(vec(21.3* (entity():pos():distance(holoEntity(99):pos()) / 155) ,0,0)))
+    entity():setAng(TargAng)
+
+    entity():applyForce((entity():forward())*33)
+    if(!IsInAir){
+        entity():soundPlay(3,0,"npc/roller/mine/rmine_movefast_loop1.wav")
+        holoAlpha(44,0)
+        holoAlpha(1,255)
+        holoAng(1,holoEntity(1):toWorld(ang(-55,0,0)))
+    }else{
+        entity():soundPlay(3,0,"ambient/energy/force_field_loop1.wav")
+        holoAlpha(44,255)
+        holoAlpha(1,0)
+    }
+}else{
+    soundStop(3)
+    holoCreate(99)
+    holoAlpha(99,0)
+    holoPos(99,Target:pos())
+}
+    holoAng(2,ang(-TargAng2:pitch(),TargAng2:yaw(),TargAng2:roll()))
+
+if(clk("beep")){
+    RandInt = randint(1,Beeps:count())
+    #print(RandInt)
+    RandSnd = randint(2,3)
+    soundStop(1)
+    entity():soundPlay(1,0,Beeps[RandInt,string])
+    soundPitch(1,Pitches[RandInt,number])
+
+    OldRandInt = RandInt
+    timer("beep",6000)
+}
+if(chatClk(owner())){
+    CommandEx = lastSpoke():lastSaid():explode(" ")
+    Prefix = CommandEx[1,string]
+    Command = CommandEx[2,string]
+    Args = CommandEx[3,string]
+    ArgsLine = CommandEx
+    ArgsLine:remove(1)
+    ArgsLineC = ArgsLine:concat(" ")
+    if(Prefix == "r3"){
+        RandInt = randint(1,Beeps:count())
+        #print(RandInt)
+        RandSnd = randint(2,3)
+        soundStop(1)
+        entity():soundPlay(1,0,Beeps[RandInt,string])
+        soundPitch(1,Pitches[RandInt,number])
+        if(Command:lower() == "follow"){
+            if(Args:lower() == "me"){
+                Follow = 1
+                Target = owner()                
+            }else{
+                Follow = 1
+                Target = findPlayerByName(Args)
+            }
+        }
+        elseif(Command:lower() == "identify"){
+            Target2 = findPlayerByName(Args)
+            print(Args)
+            print("[DROID] Info about "+Target2:name())
+            print("SteamID:  "+Target2:steamID())
+            print("SteamID64:  "+Target2:steamID64())
+            print("[SBOX INFO]")
+            print("Weapon:  "+Target2:weapon():type())
+            print("AimEntity:  "+Target2:aimEntity():toString())
+            print("Name of it if any:  "+Target2:aimEntity():name())
+            print("Godmode?:  "+Target2:inGodMode())
+            print("Admin?:  "+Target2:isAdmin())
+            print("SuperAdmin?:  "+Target2:isSuperAdmin())
+            print("[LIST OF STEAM FRIENDS]")
+            printTable(Target2:steamFriends())
+        }
+        elseif(ArgsLineC:lower() == "what model is this"){
+            print("[DROID] Model is: "+ owner():aimEntity():model())
+        }
+        elseif(Command:lower() == "ray"){
+            #Protection = 0
+            #print(ArgsLine[2,string])
+            LaserTrg = findPlayerByName(ArgsLine[2,string])            
+            #print(Args)
+
+            holoCreate(91)
+            holoPos(91,holoEntity(1):pos())
+            holoAlpha(91,0)
+            holoEntity(91):setTrails(20,20,120,"trails/laser",vec(11,133,255), 255)
+            timer("laser1",100)
+            #Protection = 1
+
+        }
+        elseif(Command:lower() == "propinfo"){
+            #Protection = 0
+            #print(ArgsLine[2,string])
+            Prop = Target:aimEntity()
+            SubCmd = ArgsLine[2,string]
+            if(SubCmd == "forward"){
+                holoCreate(114)
+                holoModel(114,"pyramid")
+                holoAng(114,Prop:toWorld(ang(90,0,0)))
+                holoPos(114,Prop:toWorld(vec(22,0,0)))
+                holoScale(114,vec(0.4,0.4,5))
+                holoColor(114,vec(255,0,0))
+                holoParent(114,Prop)
+            }
+            if(SubCmd == "right"){
+                holoCreate(114)
+                holoModel(114,"pyramid")
+                holoAng(114,Prop:toWorld(ang(90,-90,0)))
+                holoPos(114,Prop:toWorld(vec(0,-22,0)))
+                holoScale(114,vec(0.4,0.4,5))
+                holoColor(114,vec(0,255,0))
+                holoParent(114,Prop)
+            }
+            if(SubCmd == "up"){
+                holoCreate(114)
+                holoModel(114,"pyramid")
+                holoAng(114,Prop:toWorld(ang(0,0,0)))
+                holoPos(114,Prop:toWorld(vec(0,0,22)))
+                holoScale(114,vec(0.4,0.4,5))
+                holoColor(114,vec(0,55,255))
+                holoParent(114,Prop)
+            }
+            if(SubCmd == "delete"){
+                holoDelete(114)
+            }
+            if(SubCmd == "mass"){
+                print("[DROID] Prop Mass: " + Prop:mass())
+            }
+            if(SubCmd == "ang"){
+                print("[DROID] Prop Angles: " + Prop:angles())
+            }
+            if(SubCmd == "pos"){
+                print("[DROID] Prop Postion: " + Prop:pos())
+            }
+            if(SubCmd == "friction"){
+                print("[DROID] Prop Friction: " + Prop:propGetFriction())
+            }
+            if(SubCmd == "elastic"){
+                print("[DROID] Prop Elasticity: " + Prop:propGetElasticity())
+            }
+            #Protection = 1
+
+        }
+        elseif(Command:lower() == "delete"){
+            selfDestruct()
+        }
+        elseif(ArgsLineC:lower() == "what material is this"){
+            print("[DROID] Material is: "+ owner():aimEntity():getMaterial())
+        }
+        elseif(Command:lower() == "wait"){
+            Follow = 0
+        }
+        elseif(Command:lower() == "sec"){
+
+            if(Protection == 0){
+                Protection = 1
+                print("[DROID] Protection Online!")
+            }
+            elseif(Protection == 1){
+                Protection = 0
+                print("[DROID] Protection Offline!")
+            }
+        }
+        elseif(Command:lower() == "help"){
+            Page = ArgsLine[2,string]:toNumber()
+            print(Page)
+            if(!Page | Page == 1){
+                printColor(vec(255,255,0),"[DROID] Command List")
+                printColor(vec(255,255,0),"ALL commands are prefixed by the droids name (defaults to r3)")
+                #### Builders Suite
+                printColor(vec(255,255,0),"<prefix> help <page> - shows the help pages")
+                printColor(vec(255,255,0),"-[Builders Tools]-")
+                printColor(vec(255,255,0),"Usage: <prefix> propinfo <command>")
+                printColor(vec(255,255,0),">> forward, up or right - shows the respective axis on a prop")
+                printColor(vec(255,255,0),">> delete - deletes the axis indicator")
+                printColor(vec(255,255,0),">> ang - shows the angles of the prop")
+                printColor(vec(255,255,0),">> pos - shows the position/origin of the prop")
+                printColor(vec(255,255,0),">> mass - shows the mass of the prop")
+                printColor(vec(255,255,0),">> friction - shows the friction of the prop")
+                printColor(vec(255,255,0),">> elastic - shows the elasticity of the prop")
+            }
+            elseif(Page == 2){
+                printColor(vec(255,255,0)," ")
+                printColor(vec(255,255,0),"-[Droid Commands]-")
+                printColor(vec(255,255,0),"Usage: <prefix> <command>")
+                printColor(vec(255,255,0),">> follow <player> - follows a player")
+                printColor(vec(255,255,0),">> wait - waits at current position")
+                printColor(vec(255,255,0),">> ray <player> - uses raygun on player")
+                printColor(vec(255,255,0),">> what model is this - prints model of a prop")
+                printColor(vec(255,255,0),">> what material is this - prints material of a prop")
+                printColor(vec(255,255,0),">> delete - killswitch")
+                printColor(vec(255,255,0),">> identify <player> - prints infos about a player")
+            }
+
+
+
+        }
+    }
+}
+if(clk("laser1")){
+    if(LaserTrg){
+        holoPos(91,LaserTrg:toWorld(vec(0,0,30)))
+        Ballbuster = propSpawn("models/props_phx/ww2bomb.mdl",ang(0,0,0),1)
+        Ballbuster:setPos(LaserTrg:pos())
+        Ballbuster:propBreak()
+        Ballbuster = propSpawn("models/props_phx/ww2bomb.mdl",ang(0,0,0),1)
+        Ballbuster:setPos(LaserTrg:pos())
+        Ballbuster:propBreak()
+        Ballbuster = propSpawn("models/props_phx/ww2bomb.mdl",ang(0,0,0),1)
+        Ballbuster:setPos(LaserTrg:pos())
+        Ballbuster:propBreak()
+    }
+}
+
+
+
+if(Dist > 22){
+    IsInAir = 1
+    #print(LaserTrg)
+}else{
+    IsInAir = 0
+}
+Plys = players()
+for(I=1,Plys:count()){
+    Ply = Plys[I,entity]
+    if(Ply:aimEntity() == entity() && Ply:keyAttack1() && Ply:weapon():type() != "weapon_physgun" && Ply:weapon():type() != "weapon_physcannon"){
+        entity():soundPlay(56,0,"npc/dog/dog_disappointed.wav")
+        soundPitch(56,randint(222,255))
+    }
+    if(Ply:aimEntity() == entity() && Ply:keyAttack2() && Ply:weapon():type() != "weapon_physgun" && Ply:weapon():type() != "weapon_physcannon"){
+        entity():soundPlay(56,0,"npc/dog/dog_disappointed.wav")
+        soundPitch(56,randint(222,255))
+    }
+    if(Ply:aimEntity() == Target && Ply:keyAttack1() && Ply:weapon():type() != "weapon_physgun" && Ply:weapon():type() != "weapon_physcannon"){
+        entity():soundPlay(56,0,"npc/dog/dog_disappointed.wav")
+        soundPitch(56,randint(222,255))
+    }
+    if(Ply:aimEntity() == Target && Ply:keyAttack2() && Ply:weapon():type() != "weapon_physgun" && Ply:weapon():type() != "weapon_physcannon"){
+        entity():soundPlay(56,0,"npc/dog/dog_disappointed.wav")
+        soundPitch(56,randint(222,255))
+    }
+
+}
+
