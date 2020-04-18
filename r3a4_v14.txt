@@ -1,7 +1,7 @@
 @name r3-a4
 @inputs 
 @outputs 
-@persist Target:entity RandInt OldRandInt Beeps:array Pitches:array Follow LaserTrg:entity Randomizer Protection IsInAir Blacklist:array LaserTrg2:entity HoloTarget:entity
+@persist Target:entity RandInt OldRandInt Beeps:array Pitches:array Follow LaserTrg:entity Randomizer Protection IsInAir Blacklist:array LaserTrg2:entity HoloTarget:entity HoloModel:string HoloIsP
 @trigger 
 @model models/hunter/misc/sphere075x075.mdl
 
@@ -12,6 +12,7 @@ if(first()){
     IsInAir = 0
     LaserTrg = entity(0)
     Protection = 0
+    HoloIsP = 1
     Randomizer = randint(33,66)
     ####### CHANGE COLORS HERE!!! #######
     #Default Head Color = vec(255,103,103)
@@ -268,6 +269,7 @@ if(chatClk(owner())){
             Prop = Target:aimEntity()
             SubCmd = ArgsLine[2,string]
             if(findPlayerByName(SubCmd):isPlayer()){
+                HoloIsP = 1
                 HoloTarget = findPlayerByName(SubCmd)
                 holoAlpha(112,1)
                 holoAlpha(110,1)
@@ -279,6 +281,16 @@ if(chatClk(owner())){
                 holoAlpha(110,0)
                 holoRenderFX(112,0)
                 holoRenderFX(110,0)
+            }
+            if(SubCmd:find(".mdl") & SubCmd:find("models/")){
+                #print("model")
+                HoloIsP = 0
+                HoloModel = SubCmd
+                holoModel(110,SubCmd)
+                holoAlpha(112,1)
+                holoAlpha(110,1)
+                holoRenderFX(112,16)
+                holoRenderFX(110,16)
             }
             #Protection = 1
 
@@ -332,7 +344,7 @@ if(chatClk(owner())){
                 printColor(vec(255,255,0),">> what material is this - prints material of a prop")
                 printColor(vec(255,255,0),">> delete - killswitch")
                 printColor(vec(255,255,0),">> identify <player> - prints infos about a player")
-                printColor(vec(255,255,0),">> holo <player> or off - holo functions")
+                printColor(vec(255,255,0),">> holo <player> or <model> or off - holo functions")
             }
 
 
@@ -384,7 +396,13 @@ for(I=1,Plys:count()){
     }
 
 }
+if(HoloIsP == 1){
 holoModel(110,HoloTarget:model())
 holoAnim(110,HoloTarget:getAnimation(),1,0.1)
 holoAng(110,ang(0,HoloTarget:eyeAngles():yaw(),Target:eyeAngles():roll()))
+}else{
+#print("not player")
+holoModel(110,HoloModel)
+
+}
 entity():propFreeze(1)
