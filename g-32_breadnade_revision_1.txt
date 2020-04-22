@@ -1,0 +1,24 @@
+@name G-32 BreadNade Revision 1
+@inputs 
+@outputs 
+@persist 
+@trigger 
+runOnTick(1)
+findByClass("npc_grenade_frag")
+Nades = findToArray()
+
+if(changed(Nades:count())){
+    for(I=1,Nades:count()){
+        if(Nades[I,entity]:owner() == owner()){
+            holoCreate(I)
+            holoPos(I,Nades[I,entity]:pos())
+            holoParent(I,Nades[I,entity])
+            holoModel(I,"models/weapons/w_models/w_breadmonster/w_breadmonster.mdl")
+            Nades[I,entity]:setAlpha(0)
+            holoAng(I,Nades[I,entity]:angles())
+            holoEntity(I):setTrails(11,1,1,"trails/smoke",vec(0,100,0),255)
+            holoEntity(I):soundPlay(1,0,"npc/fast_zombie/gurgle_loop1.wav")
+            soundPitch(1,55)
+        }
+    }
+}
