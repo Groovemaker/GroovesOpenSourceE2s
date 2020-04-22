@@ -9,11 +9,12 @@ if(first() || duped()){
 }
 for(I=1,Plyers:count()){
     findIncludeClass("player")
+    findIncludeClass("npc*")
     findExcludeEntity(Plyers[I,entity])
     findInSphere(Plyers[I,entity]:pos(),300)
     Infectees = findToArray()
     for(I=1,Infectees:count()){
-        if(Infectees[I,entity]:type() == "player"){
+        if(Infectees[I,entity]:type() == "player" || Infectees[I,entity]:type():find("npc")){
             Plyers:pushEntity(Infectees[I,entity])
         }
     }
@@ -34,10 +35,11 @@ if(changed(Plyers:count())){
 print("Infected: "+Plyers[Plyers:count(),entity]:toString())
 }
 findIncludeClass("player")
+findIncludeClass("npc*")
 findInSphere(entity():pos(),300)
 Infectees2 = findToArray()
 for(I=1,Infectees2:count()){
-    if(Infectees2[I,entity]:type() == "player"){
+    if(Infectees2[I,entity]:type() == "player" || Infectees2[I,entity]:type():find("npc")){
         Plyers:pushEntity(Infectees2[I,entity])
     }
 }
