@@ -1,0 +1,51 @@
+@name BREADVID-19 Parasite
+@inputs
+@outputs 
+@persist Int Number OldNum Plyers:array
+@trigger 
+@model models/weapons/c_models/c_breadmonster/c_breadmonster.mdl
+interval(3333)
+if(first() || duped()){
+}
+for(I=1,Plyers:count()){
+    findIncludeClass("player")
+    findIncludeClass("npc*")
+    findExcludeEntity(Plyers[I,entity])
+    findInSphere(Plyers[I,entity]:pos(),300)
+    Infectees = findToArray()
+    for(I=1,Infectees:count()){
+        if(Infectees[I,entity]:type() == "player" || Infectees[I,entity]:type():find("npc")){
+            Plyers:pushEntity(Infectees[I,entity])
+        }
+    }
+    #print(Plyers[I,entity]:toString())
+    #Plyers[I,entity]:soundPlay(I,0,"ambient/atmosphere/mill_bigwarehouseamb_loop.wav")
+
+    holoCreate(I)
+    holoAlpha(I,255)
+    holoModel(I,"models/weapons/w_models/w_breadmonster/w_breadmonster.mdl")
+    holoPos(I,Plyers[I,entity]:attachmentPos("eyes") - Plyers[I,entity]:eyeAngles():forward() * 1)
+    holoParentAttachment(I,Plyers[I,entity],"eyes")
+    holoScale(I,vec(2))
+    holoAng(I,Plyers[I,entity]:eyeAngles())
+    #holoColor(I+30,vec(255,100,100))
+    holoEntity(I):soundPlay(I,0,"weapons/breadmonster/sapper/bm_sapper_scream_0"+randint(1,2)+".wav")
+    #holoParent(I+30,Plyers[I,entity])
+    #soundVolume(I+30,1)
+    #Plyers[I,entity]:takeDamage(3)
+}
+    #entity():setAlpha(0)
+if(changed(Plyers:count())){
+print("Infected: "+Plyers[Plyers:count(),entity]:toString())
+}
+findIncludeClass("player")
+findIncludeClass("npc*")
+findInSphere(entity():pos(),300)
+Infectees2 = findToArray()
+for(I=1,Infectees2:count()){
+    if(Infectees2[I,entity]:type() == "player" || Infectees2[I,entity]:type():find("npc")){
+        Plyers:pushEntity(Infectees2[I,entity])
+    }
+}
+#print("Infected: ") 
+#printTable(Plyers)
