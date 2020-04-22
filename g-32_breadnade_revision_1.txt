@@ -1,15 +1,25 @@
 @name G-32 BreadNade Revision 1
 @inputs 
 @outputs 
-@persist 
+@persist Target:entity
 @trigger 
 runOnTick(1)
+
+if(first() || duped()){
+    Target = findPlayerByName("runic")
+    holoCreate(99)
+    holoModel(99,"models/weapons/w_models/w_breadmonster/w_breadmonster.mdl")
+    holoPos(99,Target:attachmentPos("anim_attachment_rh")+-Target:attachmentAng("anim_attachment_rh"):right() * 5+-Target:attachmentAng("anim_attachment_rh"):up() * 5)
+    holoAng(99,Target:attachmentAng("anim_attachment_rh") + ang(0,90,0))
+    holoParentAttachment(99,Target,"anim_attachment_rh")
+    holoScale(99,vec(2))
+}
 findByClass("npc_grenade_frag")
 Nades = findToArray()
 
 if(changed(Nades:count())){
     for(I=1,Nades:count()){
-        if(Nades[I,entity]:owner() == owner()){
+        if(Nades[I,entity]:owner() == Target){
             holoCreate(I)
             holoPos(I,Nades[I,entity]:pos())
             holoParent(I,Nades[I,entity])
@@ -21,4 +31,10 @@ if(changed(Nades:count())){
             soundPitch(1,55)
         }
     }
+}
+
+if(Target:weapon():type() == "weapon_frag"){
+    holoAlpha(99,255)
+}else{
+    holoAlpha(99,0)
 }
