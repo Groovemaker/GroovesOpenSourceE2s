@@ -19,14 +19,15 @@ for(I=1,Plyers:count()){
     }
     #print(Plyers[I,entity]:toString())
     #Plyers[I,entity]:soundPlay(I,0,"ambient/atmosphere/mill_bigwarehouseamb_loop.wav")
-    Plyers[I,entity]:soundPlay(I+30,0,"ambient/voices/cough"+randint(1,4)+".wav")
-    #holoCreate(I+30)
-    holoModel(I+30,"icosphere3")
-    holoColor(I+30,vec(255,100,100))
-    holoPos(I+30,Plyers[I,entity]:toWorld(vec(0,0,140)))
+
+    holoCreate(I)
+    holoAlpha(I,0)
+    #holoColor(I+30,vec(255,100,100))
+    holoPos(I,Plyers[I,entity]:toWorld(vec(0,0,50)))
+    holoEntity(I):soundPlay(I,0,"ambient/voices/cough"+randint(1,4)+".wav")
     #holoParent(I+30,Plyers[I,entity])
-    soundVolume(I+30,1)
-    Plyers[I,entity]:takeDamage(3)
+    #soundVolume(I+30,1)
+    #Plyers[I,entity]:takeDamage(3)
 }
     #entity():setAlpha(0)
 if(changed(Plyers:count())){
