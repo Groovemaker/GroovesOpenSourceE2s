@@ -1,0 +1,53 @@
+@name Ah yes Bread
+@inputs 
+@outputs 
+@persist Target:entity RandInt OldRandInt
+@trigger 
+@model 
+
+interval(111)
+runOnChat(1)
+if(chatClk(owner())){
+    CommandEx = lastSpoke():lastSaid():explode(" ")
+    Command = CommandEx[1,string]
+    Args = CommandEx[2,string]
+    if(Command == "!bread"){
+        Target = findPlayerByName(Args)
+    }    
+}
+if(first()){
+    timer("roar",100)
+    entity():setAlpha(0)
+    Target = owner()
+    holoCreate(1)
+    holoModel(1,"models/weapons/w_models/w_breadmonster/w_breadmonster.mdl")
+    holoAng(1,entity():toWorld(ang(180,0,0)))
+    holoPos(1,entity():toWorld(vec(0,0,0)))
+    holoColor(1,vec(100,100,100))
+    holoScale(1,vec(5))
+
+    holoCreate(88)
+    holoPos(88,entity():pos())
+    holoAlpha(88,0)
+    for(I=1,9){holoParent(I,88)}
+    holoAng(88,entity():toWorld(ang(0,180,0)))
+    holoParent(88,entity())
+}
+holoCreate(99)
+holoPos(99,Target:attachmentPos("eyes"))
+holoAlpha(99,0)
+TargAng = (holoEntity(99):pos() - entity():pos()):toAngle()
+if(entity():pos():distance(holoEntity(99):pos()) > 22){
+    entity():setPos(entity():toWorld(vec(34,0,0)))
+    entity():setAng(TargAng)
+entity():applyForce((entity():forward())*33)
+}
+
+
+if(clk("roar")){
+    RandInt = randint(1,2)
+    soundStop(1)
+    entity():soundPlay(1,0,"weapons/breadmonster/gloves/bm_gloves_scream_0"+randint(1,2)+".wav")
+    OldRandInt = RandInt
+    timer("roar",333)
+}
