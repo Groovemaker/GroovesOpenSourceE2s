@@ -1,0 +1,41 @@
+@name G-32 PumpkiNade Revision 1
+@inputs 
+@outputs 
+@persist Target:entity
+@trigger 
+runOnTick(1)
+
+if(first() || duped()){
+    Target = findPlayerByName("runic")
+    holoCreate(99)
+    holoModel(99,"models/passtime/ball/passtime_ball_halloween.mdl")
+    holoPos(99,Target:attachmentPos("anim_attachment_rh"))
+    holoAng(99,Target:attachmentAng("anim_attachment_rh"))
+    holoParentAttachment(99,Target,"anim_attachment_rh")
+    holoScale(99,vec(1))
+}
+findByClass("npc_grenade_frag")
+Nades = findToArray()
+
+if(changed(Nades:count())){
+    for(I=1,Nades:count()){
+        if(Nades[I,entity]:owner() == Target){
+            holoCreate(I)
+            holoPos(I,Nades[I,entity]:pos())
+            holoParent(I,Nades[I,entity])
+            holoModel(I,"models/passtime/ball/passtime_ball_halloween.mdl")
+            Nades[I,entity]:setAlpha(0)
+            holoAng(I,Nades[I,entity]:angles())
+            holoEntity(I):setTrails(11,1,1,"trails/physbeam",vec(255,133,0),255)
+            holoEntity(I):soundPlay(1,0,"misc/halloween/hwn_bomb_flash.wav")
+            holoScale(I,vec(1))
+            soundPitch(1,55)
+        }
+    }
+}
+
+if(Target:weapon():type() == "weapon_frag"){
+    holoAlpha(99,255)
+}else{
+    holoAlpha(99,0)
+}
