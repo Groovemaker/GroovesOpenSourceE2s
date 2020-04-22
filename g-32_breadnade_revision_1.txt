@@ -28,6 +28,7 @@ if(changed(Nades:count())){
             holoAng(I,Nades[I,entity]:angles())
             holoEntity(I):setTrails(11,1,1,"trails/smoke",vec(0,100,0),255)
             holoEntity(I):soundPlay(1,0,"npc/fast_zombie/gurgle_loop1.wav")
+            holoScale(I,vec(2))
             soundPitch(1,55)
         }
     }
