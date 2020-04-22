@@ -9,8 +9,8 @@ if(first() || duped()){
     Target = findPlayerByName("runic")
     holoCreate(99)
     holoModel(99,"models/weapons/w_models/w_breadmonster/w_breadmonster.mdl")
-    holoPos(99,Target:attachmentPos("anim_attachment_rh")+-Target:attachmentAng("anim_attachment_rh"):right() * 5+-Target:attachmentAng("anim_attachment_rh"):up() * 5)
-    holoAng(99,Target:attachmentAng("anim_attachment_rh") + ang(0,90,0))
+    holoPos(99,Target:attachmentPos("anim_attachment_rh")+-Target:attachmentAng("anim_attachment_rh"):up() * 0 + Target:attachmentAng("anim_attachment_rh"):forward()*2)
+    holoAng(99,Target:attachmentAng("anim_attachment_rh"))
     holoParentAttachment(99,Target,"anim_attachment_rh")
     holoScale(99,vec(2))
 }
