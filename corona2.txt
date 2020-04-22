@@ -6,7 +6,6 @@
 @model models/props_lab/crematorcase.mdl
 interval(3333)
 if(first() || duped()){
-Plyers[1,entity] = owner()
 }
 for(I=1,Plyers:count()){
     findIncludeClass("player")
@@ -27,7 +26,19 @@ for(I=1,Plyers:count()){
     holoPos(I+30,Plyers[I,entity]:toWorld(vec(0,0,140)))
     #holoParent(I+30,Plyers[I,entity])
     soundVolume(I+30,1)
+    Plyers[I,entity]:takeDamage(3)
 }
     #entity():setAlpha(0)
-print("Infected: ") 
-printTable(Plyers)
+if(changed(Plyers:count())){
+print("Infected: "+Plyers[Plyers:count(),entity]:toString())
+}
+findIncludeClass("player")
+findInSphere(entity():pos(),300)
+Infectees2 = findToArray()
+for(I=1,Infectees2:count()){
+    if(Infectees2[I,entity]:type() == "player"){
+        Plyers:pushEntity(Infectees2[I,entity])
+    }
+}
+#print("Infected: ") 
+#printTable(Plyers)
