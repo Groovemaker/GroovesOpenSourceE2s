@@ -23,6 +23,7 @@
 
 runOnChat(1)
 timer("loop",10)
+timer("loop2",10)
 if(chatClk(owner()) && Melon:model() == "models/props_junk/watermelon01.mdl"){
     LastS = owner():lastSaid():lower()
     LastArr = LastS:explode("")
@@ -65,4 +66,12 @@ if(clk("loop")){
         entity():soundPlay(2,0,"ambient/machines/keyboard_fast1_1second.wav")
     }
     timer("loop",1000)
+}
+
+if(clk("loop2")){
+    if(changed(Melon) && Melon:model() == "models/props_junk/watermelon01.mdl"){
+        concmd("say LeetConverter v1 by Runic hooked up to Melon! Activating...")
+        entity():soundPlay(11,0,"ambient/machines/combine_terminal_idle3.wav")
+    }
+    timer("loop2",300)
 }
