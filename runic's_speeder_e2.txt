@@ -4,7 +4,7 @@
 @persist V:entity E:entity D:entity LastPressed:string Dist OldDist Velocity RD:ranger Height
 @trigger 
 
-interval(100)
+interval(10)
 if(first() | duped()){
     Height = 34
     Dist = 0
