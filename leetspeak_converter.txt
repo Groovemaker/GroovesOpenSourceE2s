@@ -5,6 +5,7 @@
 @trigger 
 @model models/props_lab/monitor02.mdl
 runOnChat(1)
+timer("loop",10)
 if(chatClk(owner())){
     LastS = owner():lastSaid():lower()
     LastArr = LastS:explode("")
@@ -42,3 +43,9 @@ if(clk("timer")){
         entity():soundPlay(1,0,"ui/cyoa_map_open.wav")
 }
 entity():setSkin(1)
+if(clk("loop")){
+    if(owner():isTyping()){
+        entity():soundPlay(2,0,"ambient/machines/keyboard_fast1_1second.wav")
+    }
+    timer("loop",1000)
+}
