@@ -1,0 +1,40 @@
+@name LeetSpeak Converter
+@inputs 
+@outputs 
+@persist Leet:string
+@trigger 
+
+runOnChat(1)
+if(chatClk(owner())){
+    LastS = owner():lastSaid():lower()
+    LastArr = LastS:explode("")
+    #print(LastS)
+    #print(Leet)
+    if(LastS:upper() != Leet){
+        if(LastArr[1,string] == ">" && LastArr[2,string] != ">"){
+        hideChat(0)}
+        else{
+        hideChat(1)}
+        LastSNew = LastS:replace(" ","_")
+        LastS1 = LastSNew:replace("a","4")
+        LastS2 = LastS1:replace("e","3")
+        LastS3 = LastS2:replace("l","1")
+        LastS4 = LastS3:replace("o","0")
+        LastS5 = LastS4:replace("s","Z")
+        LastS6 = LastS5:replace("u","00")
+        LeetT = LastS6:upper()
+        LeetT2 = LeetT:explode("")
+        if(LeetT2[1,string] != ">"){
+            LeetT2:insertString(1,">")
+        }
+        Leet = LeetT2:concat("")
+        #print(Leet)
+
+        timer("timer",555)
+    }
+
+}
+
+if(clk("timer")){
+        concmd("say "+Leet)
+}
