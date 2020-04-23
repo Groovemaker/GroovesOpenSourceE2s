@@ -1,0 +1,53 @@
+@name Runic's Speeder E2
+@inputs Baseplate:entity Pod:entity
+@outputs 
+@persist V:entity E:entity D:entity LastPressed:string
+@trigger 
+
+interval(10)
+if(first() | duped()){
+    LastPressed = "none"
+    V = Baseplate
+    E = entity()
+    D = Pod:driver()
+    #V:setAlpha(0)
+    E:soundPlay(1,0,"thrusters/mh2.wav")
+    soundPitch(1,10)
+    E:soundPlay(2,0,"thrusters/hover02.wav")
+    soundVolume(2,0.4)
+# Right steer    apc wheel fr turn
+# Left steer     apc wheel fl turn
+}
+if(Pod:driver():keyForward()){
+
+    V:applyForce(-(V:forward() * 9500))
+}
+    soundPitch(1,(V:vel():length()) / 9)
+if(Pod:driver():keyBack()){
+    soundPitch(1,(V:vel():length()) / 6)
+    V:applyForce((V:forward() * 9310))
+}
+if(Pod:driver():keyLeft()){
+    LastPressed = "left"
+    V:applyAngForce((ang(0,10,0) * 888))
+}
+
+if(Pod:driver():keyRight()){
+    LastPressed = "right"
+    V:applyAngForce(-(ang(0,10,0) * 888))
+}
+if(Pod:driver():keyJump()){
+
+    V:applyForce(-V:vel()*105)
+}
+
+if(!Pod:driver():keyForward() && !Pod:driver():keyBack()){
+    V:applyForce(-V:vel()*33)
+}
+if(!Pod:driver():keyLeft() && !Pod:driver():keyRight()){
+}
+V:setAlpha(255)
+
+    #print("derp")
+
+
