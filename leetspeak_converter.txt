@@ -1,7 +1,7 @@
 @name LeetSpeak Converter
 @inputs Melon:entity
 @outputs 
-@persist Leet:string
+@persist Leet:string DieExec
 @trigger 
 @model models/props_lab/monitor02.mdl
 
@@ -26,6 +26,7 @@ timer("loop",10)
 timer("loop2",10)
 if(first() || duped()){
     entity():setSkin(0)
+    DieExec = 1
 }
 if(chatClk(owner()) && Melon:model() == "models/props_junk/watermelon01.mdl"){
     LastS = owner():lastSaid():lower()
@@ -76,12 +77,14 @@ if(clk("loop2")){
         entity():setSkin(1)
         concmd("say LeetConverter v1 by Runic hooked up to Melon! Activating...")
         entity():soundPlay(11,0,"ambient/machines/combine_terminal_idle3.wav")
+        DieExec = 0
     }
-    if(Melon:model() != "models/props_junk/watermelon01.mdl" && !Melon:isValid()){
+    if(Melon:model() != "models/props_junk/watermelon01.mdl" && !Melon:isValid() && DieExec == 0){
         #print(Melon)
         entity():setSkin(0)
         #concmd("say LeetConverter v1 by Runic hooked up to Melon! Activating...")
-        #entity():soundPlay(11,0,"ambient/machines/combine_terminal_idle3.wav")
+        entity():soundPlay(11,0,"npc/turret_floor/die.wav")
+        DieExec = 1
     }
     #print(Melon:isValid())
     timer("loop2",300)
