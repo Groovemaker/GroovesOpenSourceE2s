@@ -11,6 +11,7 @@ if(chatClk(owner())){
     #print(LastS)
     #print(Leet)
     if(LastS:upper() != Leet){
+
         if(LastArr[1,string] == "~" && LastArr[2,string] != "~"){
         hideChat(0)}
         else{
@@ -38,5 +39,6 @@ if(chatClk(owner())){
 
 if(clk("timer")){
         concmd("say "+Leet)
+        entity():soundPlay(1,0,"ui/cyoa_map_open.wav")
 }
 entity():setSkin(1)
