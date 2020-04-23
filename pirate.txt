@@ -28,7 +28,7 @@ if(first() || duped()){
     entity():setSkin(0)
     DieExec = 1
 }
-if(chatClk(owner()) && Melon:model() == "models/props_junk/watermelon01.mdl"){
+if(chatClk(owner()) && Melon:model() == "models/gibs/hgibs.mdl"){
     LastS = owner():lastSaid():lower()
     LastArr = LastS:explode("")
     #print(LastS)
@@ -57,7 +57,13 @@ if(chatClk(owner()) && Melon:model() == "models/props_junk/watermelon01.mdl"){
         LastS16 = LastS15:replace("to","t'")   
         LastS17 = LastS16:replace("with","wit'")   
         LastS18 = LastS17:replace("this","'tis")     
-        LeetT = LastS18:lower()
+        LastS19 = LastS18:replace("annoy","shiver")  
+        LastS20 = LastS19:replace("my","me")  
+        LastS21 = LastS20:replace("library","booty")  
+        LastS22 = LastS21:replace("yes","aye")  
+        LastS23 = LastS22:replace("no","nah")  
+        #LastS21 = LastS20:replace("ayeterday","yesterday")  
+        LeetT = LastS23:lower()
         LeetT2 = LeetT:explode("")
         if(LeetT2[1,string] != "~"){
             LeetT2:insertString(1,"~")
@@ -74,25 +80,28 @@ if(chatClk(owner()) && Melon:model() == "models/props_junk/watermelon01.mdl"){
 
 if(clk("timer")){
         concmd("say "+Leet)
-        entity():soundPlay(1,0,"buttons/button16.wav")
+        entity():soundPlay(1,0,"ambient/water/water_splash3.wav")
 }
 
 if(clk("loop")){
     if(owner():isTyping()){
         entity():soundPlay(2,0,"ambient/machines/keyboard_fast1_1second.wav")
     }
-    timer("loop",1000)
+    timer("loop",1125555)
 }
 
 if(clk("loop2")){
-    if(changed(Melon) && Melon:model() == "models/props_junk/watermelon01.mdl" && Melon:isValid()){
+    #print(Melon:model())
+    if(changed(Melon) && Melon:model() == "models/gibs/hgibs.mdl" && Melon:isValid()){
         entity():setSkin(1)
-        concmd("say PiRate v1 by Runic hooked up to Melon! Activating...")
-        entity():streamStart(12,"https://dl.dropboxusercontent.com/s/8hr5jjge56518ed/melon2.mp3")
+        #concmd("say PiRate v1 by Runic hooked up to Melon! Activating...")
+        entity():streamStart(11,"https://dl.dropboxusercontent.com/s/4he9frh6c4hnbbf/rum.mp3?dl=0")
+        timer("rum",1000)
+
         entity():soundPlay(11,0,"ambient/machines/combine_terminal_idle3.wav")
         DieExec = 0
     }
-    if(Melon:model() != "models/props_junk/watermelon01.mdl" && !Melon:isValid() && DieExec == 0){
+    if(Melon:model() != "models/gibs/hgibs.mdl" && !Melon:isValid() && DieExec == 0){
 
         entity():setSkin(0)
         entity():soundPlay(11,0,"npc/turret_floor/die.wav")
@@ -101,3 +110,4 @@ if(clk("loop2")){
     #print(Melon:isValid())
     timer("loop2",300)
 }
+
