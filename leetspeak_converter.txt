@@ -4,6 +4,22 @@
 @persist Leet:string
 @trigger 
 @model models/props_lab/monitor02.mdl
+
+########################## IMPORTANT INFORMATION! ######################################
+#                                                                                      #
+#    To Make this Work, you'll have to enable concmd and whitelist the say command.    #
+#      #########################################################################       #
+#    1. Press the wrench icon on the top right side of the e2 editor                   #
+#    2. Clicking a tick on concmd                                                      #
+#    3. Proceed with writing "say" without the quotes in the concmd whitelist          #
+#    4. Restart your game!                                                             #
+#                                                                                      #
+########################################################################################
+
+
+
+
+
 runOnChat(1)
 timer("loop",10)
 if(chatClk(owner())){
