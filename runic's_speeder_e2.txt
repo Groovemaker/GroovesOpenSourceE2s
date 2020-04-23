@@ -13,10 +13,10 @@ if(first() | duped()){
     E = entity()
     D = Pod:driver()
     #V:setAlpha(0)
-    E:soundPlay(1,0,"thrusters/mh2.wav")
+    E:soundPlay(1,0,"thrusters/hover02.wav")
     soundPitch(1,10)
     E:soundPlay(2,0,"thrusters/hover02.wav")
-    soundVolume(2,0.4)
+    soundVolume(2,0.1)
 # Right steer    apc wheel fr turn
 # Left steer     apc wheel fl turn
 }
@@ -40,7 +40,7 @@ if(Pod:driver():keyRight()){
 }
 if(Pod:driver():keyJump()){
 
-    V:applyForce(-V:vel()*105)
+    V:applyForce(-V:vel()*33)
 }
 
 if(!Pod:driver():keyForward() && !Pod:driver():keyBack()){
