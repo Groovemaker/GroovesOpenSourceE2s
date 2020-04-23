@@ -11,7 +11,7 @@ if(chatClk(owner())){
     #print(LastS)
     #print(Leet)
     if(LastS:upper() != Leet){
-        if(LastArr[1,string] == ">" && LastArr[2,string] != ">"){
+        if(LastArr[1,string] == "~" && LastArr[2,string] != "~"){
         hideChat(0)}
         else{
         hideChat(1)}
@@ -24,8 +24,9 @@ if(chatClk(owner())){
         LastS6 = LastS5:replace("u","00")
         LeetT = LastS6:upper()
         LeetT2 = LeetT:explode("")
-        if(LeetT2[1,string] != ">"){
-            LeetT2:insertString(1,">")
+        if(LeetT2[1,string] != "~"){
+            LeetT2:insertString(1,"~")
+            LeetT2:pushString("~")
         }
         Leet = LeetT2:concat("")
         #print(Leet)
