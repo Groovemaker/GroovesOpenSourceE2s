@@ -3,7 +3,7 @@
 @outputs 
 @persist Leet:string
 @trigger 
-
+@model models/props_lab/monitor02.mdl
 runOnChat(1)
 if(chatClk(owner())){
     LastS = owner():lastSaid():lower()
@@ -39,3 +39,4 @@ if(chatClk(owner())){
 if(clk("timer")){
         concmd("say "+Leet)
 }
+entity():setSkin(1)
