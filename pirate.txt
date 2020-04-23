@@ -1,0 +1,103 @@
+@name Pirate Converter
+@inputs Melon:entity
+@outputs 
+@persist Leet:string DieExec
+@trigger 
+@model models/props_lab/monitor02.mdl
+
+########################## IMPORTANT INFORMATION! ######################################
+#                                                                                      #
+#    To Make this Work, you'll have to enable concmd and whitelist the say command.    #
+#      #########################################################################       #
+#    1. Press the wrench icon on the top right side of the e2 editor                   #
+#    2. Clicking a tick on concmd                                                      #
+#    3. Proceed with writing "say" without the quotes in the concmd whitelist          #
+#    4. Restart your game!                                                             #
+#                                                                                      #
+########################################################################################
+
+# Instructions: Connect wire to Melon and chat away!
+
+
+
+
+runOnChat(1)
+timer("loop",10)
+timer("loop2",10)
+if(first() || duped()){
+    entity():setSkin(0)
+    DieExec = 1
+}
+if(chatClk(owner()) && Melon:model() == "models/props_junk/watermelon01.mdl"){
+    LastS = owner():lastSaid():lower()
+    LastArr = LastS:explode("")
+    #print(LastS)
+    #print(Leet)
+    if(LastS != Leet){
+
+        if(LastArr[1,string] == "~" && LastArr[2,string] != "~"){
+        hideChat(0)}
+        else{
+        hideChat(1)}
+        LastS1 = LastS:replace("you","ye")
+        LastS2 = LastS1:replace("big","mighty")
+        LastS3 = LastS2:replace("guy","bilgerat")
+        LastS4 = LastS3:replace("about","aboot")
+        LastS5 = LastS4:replace("out","abandon ye ship")
+        LastS6 = LastS5:replace("dude","mate")
+        LastS7 = LastS6:replace("person","bilgerat")
+        LastS8 = LastS7:replace("bro","mate")
+        LastS9 = LastS8:replace("die","walk the plank")
+        LastS10 = LastS9:replace("ha","harr")
+        LastS11 = LastS10:replace("server","spelunky")
+        LastS12 = LastS11:replace("'re","r")  
+        LastS13 = LastS12:replace("yo","ahoy")
+        LastS14 = LastS13:replace("hello","ahoy")   
+        LastS15 = LastS14:replace("am","be")  
+        LastS16 = LastS15:replace("to","t'")   
+        LastS17 = LastS16:replace("with","wit'")   
+        LastS18 = LastS17:replace("this","'tis")     
+        LeetT = LastS18:lower()
+        LeetT2 = LeetT:explode("")
+        if(LeetT2[1,string] != "~"){
+            LeetT2:insertString(1,"~")
+            LeetT2:pushString("~")
+        }
+        LeetT3 = LeetT2:concat("")
+        Leet = LeetT3:lower()
+        #print(Leet)
+
+        timer("timer",555)
+    }
+
+}
+
+if(clk("timer")){
+        concmd("say "+Leet)
+        entity():soundPlay(1,0,"buttons/button16.wav")
+}
+
+if(clk("loop")){
+    if(owner():isTyping()){
+        entity():soundPlay(2,0,"ambient/machines/keyboard_fast1_1second.wav")
+    }
+    timer("loop",1000)
+}
+
+if(clk("loop2")){
+    if(changed(Melon) && Melon:model() == "models/props_junk/watermelon01.mdl" && Melon:isValid()){
+        entity():setSkin(1)
+        concmd("say PiRate v1 by Runic hooked up to Melon! Activating...")
+        entity():streamStart(12,"https://dl.dropboxusercontent.com/s/8hr5jjge56518ed/melon2.mp3")
+        entity():soundPlay(11,0,"ambient/machines/combine_terminal_idle3.wav")
+        DieExec = 0
+    }
+    if(Melon:model() != "models/props_junk/watermelon01.mdl" && !Melon:isValid() && DieExec == 0){
+
+        entity():setSkin(0)
+        entity():soundPlay(11,0,"npc/turret_floor/die.wav")
+        DieExec = 1
+    }
+    #print(Melon:isValid())
+    timer("loop2",300)
+}
