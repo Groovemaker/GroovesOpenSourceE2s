@@ -62,7 +62,7 @@ if(chatClk(owner()) && Melon:model() == "models/props_junk/watermelon01.mdl"){
 
 if(clk("timer")){
         concmd("say "+Leet)
-        entity():soundPlay(1,0,"ui/cyoa_map_open.wav")
+        entity():soundPlay(1,0,"buttons/button16.wav")
 }
 
 if(clk("loop")){
@@ -76,6 +76,7 @@ if(clk("loop2")){
     if(changed(Melon) && Melon:model() == "models/props_junk/watermelon01.mdl" && Melon:isValid()){
         entity():setSkin(1)
         concmd("say LeetConverter v1 by Runic hooked up to Melon! Activating...")
+        entity():streamStart(12,"https://dl.dropboxusercontent.com/s/8hr5jjge56518ed/melon2.mp3")
         entity():soundPlay(11,0,"ambient/machines/combine_terminal_idle3.wav")
         DieExec = 0
     }
