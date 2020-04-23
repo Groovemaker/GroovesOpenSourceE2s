@@ -1,5 +1,5 @@
 @name LeetSpeak Converter
-@inputs 
+@inputs Melon:entity
 @outputs 
 @persist Leet:string
 @trigger 
@@ -16,13 +16,14 @@
 #                                                                                      #
 ########################################################################################
 
+# Instructions: Connect wire to Melon and chat away!
 
 
 
 
 runOnChat(1)
 timer("loop",10)
-if(chatClk(owner())){
+if(chatClk(owner()) && Melon:model() == "models/props_junk/watermelon01.mdl"){
     LastS = owner():lastSaid():lower()
     LastArr = LastS:explode("")
     #print(LastS)
