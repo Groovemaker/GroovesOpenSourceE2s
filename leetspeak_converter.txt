@@ -24,6 +24,9 @@
 runOnChat(1)
 timer("loop",10)
 timer("loop2",10)
+if(first() || duped()){
+    entity():setSkin(0)
+}
 if(chatClk(owner()) && Melon:model() == "models/props_junk/watermelon01.mdl"){
     LastS = owner():lastSaid():lower()
     LastArr = LastS:explode("")
@@ -60,7 +63,7 @@ if(clk("timer")){
         concmd("say "+Leet)
         entity():soundPlay(1,0,"ui/cyoa_map_open.wav")
 }
-entity():setSkin(1)
+
 if(clk("loop")){
     if(owner():isTyping()){
         entity():soundPlay(2,0,"ambient/machines/keyboard_fast1_1second.wav")
@@ -69,9 +72,17 @@ if(clk("loop")){
 }
 
 if(clk("loop2")){
-    if(changed(Melon) && Melon:model() == "models/props_junk/watermelon01.mdl"){
+    if(changed(Melon) && Melon:model() == "models/props_junk/watermelon01.mdl" && Melon:isValid()){
+        entity():setSkin(1)
         concmd("say LeetConverter v1 by Runic hooked up to Melon! Activating...")
         entity():soundPlay(11,0,"ambient/machines/combine_terminal_idle3.wav")
     }
+    if(Melon:model() != "models/props_junk/watermelon01.mdl" && !Melon:isValid()){
+        #print(Melon)
+        entity():setSkin(0)
+        #concmd("say LeetConverter v1 by Runic hooked up to Melon! Activating...")
+        #entity():soundPlay(11,0,"ambient/machines/combine_terminal_idle3.wav")
+    }
+    #print(Melon:isValid())
     timer("loop2",300)
 }
