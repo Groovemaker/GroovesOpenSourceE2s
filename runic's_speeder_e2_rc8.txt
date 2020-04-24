@@ -1,0 +1,73 @@
+@name Runic's Speeder E2 RC8
+@inputs Baseplate:entity Pod:entity
+@outputs Velocity On
+@persist V:entity E:entity D:entity LastPressed:string Dist OldDist Velocity RD:ranger Height Doable On
+@trigger 
+
+interval(10)
+if(first() | dupefinished()){
+    On = 0
+    Doable = 1
+    Height = 34
+    Dist = 0
+    LastPressed = "none"
+    V = Baseplate
+    E = entity()
+    D = Pod:driver()
+    #V:setAlpha(0)
+    E:soundPlay(1,0,"thrusters/hover02.wav")
+# Right steer    apc wheel fr turn
+# Left steer     apc wheel fl turn
+}
+if(Pod:driver():keyForward()){
+
+    V:applyForce(-(V:forward() * 25500))
+}
+    soundPitch(1,(V:vel():length()) / 9)
+if(Pod:driver():keyBack()){
+    soundPitch(1,(V:vel():length()) / 6)
+    V:applyForce((V:forward() * 22310))
+}
+if(Pod:driver():keyLeft()){
+    LastPressed = "left"
+    V:applyAngForce((ang(0,10,0) * 2488))
+}
+
+if(Pod:driver():keyRight()){
+    LastPressed = "right"
+    V:applyAngForce(-(ang(0,10,0) * 2488))
+}
+if(Pod:driver():keyJump()){
+
+    V:applyForce(-V:vel()*288)
+}
+if(Pod:driver():keyReload() && Doable){
+    if(On == 1){On = 0}elseif(On == 0){ On = 1}
+    Doable = 0
+    timer("doable",600)
+}
+if(!Pod:driver():keyForward() && !Pod:driver():keyBack()){
+    V:applyForce(-V:vel()*288)
+    soundPitch(1,100)
+}
+if(!Pod:driver():keyLeft() && !Pod:driver():keyRight()){
+}
+V:setAlpha(255)
+if(!Pod:driver():keyAttack1() && !Pod:driver():keyAttack2()){
+    Velocity = 0
+}
+if(Pod:driver():keyAttack2()){
+    Velocity = -5
+}
+if(Pod:driver():keyAttack1()){
+    Velocity = 5
+}
+if(clk("doable")){
+    Doable = 1
+}
+if(On == 1){
+    soundVolume(1,0.5)
+}elseif(On == 0){
+    soundVolume(1,0)
+
+}
