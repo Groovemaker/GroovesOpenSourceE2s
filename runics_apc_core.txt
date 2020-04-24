@@ -16,6 +16,7 @@ if(chatClk(owner())){
     }
 }
 if(first() | dupefinished()){
+    timer("misloop",10)
     Target = owner()
     On = 0
     Doable = 1
@@ -113,16 +114,24 @@ if(On == 1){
 }
 if(clk("tracker")){
     Tracking = 1
-
+    Ballbuster:setAng(Target:pos():toAngle())
 }
-Ballbuster:applyForce(Ballbuster:forward() * 11110)
+#
 if(Tracking == 1){
     Pitch=Ballbuster:elevation(Target:pos())
     Yaw=Ballbuster:bearing(Target:pos())
     Roll=Ballbuster:angles():roll()
     MissileAng=(-ang(Pitch,Yaw,Roll)*Ballbuster:mass())
      
-    Ballbuster:applyAngForce(MissileAng * 1.3)
+
     #Ballbuster:setAng(Target:pos():toAngle())
-    Ballbuster:applyForce((Target:pos()-Ballbuster:pos()) * 44)
+    Ballbuster:applyForce((Target:pos()-Ballbuster:pos()) * 1111)
+    Ballbuster:setAlpha(0)
+    holoCreate(89)
+    holoModel(89,"models/items/ar2_grenade.mdl")
+    holoPos(89,Ballbuster:pos())
+    holoParent(89,Ballbuster)
+}else{
+    Ballbuster:applyForce(Ballbuster:forward() * 11110)
 }
+
