@@ -86,11 +86,12 @@ if(Pod:driver():keyAttack1() && !Ballbuster){
     Ballbuster:soundPlay(11,0,"weapons/rpg/rocket1.wav")
     Ballbuster:soundPlay(22,0,"weapons/rpg/rocket1.wav")
     Ballbuster:soundPlay(33,0,"weapons/rpg/rocket1.wav")
+    Ballbuster:setAlpha(0)
     #Ballbuster2 = propSpawn("models/props_phx/amraam.mdl",ang(0,0,0),0)
     #Ballbuster2:setPos(Wl:toWorld(vec(70,0,-5)* Multi))
     #Ballbuster2:setAng(holoEntity(44):angles())
     Ballbuster:setNoCollideAll()
-    print("Firing Missile")
+    print("Firing Artillery")
     #Ballbuster2:setNoCollideAll()
 
     timer("tracker",1600)
@@ -125,8 +126,8 @@ if(Tracking == 1){
      
 
     #Ballbuster:setAng(Target:pos():toAngle())
-    Ballbuster:applyForce((Target:pos()-Ballbuster:pos()) * 1111)
-    #Ballbuster:setAlpha(0)
+    Ballbuster:applyForce((Target:pos()-Ballbuster:pos()) * 2111)
+    Ballbuster:setAlpha(0)
 
 }else{
     Ballbuster:applyForce(Ballbuster:forward() * 11110)
