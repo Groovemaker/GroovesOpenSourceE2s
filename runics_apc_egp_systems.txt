@@ -1,0 +1,29 @@
+@name Runics APC: EGP Systems
+@inputs EGP1:wirelink EGP2:wirelink EGP3:wirelink Baseplate:entity IsOpen1 Pod:entity
+@outputs 
+@persist 
+@trigger 
+
+interval(111)
+Vel = Baseplate:vel():length()
+#print(Vel)
+KMH = toUnit("km/h",Vel)
+KMHRound = round(KMH,0)
+if(IsOpen1 == 1){
+    IsOpen2 = "Open"
+}elseif(IsOpen1 == 0){
+    IsOpen2 = "Closed"
+}
+if(Pod:driver()){
+EGP3:egpFont(1,"ChatFont",55)
+EGP3:egpText(1,"Driver Status",vec2(100,160))
+EGP3:egpFont(2,"ChatFont",44)
+EGP3:egpText(2,"Name: "+Pod:driver():name(),vec2(100,233))
+EGP3:egpFont(3,"ChatFont",44)
+EGP3:egpText(3,"Health: "+Pod:driver():health(),vec2(100,266))
+}else{EGP3:egpClear()}
+
+EGP2:egpFont(1,"ChatFont",111)
+EGP2:egpText(1,KMHRound:toString()+"km/h",vec2(100,160))
+EGP1:egpFont(1,"ChatFont",55)
+EGP1:egpText(1,"Door: "+IsOpen2,vec2(100,160))
