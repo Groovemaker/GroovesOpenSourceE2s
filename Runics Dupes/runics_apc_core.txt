@@ -1,0 +1,81 @@
+@name Runic's APC Core
+@inputs Baseplate:entity Pod:entity
+@outputs Velocity On
+@persist V:entity E:entity D:entity LastPressed:string Doable On
+@trigger 
+
+interval(10)
+if(first() | dupefinished()){
+    On = 0
+    Doable = 1
+    Height = 34
+    Dist = 0
+    LastPressed = "none"
+    V = Baseplate
+    E = entity()
+    D = Pod:driver()
+    V:setAlpha(0)
+    E:soundPlay(1,0,"ambient/levels/citadel/zapper_ambient_loop1.wav")
+# Right steer    apc wheel fr turn
+# Left steer     apc wheel fl turn
+}
+if(Pod:driver():keyForward() && On){
+    for(I=1,10){
+        Wheel = ioInputEntity("Wheel"+I)
+        Wheel:setAng(Wheel:toWorld(ang(0,V:vel():length(),0)))
+    }
+    V:applyForce((V:right() * 165500))
+}
+    soundPitch(1,(V:vel():length()) / 9)
+if(Pod:driver():keyBack() && On){
+    soundPitch(1,(V:vel():length()) / 6)
+    V:applyForce(-(V:right() * 165500))
+}
+if(Pod:driver():keyLeft() && On){
+    LastPressed = "left"
+    V:applyAngForce((ang(0,10,0) * 4012488))
+}
+
+if(Pod:driver():keyRight() && On){
+    LastPressed = "right"
+    V:applyAngForce(-(ang(0,10,0) * 4012488))
+}
+if(Pod:driver():keyJump()){
+
+    V:applyForce(-V:vel()*288)
+}
+if(Pod:driver():keyReload() && Doable){
+    if(On == 1){On = 0}elseif(On == 0){ On = 1}
+    Doable = 0
+    timer("doable",600)
+}
+if(!Pod:driver():keyForward() && !Pod:driver():keyBack()){
+    V:applyForce(-V:vel()*288)
+    soundPitch(1,100)
+}
+if(!Pod:driver():keyLeft() && !Pod:driver():keyRight()){
+}
+V:setAlpha(255)
+if(!Pod:driver():keyAttack1() && !Pod:driver():keyAttack2()){
+    Velocity = 0
+}
+if(Pod:driver():keyAttack2()){
+    Velocity = -5
+}
+if(Pod:driver():keyAttack1()){
+    Velocity = 5
+}
+if(clk("doable")){
+    Doable = 1
+}
+if(changed(On) && On == 1){
+    E:soundPlay(3,0,"ambient/machines/thumper_startup1.wav")
+}elseif(changed(On) && On == 0){
+    E:soundPlay(3,0,"vehicles/v8/v8_stop1.wav")
+}
+if(On == 1){
+    soundVolume(1,1)
+}elseif(On == 0){
+    soundVolume(1,0)
+
+}
