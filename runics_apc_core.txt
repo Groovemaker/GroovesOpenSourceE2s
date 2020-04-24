@@ -1,11 +1,22 @@
 @name Runic's APC Core
 @inputs Baseplate:entity Pod:entity
 @outputs Velocity On
-@persist V:entity E:entity D:entity LastPressed:string Doable On
+@persist V:entity E:entity D:entity LastPressed:string Doable On Ballbuster:entity Tracking Target:entity
 @trigger 
-
+runOnChat(1)
 interval(10)
+if(chatClk(owner())){
+    CommandEx = lastSpoke():lastSaid():explode(" ")
+    Command = CommandEx[1,string]
+    Args = CommandEx[2,string]
+    if(Command == "lck"){
+        hideChat(1)
+        Target = findPlayerByName(Args)
+        print("Locked On Player: "+Target:name())
+    }
+}
 if(first() | dupefinished()){
+    Target = owner()
     On = 0
     Doable = 1
     Height = 34
@@ -19,6 +30,7 @@ if(first() | dupefinished()){
 # Right steer    apc wheel fr turn
 # Left steer     apc wheel fl turn
 }
+
 if(Pod:driver():keyForward() && On){
     for(I=1,10){
         Wheel = ioInputEntity("Wheel"+I)
@@ -62,8 +74,27 @@ if(!Pod:driver():keyAttack1() && !Pod:driver():keyAttack2()){
 if(Pod:driver():keyAttack2()){
     Velocity = -5
 }
-if(Pod:driver():keyAttack1()){
-    Velocity = 5
+if(Pod:driver():keyAttack1() && !Ballbuster){
+    Tracking = 0
+    #print("bombed")
+
+    Ballbuster = propSpawn("models/props_phx/amraam.mdl",ang(0,0,0),0)
+    Ballbuster:setPos(V:toWorld(vec(0,0,300))* 1)
+    Ballbuster:setTrails(20,20,120,"trails/smoke",vec(155,155,155), 255)
+    Ballbuster:setAng(V:toWorld(ang(-90,0,0)))
+    Ballbuster:soundPlay(11,0,"weapons/rpg/rocket1.wav")
+    Ballbuster:soundPlay(22,0,"weapons/rpg/rocket1.wav")
+    Ballbuster:soundPlay(33,0,"weapons/rpg/rocket1.wav")
+    #Ballbuster2 = propSpawn("models/props_phx/amraam.mdl",ang(0,0,0),0)
+    #Ballbuster2:setPos(Wl:toWorld(vec(70,0,-5)* Multi))
+    #Ballbuster2:setAng(holoEntity(44):angles())
+    Ballbuster:setNoCollideAll()
+    #Ballbuster2:setNoCollideAll()
+
+    timer("tracker",1600)
+    #Ballbuster2:applyForce(-Wl:forward() * 10010000)
+    #Ballbuster:propBreak()
+
 }
 if(clk("doable")){
     Doable = 1
@@ -78,4 +109,19 @@ if(On == 1){
 }elseif(On == 0){
     soundVolume(1,0)
 
+}
+if(clk("tracker")){
+    Tracking = 1
+
+}
+Ballbuster:applyForce(Ballbuster:forward() * 11110)
+if(Tracking == 1){
+    Pitch=Ballbuster:elevation(Target:pos())
+    Yaw=Ballbuster:bearing(Target:pos())
+    Roll=Ballbuster:angles():roll()
+    MissileAng=(-ang(Pitch,Yaw,Roll)*Ballbuster:mass())
+     
+    Ballbuster:applyAngForce(-MissileAng * 5)
+    #Ballbuster:setAng(Target:pos():toAngle())
+    Ballbuster:applyForce((Ballbuster:pos() - Target:pos()) * 11)
 }
