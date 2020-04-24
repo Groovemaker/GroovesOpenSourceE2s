@@ -68,6 +68,11 @@ if(Pod:driver():keyAttack1()){
 if(clk("doable")){
     Doable = 1
 }
+if(changed(On) && On == 1){
+    E:soundPlay(3,0,"ambient/machines/thumper_startup1.wav")
+}elseif(changed(On) && On == 0){
+    E:soundPlay(3,0,"vehicles/v8/v8_stop1.wav")
+}
 if(On == 1){
     soundVolume(1,1)
 }elseif(On == 0){
