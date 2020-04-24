@@ -1,0 +1,61 @@
+@name Runic's Speeder E2 RC7
+@inputs Baseplate:entity Pod:entity
+@outputs Velocity
+@persist V:entity E:entity D:entity LastPressed:string Dist OldDist Velocity RD:ranger Height
+@trigger 
+
+interval(10)
+if(first() | dupefinished()){
+    Height = 34
+    Dist = 0
+    LastPressed = "none"
+    V = Baseplate
+    E = entity()
+    D = Pod:driver()
+    #V:setAlpha(0)
+    E:soundPlay(1,0,"thrusters/hover02.wav")
+    soundPitch(1,111)
+    E:soundPlay(2,0,"thrusters/hover02.wav")
+    soundVolume(2,1)
+# Right steer    apc wheel fr turn
+# Left steer     apc wheel fl turn
+}
+if(Pod:driver():keyForward()){
+
+    V:applyForce(-(V:forward() * 9500))
+}
+    soundPitch(1,(V:vel():length()) / 9)
+if(Pod:driver():keyBack()){
+    soundPitch(1,(V:vel():length()) / 6)
+    V:applyForce((V:forward() * 9310))
+}
+if(Pod:driver():keyLeft()){
+    LastPressed = "left"
+    V:applyAngForce((ang(0,10,0) * 888))
+}
+
+if(Pod:driver():keyRight()){
+    LastPressed = "right"
+    V:applyAngForce(-(ang(0,10,0) * 888))
+}
+if(Pod:driver():keyJump()){
+
+    V:applyForce(-V:vel()*33)
+}
+
+if(!Pod:driver():keyForward() && !Pod:driver():keyBack()){
+    V:applyForce(-V:vel()*33)
+    soundPitch(1,100)
+}
+if(!Pod:driver():keyLeft() && !Pod:driver():keyRight()){
+}
+V:setAlpha(255)
+if(!Pod:driver():keyAttack1() && !Pod:driver():keyAttack2()){
+    Velocity = 0
+}
+if(Pod:driver():keyAttack2()){
+    Velocity = -5
+}
+if(Pod:driver():keyAttack1()){
+    Velocity = 5
+}
