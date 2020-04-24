@@ -33,12 +33,12 @@ if(Pod:driver():keyBack() && On){
 }
 if(Pod:driver():keyLeft() && On){
     LastPressed = "left"
-    V:applyAngForce((ang(0,10,0) * 2412488))
+    V:applyAngForce((ang(0,10,0) * 3512488))
 }
 
 if(Pod:driver():keyRight() && On){
     LastPressed = "right"
-    V:applyAngForce(-(ang(0,10,0) * 2412488))
+    V:applyAngForce(-(ang(0,10,0) * 3512488))
 }
 if(Pod:driver():keyJump()){
 
