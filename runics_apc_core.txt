@@ -126,11 +126,8 @@ if(Tracking == 1){
 
     #Ballbuster:setAng(Target:pos():toAngle())
     Ballbuster:applyForce((Target:pos()-Ballbuster:pos()) * 1111)
-    Ballbuster:setAlpha(0)
-    holoCreate(89)
-    holoModel(89,"models/items/ar2_grenade.mdl")
-    holoPos(89,Ballbuster:pos())
-    holoParent(89,Ballbuster)
+    #Ballbuster:setAlpha(0)
+
 }else{
     Ballbuster:applyForce(Ballbuster:forward() * 11110)
 }
