@@ -24,21 +24,21 @@ if(Pod:driver():keyForward() && On){
         Wheel = ioInputEntity("Wheel"+I)
         Wheel:setAng(Wheel:toWorld(ang(0,V:vel():length(),0)))
     }
-    V:applyForce((V:right() * 125500))
+    V:applyForce((V:right() * 165500))
 }
     soundPitch(1,(V:vel():length()) / 9)
 if(Pod:driver():keyBack() && On){
     soundPitch(1,(V:vel():length()) / 6)
-    V:applyForce(-(V:right() * 125500))
+    V:applyForce(-(V:right() * 165500))
 }
 if(Pod:driver():keyLeft() && On){
     LastPressed = "left"
-    V:applyAngForce((ang(0,10,0) * 3512488))
+    V:applyAngForce((ang(0,10,0) * 4012488))
 }
 
 if(Pod:driver():keyRight() && On){
     LastPressed = "right"
-    V:applyAngForce(-(ang(0,10,0) * 3512488))
+    V:applyAngForce(-(ang(0,10,0) * 4012488))
 }
 if(Pod:driver():keyJump()){
 
