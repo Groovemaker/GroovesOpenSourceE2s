@@ -15,7 +15,7 @@ if(first() | dupefinished()){
     E = entity()
     D = Pod:driver()
     V:setAlpha(0)
-    E:soundPlay(1,0,"thrusters/mh2.wav")
+    E:soundPlay(1,0,"ambient/levels/citadel/zapper_ambient_loop1.wav")
 # Right steer    apc wheel fr turn
 # Left steer     apc wheel fl turn
 }
@@ -33,12 +33,12 @@ if(Pod:driver():keyBack() && On){
 }
 if(Pod:driver():keyLeft() && On){
     LastPressed = "left"
-    V:applyAngForce((ang(0,10,0) * 1112488))
+    V:applyAngForce((ang(0,10,0) * 2412488))
 }
 
 if(Pod:driver():keyRight() && On){
     LastPressed = "right"
-    V:applyAngForce(-(ang(0,10,0) * 1112488))
+    V:applyAngForce(-(ang(0,10,0) * 2412488))
 }
 if(Pod:driver():keyJump()){
 
@@ -69,7 +69,7 @@ if(clk("doable")){
     Doable = 1
 }
 if(On == 1){
-    soundVolume(1,0.5)
+    soundVolume(1,1)
 }elseif(On == 0){
     soundVolume(1,0)
 
