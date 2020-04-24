@@ -89,6 +89,7 @@ if(Pod:driver():keyAttack1() && !Ballbuster){
     #Ballbuster2:setPos(Wl:toWorld(vec(70,0,-5)* Multi))
     #Ballbuster2:setAng(holoEntity(44):angles())
     Ballbuster:setNoCollideAll()
+    print("Firing Missile")
     #Ballbuster2:setNoCollideAll()
 
     timer("tracker",1600)
@@ -121,7 +122,7 @@ if(Tracking == 1){
     Roll=Ballbuster:angles():roll()
     MissileAng=(-ang(Pitch,Yaw,Roll)*Ballbuster:mass())
      
-    Ballbuster:applyAngForce(-MissileAng * 5)
+    Ballbuster:applyAngForce(MissileAng * 1.3)
     #Ballbuster:setAng(Target:pos():toAngle())
-    Ballbuster:applyForce((Ballbuster:pos() - Target:pos()) * 11)
+    Ballbuster:applyForce((Target:pos()-Ballbuster:pos()) * 44)
 }
