@@ -1,10 +1,10 @@
 @name Runic's APC Core
 @inputs Baseplate:entity Pod:entity
 @outputs Velocity On
-@persist V:entity E:entity D:entity LastPressed:string Doable On Ballbuster:entity Tracking Target:entity
+@persist V:entity E:entity D:entity LastPressed:string Doable On Ballbuster:entity Tracking Target:entity Multi
 @trigger 
 runOnChat(1)
-interval(10)
+interval(100)
 if(chatClk(owner())){
     CommandEx = lastSpoke():lastSaid():explode(" ")
     Command = CommandEx[1,string]
@@ -16,6 +16,7 @@ if(chatClk(owner())){
     }
 }
 if(first() | dupefinished()){
+    Multi = 4
     timer("misloop",10)
     Target = owner()
     On = 0
@@ -37,21 +38,21 @@ if(Pod:driver():keyForward() && On){
         Wheel = ioInputEntity("Wheel"+I)
         Wheel:setAng(Wheel:toWorld(ang(0,V:vel():length(),0)))
     }
-    V:applyForce((V:right() * 165500))
+    V:applyForce((V:right() * Multi *165500))
 }
     soundPitch(1,(V:vel():length()) / 9)
 if(Pod:driver():keyBack() && On){
     soundPitch(1,(V:vel():length()) / 6)
-    V:applyForce(-(V:right() * 165500))
+    V:applyForce(-(V:right() * Multi  * 165500))
 }
 if(Pod:driver():keyLeft() && On){
     LastPressed = "left"
-    V:applyAngForce((ang(0,10,0) * 4012488))
+    V:applyAngForce((ang(0,10,0) * Multi  * 4012488))
 }
 
 if(Pod:driver():keyRight() && On){
     LastPressed = "right"
-    V:applyAngForce(-(ang(0,10,0) * 4012488))
+    V:applyAngForce(-(ang(0,10,0) * Multi  * 4012488))
 }
 if(Pod:driver():keyJump()){
 
@@ -63,7 +64,7 @@ if(Pod:driver():keyReload() && Doable){
     timer("doable",600)
 }
 if(!Pod:driver():keyForward() && !Pod:driver():keyBack()){
-    V:applyForce(-V:vel()*288)
+    V:applyForce(-V:vel()*288  * Multi)
     soundPitch(1,100)
 }
 if(!Pod:driver():keyLeft() && !Pod:driver():keyRight()){
@@ -126,10 +127,10 @@ if(Tracking == 1){
      
 
     #Ballbuster:setAng(Target:pos():toAngle())
-    Ballbuster:applyForce((Target:pos()-Ballbuster:pos()) * 1111)
+    Ballbuster:applyForce((Target:pos()-Ballbuster:pos()) * Multi  * 1111)
     Ballbuster:setAlpha(0)
 
 }else{
-    Ballbuster:applyForce(Ballbuster:forward() * 11110)
+    Ballbuster:applyForce(Ballbuster:forward() * Multi  * 11110)
 }
 
