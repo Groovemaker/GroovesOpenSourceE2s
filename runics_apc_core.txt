@@ -55,7 +55,7 @@ if(Pod:driver():keyRight() && On){
 }
 if(Pod:driver():keyJump()){
 
-    V:applyForce(-V:vel()*288)
+    V:applyForce(-V:vel()*488)
 }
 if(Pod:driver():keyReload() && Doable){
     if(On == 1){On = 0}elseif(On == 0){ On = 1}
@@ -90,7 +90,7 @@ if(Pod:driver():keyAttack1() && !Ballbuster){
     #Ballbuster2 = propSpawn("models/props_phx/amraam.mdl",ang(0,0,0),0)
     #Ballbuster2:setPos(Wl:toWorld(vec(70,0,-5)* Multi))
     #Ballbuster2:setAng(holoEntity(44):angles())
-    Ballbuster:setNoCollideAll()
+    #Ballbuster:setNoCollideAll()
     print("Firing Artillery")
     #Ballbuster2:setNoCollideAll()
 
@@ -126,7 +126,7 @@ if(Tracking == 1){
      
 
     #Ballbuster:setAng(Target:pos():toAngle())
-    Ballbuster:applyForce((Target:pos()-Ballbuster:pos()) * 2111)
+    Ballbuster:applyForce((Target:pos()-Ballbuster:pos()) * 1111)
     Ballbuster:setAlpha(0)
 
 }else{
