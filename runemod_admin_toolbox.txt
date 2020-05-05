@@ -1,0 +1,76 @@
+@name Runemod Admin Toolbox
+@persist CommandEx:array Cmd:string Target:string Slapping
+runOnChat(1)
+
+if(first() || duped()){
+    Slapping = 0
+    Cmd = ""
+    Target = owner():name()
+    timer("lp",10)
+}
+if(chatClk(owner())){
+    CommandEx = lastSpoke():lastSaid():explode(" ")
+    Command = CommandEx[1,string]
+    if(Command == "runemod"){
+        ### Megaslap - Spams Slap on target
+        if(CommandEx[2,string] == "megaslap"){
+            if(CommandEx[3,string] == "1"){
+                CommandEx:shift()
+                CommandEx:shift()
+                CommandEx:shift()
+                RestOfLine = CommandEx:concat(" ")
+                Target = RestOfLine
+                Cmd = "slap"
+                Slapping = 1       
+            }elseif(CommandEx[3,string] == "0"){
+                Target = ""
+                Cmd = ""
+                Slapping = 0
+    
+            }
+        }
+        
+        ### Megaslap - Spams Slap on target
+        if(CommandEx[2,string] == "megaslay"){
+            if(CommandEx[3,string] == "1"){
+                CommandEx:shift()
+                CommandEx:shift()
+                CommandEx:shift()
+                RestOfLine = CommandEx:concat(" ")
+                Target = RestOfLine
+                Cmd = "sslay"
+                Slapping = 1       
+            }elseif(CommandEx[3,string] == "0"){
+                Target = ""
+                Cmd = ""
+                Slapping = 0
+    
+            }
+        }
+        
+        ### Megaslap - Spams Slap on target
+        if(CommandEx[2,string] == "tesla"){
+            if(CommandEx[3,string] == "1"){
+                CommandEx:shift()
+                CommandEx:shift()
+                CommandEx:shift()
+                RestOfLine = CommandEx:concat(" ")
+                Target = RestOfLine
+                Cmd = "shock"
+                Slapping = 1       
+            }elseif(CommandEx[3,string] == "0"){
+                Target = ""
+                Cmd = ""
+                Slapping = 0
+    
+            }
+        }
+    }
+}
+
+if(clk("lp")){
+    if(Slapping == 1){
+        concmd("ulx "+Cmd+" "+Target)
+    }
+    timer("lp",100)
+}
