@@ -30,7 +30,7 @@ if(chatClk(owner())){
             }
         }
         
-        ### Megaslap - Spams sslay on target
+        ### Megaslay - Spams sslay on target
         if(CommandEx[2,string] == "megaslay"){
             if(CommandEx[3,string] == "1"){
                 CommandEx:shift()
@@ -48,7 +48,7 @@ if(chatClk(owner())){
             }
         }
         
-        ### Megaslap - Teslacoil lmao
+        ### Tesla - Teslacoil lmao
         if(CommandEx[2,string] == "tesla"){
             if(CommandEx[3,string] == "1"){
                 CommandEx:shift()
