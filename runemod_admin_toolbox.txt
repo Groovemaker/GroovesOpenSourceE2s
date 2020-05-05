@@ -65,6 +65,69 @@ if(chatClk(owner())){
     
             }
         }
+        
+        ### pinfo - Shows info about target
+        if(CommandEx[2,string] == "pinfo"){
+                CommandEx:shift()
+                CommandEx:shift()
+                RestOfLine = CommandEx:concat(" ")
+                Target = RestOfLine
+                Cmd = "headshots"
+                concmd("ulx "+Cmd+" "+Target)
+                Cmd = "headcount"
+                concmd("ulx "+Cmd+" "+Target)
+                Cmd = "steamid"
+                concmd("ulx "+Cmd+" "+Target)
+                Cmd = "friends"
+                concmd("ulx "+Cmd+" "+Target)
+        }
+        
+        ### spinfo - SILENTLY Shows info about target
+        if(CommandEx[2,string] == "spinfo"){
+                hideChat(1)
+                CommandEx:shift()
+                CommandEx:shift()
+                RestOfLine = CommandEx:concat(" ")
+                Target = RestOfLine
+                Cmd = "headshots"
+                concmd("ulx "+Cmd+" "+Target)
+                Cmd = "headcount"
+                concmd("ulx "+Cmd+" "+Target)
+                Cmd = "steamid"
+                concmd("ulx "+Cmd+" "+Target)
+                Cmd = "friends"
+                concmd("ulx "+Cmd+" "+Target)
+                #hideChat(0)
+        }
+        
+        ### Overpower - well, what do you think it does bruh?
+        if(CommandEx[2,string] == "overpower"){
+                hideChat(0)
+                CommandEx:shift()
+                CommandEx:shift()
+                RestOfLine = CommandEx:concat(" ")
+                Target = RestOfLine
+                Cmd = "mend"
+                concmd("ulx "+Cmd+" "+Target)
+                Cmd = "armor"
+                concmd("ulx "+Cmd+ " " +Target+ " 255")
+                Cmd = "hp"
+                concmd("ulx "+Cmd+ " " +Target+ " 255")
+                #hideChat(0)
+        }
+        
+        ### Runeclean - Clean up alot of shit
+        if(CommandEx[2,string] == "runeclean"){
+                hideChat(0)
+                CommandEx:shift()
+                CommandEx:shift()
+                RestOfLine = CommandEx:concat(" ")
+                Target = RestOfLine
+                Cmd = "ulticlean"
+                concmd("ulx "+Cmd)
+                Cmd = "decals"
+                concmd("ulx "+Cmd)
+        }
     }
 }
 
