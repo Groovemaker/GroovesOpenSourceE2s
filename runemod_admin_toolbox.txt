@@ -183,6 +183,20 @@ if(chatClk(owner())){
                 holoEntity(22):extinguish()
                 msg(owner(),"stopped hellfire on ",findPlayerByName(Target):name())
         }
+        
+        if(CommandEx[2,string] == "linklag++"){
+                hideChat(0)
+                CommandEx:shift()
+                CommandEx:shift()
+                RestOfLine = CommandEx:concat(" ")
+                Target = RestOfLine
+                Cmd = "ulticlean"
+                concmd("ulx "+Cmd)
+                Cmd = "decals"
+                concmd("ulx "+Cmd)
+                Cmd = "linklag"
+                concmd("ulx "+Cmd)
+        }
     }
 }
 
