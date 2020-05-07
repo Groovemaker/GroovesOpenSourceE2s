@@ -8,6 +8,12 @@ if(first() || duped()){
     Target = owner():name()
     timer("lp",10)
 }
+
+function msg(Doer:entity,Command:string,Trg:string){
+                
+                concmd("ulx tsay "+"[RUNEMOD] " + Doer:name()+" "+Command+" "+Trg)
+}
+
 if(chatClk(owner())){
     CommandEx = lastSpoke():lastSaid():explode(" ")
     Command = CommandEx[1,string]
@@ -21,11 +27,13 @@ if(chatClk(owner())){
                 RestOfLine = CommandEx:concat(" ")
                 Target = RestOfLine
                 Cmd = "slap"
-                Slapping = 1       
+                Slapping = 1
+                msg(owner(),"used megaslap on ",findPlayerByName(Target):name())       
             }elseif(CommandEx[3,string] == "0"){
                 Target = ""
                 Cmd = ""
                 Slapping = 0
+                msg(owner(),"turned off megaslap ","")
     
             }
         }
@@ -39,11 +47,13 @@ if(chatClk(owner())){
                 RestOfLine = CommandEx:concat(" ")
                 Target = RestOfLine
                 Cmd = "sslay"
-                Slapping = 1       
+                Slapping = 1
+                msg(owner(),"used megaslay on ",findPlayerByName(Target):name())  
             }elseif(CommandEx[3,string] == "0"){
                 Target = ""
                 Cmd = ""
                 Slapping = 0
+                msg(owner(),"turned off megaslay ","")
     
             }
         }
@@ -57,11 +67,13 @@ if(chatClk(owner())){
                 RestOfLine = CommandEx:concat(" ")
                 Target = RestOfLine
                 Cmd = "shock"
-                Slapping = 1       
+                Slapping = 1
+                msg(owner(),"planted a teslacoil on ",findPlayerByName(Target):name())   
             }elseif(CommandEx[3,string] == "0"){
                 Target = ""
                 Cmd = ""
                 Slapping = 0
+                msg(owner(),"put nikola tesla back into his grave ","")
     
             }
         }
@@ -80,6 +92,7 @@ if(chatClk(owner())){
                 concmd("ulx "+Cmd+" "+Target)
                 Cmd = "friends"
                 concmd("ulx "+Cmd+" "+Target)
+                msg(owner(),"printed player info of ",findPlayerByName(Target):name())
         }
         
         ### spinfo - SILENTLY Shows info about target
@@ -127,6 +140,48 @@ if(chatClk(owner())){
                 concmd("ulx "+Cmd)
                 Cmd = "decals"
                 concmd("ulx "+Cmd)
+        }
+
+        ### Announce - Announce a message
+        if(CommandEx[2,string] == "announce"){
+                hideChat(0)
+                CommandEx:shift()
+                CommandEx:shift()
+                RestOfLine = CommandEx:concat(" ")
+                Target = RestOfLine
+                Cmd = "tsay"
+                concmd("ulx "+Cmd+" "+RestOfLine)
+                Cmd = "csay"
+                concmd("ulx "+Cmd+" "+RestOfLine)
+        }
+        
+        ### Hellfiya - Hellfire, what else?
+        if(CommandEx[2,string] == "hellfiya"){
+                hideChat(0)
+                CommandEx:shift()
+                CommandEx:shift()
+                RestOfLine = CommandEx:concat(" ")
+                Target = RestOfLine
+                holoCreate(22)
+                holoAlpha(22,0)
+                holoPos(22,findPlayerByName(Target):pos())
+                holoEntity(22):ignite()
+                Killa = propSpawn("models/props_phx/cannonball.mdl",ang(0,0,0),1)
+                Killa:setPos(findPlayerByName(Target):pos())
+                Killa:propBreak()
+                msg(owner(),"started hellfire on ",findPlayerByName(Target):name())
+        }
+        if(CommandEx[2,string] == "unfiya"){
+                hideChat(0)
+                CommandEx:shift()
+                CommandEx:shift()
+                RestOfLine = CommandEx:concat(" ")
+                Target = RestOfLine
+                holoCreate(22)
+                holoAlpha(22,0)
+                holoPos(22,findPlayerByName(Target):pos())
+                holoEntity(22):extinguish()
+                msg(owner(),"stopped hellfire on ",findPlayerByName(Target):name())
         }
     }
 }
