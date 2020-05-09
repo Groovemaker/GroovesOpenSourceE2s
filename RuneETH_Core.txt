@@ -11,6 +11,18 @@ if(first() || duped()){
     URL = "https://api.etherscan.io/api?module=stats&action=ethprice&apikey="+APIKEY
     OldUSD = 0
     OlDBTC = 0
+    Ret = httpData()
+    RetD = jsonDecode(Ret)
+    EthBTC = RetD["result",table]["ethbtc",string]
+    EthUSD = RetD["result",table]["ethusd",string]
+    BTCLine = "ETH <-> BTC: "+EthBTC
+    EGP:egpText(2,BTCLine ,vec2(50,160))
+    EGP:egpColor(2,vec(255,255,255))
+    EGP:egpFont(2,"chatfont",32)
+    USDLine = "ETH <-> USD: "+EthUSD
+    EGP:egpText(3,USDLine ,vec2(50,200))
+    EGP:egpColor(3,vec(255,255,255))
+    EGP:egpFont(3,"chatfont",32)
 }
 
 httpRequest(URL)
@@ -29,24 +41,24 @@ EGP:egpText(1,"ETHEREUM TRACKER",vec2(50,0))
 EGP:egpFont(1,"chatfont",45)
 
 if(EthBTC:toNumber() > OldBTC){
-    BTCLine = "ETC <-> BTC: "+EthBTC+" +"
+    BTCLine = "ETH <-> BTC: "+EthBTC+" +"
     EGP:egpText(2,BTCLine ,vec2(50,160))
     EGP:egpColor(2,vec(55,255,55))
     EGP:egpFont(2,"chatfont",32)
 }elseif(EthBTC:toNumber() < OldBTC){
-    BTCLine = "ETC <-> BTC: "+EthBTC+" -"
+    BTCLine = "ETH <-> BTC: "+EthBTC+" -"
     EGP:egpText(2,BTCLine ,vec2(50,160))
     EGP:egpColor(2,vec(255,50,50))
     EGP:egpFont(2,"chatfont",32)
 }
 
 if(EthUSD:toNumber() > OldUSD){
-    USDLine = "ETC <-> USD: "+EthUSD+" +"
+    USDLine = "ETH <-> USD: "+EthUSD+" +"
     EGP:egpText(3,USDLine ,vec2(50,200))
     EGP:egpColor(3,vec(55,255,55))
     EGP:egpFont(3,"chatfont",32)
 }elseif(EthUSD:toNumber() < OldUSD){
-    USDLine = "ETC <-> USD: "+EthUSD+" -"
+    USDLine = "ETH <-> USD: "+EthUSD+" -"
     EGP:egpText(3,USDLine ,vec2(50,200))
     EGP:egpColor(3,vec(255,50,50))
     EGP:egpFont(3,"chatfont",32)
