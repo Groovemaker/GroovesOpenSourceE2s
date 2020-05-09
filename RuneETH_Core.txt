@@ -1,0 +1,61 @@
+@name Runics Ethereum Tracker - Core
+@inputs EGP:wirelink Gasfee:string
+@outputs 
+@persist APIKEY:string URL:string Ival URLGas:string IvalGas ReqGoing USDLine:string OldUSD BTCLine:string OldBTC
+@trigger 
+
+runOnHTTP(1)
+interval(500)
+if(first() || duped()){
+    APIKEY = ""
+    URL = "https://api.etherscan.io/api?module=stats&action=ethprice&apikey="+APIKEY
+    OldUSD = 0
+    OlDBTC = 0
+}
+
+httpRequest(URL)
+
+
+
+Ret = httpData()
+RetD = jsonDecode(Ret)
+EthBTC = RetD["result",table]["ethbtc",string]
+EthUSD = RetD["result",table]["ethusd",string]
+
+
+if(httpClk()){
+
+EGP:egpText(1,"ETHEREUM TRACKER",vec2(50,0))
+EGP:egpFont(1,"chatfont",45)
+
+if(EthBTC:toNumber() > OldBTC){
+    BTCLine = "ETC <-> BTC: "+EthBTC+" +"
+    EGP:egpText(2,BTCLine ,vec2(50,160))
+    EGP:egpColor(2,vec(55,255,55))
+    EGP:egpFont(2,"chatfont",32)
+}elseif(EthBTC:toNumber() < OldBTC){
+    BTCLine = "ETC <-> BTC: "+EthBTC+" -"
+    EGP:egpText(2,BTCLine ,vec2(50,160))
+    EGP:egpColor(2,vec(255,50,50))
+    EGP:egpFont(2,"chatfont",32)
+}
+
+if(EthUSD:toNumber() > OldUSD){
+    USDLine = "ETC <-> USD: "+EthUSD+" +"
+    EGP:egpText(3,USDLine ,vec2(50,200))
+    EGP:egpColor(3,vec(55,255,55))
+    EGP:egpFont(3,"chatfont",32)
+}elseif(EthUSD:toNumber() < OldUSD){
+    USDLine = "ETC <-> USD: "+EthUSD+" -"
+    EGP:egpText(3,USDLine ,vec2(50,200))
+    EGP:egpColor(3,vec(255,50,50))
+    EGP:egpFont(3,"chatfont",32)
+}
+
+OldUSD = EthUSD:toNumber()
+OldBTC = EthBTC:toNumber()
+
+EGP:egpText(4,"Gastime (0.1 gwei): "+Gasfee+"sec" ,vec2(50,240))
+EGP:egpFont(4,"chatfont",32)
+EGP:egpFont(3,"chatfont",32)
+}

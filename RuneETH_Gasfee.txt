@@ -1,0 +1,25 @@
+@name Runics Ethereum Tracker - Gasfees
+@inputs 
+@outputs Gasfee:string
+@persist APIKEY:string URL:string Ival URLGas:string IvalGas ReqGoing
+@trigger 
+
+runOnHTTP(1)
+interval(1000)
+if(first() || duped()){
+    APIKEY = ""
+    URL = "https://api.etherscan.io/api?module=gastracker&action=gasestimate&gasprice=1000000000&apikey="+APIKEY
+    Ival = 100
+    IvalGas = 1000
+    ReqGoing = 0
+}
+
+httpRequest(URL)
+
+Ret = httpData()
+RetD = jsonDecode(Ret)
+if(httpClk()){
+Gasfee = RetD["result",string]
+}
+
+
