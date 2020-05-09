@@ -1,0 +1,53 @@
+@name Runics Firework
+@inputs 
+@outputs 
+@persist Teig:entity Apply
+@trigger 
+
+if(first() || duped()){
+    Apply = 0
+    timer("usesystem",10)
+    Teig = propSpawn("models/props_c17/canister02a.mdl",ang(0,0,0),1)
+}
+
+if(clk("usesystem")){
+    Allps = players()
+    for(I=1,Allps:count()){
+        Guy = Allps[I,entity]
+        if(Guy:keyUse() && Guy:aimEntity() == Teig){
+            Teig:propFreeze(0)
+
+            Apply = 1
+            Teig:setTrails(20,20,120,"trails/smoke",vec(255,255,255), 255)
+            timer("fly",10)
+            timer("splode",2000)
+        }
+    }
+
+    timer("usesystem",100)
+}
+if(clk("fly")){
+    if(Apply == 1){
+        Teig:applyForce(vec(0,0,100000))
+
+    }
+    timer("fly",300)
+}
+if(clk("splode")){
+    Killa = propSpawn("models/props_phx/cannonball.mdl",ang(0,0,0),1)
+    Killa:setPos(Teig:pos())
+    Killa:propBreak()
+    Apply = 0
+    for(I=1,125){
+        holoCreate(I)
+        holoPos(I,Teig:pos())
+        holoAlpha(I,0)
+        holoAng(I,randvec(-360,360):toAngle())
+        holoEntity(I):setTrails(20,20,120,"trails/physbeam",vec(randint(100,255),randint(100,255),randint(100,255)), 255)
+    }
+    Teig:setAlpha(0)
+}
+
+for(I=1,125){
+    holoPos(I,holoEntity(I):toWorld(vec(0,100,0)))
+}
