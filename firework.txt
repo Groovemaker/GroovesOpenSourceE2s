@@ -20,15 +20,15 @@ if(clk("usesystem")){
             Apply = 1
             Teig:setTrails(30,30,120,"trails/smoke",vec(255,255,255), 255)
             timer("fly",10)
-            timer("splode",2000)
+            timer("splode",4000)
         }
     }
 
-    timer("usesystem",440)
+    timer("usesystem",140)
 }
 if(clk("fly")){
     if(Apply == 1){
-        Teig:applyForce(vec(0,0,100000))
+        Teig:applyForce(vec(0,0,Teig:mass() * 10000000))
 
     }
     timer("fly",2000)
@@ -43,11 +43,11 @@ if(clk("splode")){
         holoPos(I,Teig:pos())
         holoAlpha(I,0)
         holoAng(I,randvec(-360,360):toAngle())
-        holoEntity(I):setTrails(220,220,120,"trails/physbeam",vec(randint(11,255),randint(11,255),randint(11,255)), 255)
+        holoEntity(I):setTrails(11111,11550,120,"trails/laser",vec(randint(61,255),randint(61,255),randint(61,255)), 255)
     }
     Teig:propDelete()
     #Teig:setAlpha(0)
-    timer("cleanup",7000)
+    timer("cleanup",8000)
 }
 
 if(clk("cleanup")){
