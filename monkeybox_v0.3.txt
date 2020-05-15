@@ -1,0 +1,196 @@
+@name MonkeyBox v0.3
+@persist Target:entity Aim Targtry:dbutton AimBut:dbutton Teleportb:dbutton Explodeb:dbutton GodBut:dbutton Version God Dview:dlistview
+
+
+#### DEPENDENCIES: ####
+# PlyCore             #
+# VguiCore            #
+# PropCore            #
+# NexusCore           #
+#######################
+
+if(first()){
+    hint("~[Only a laughing monkey is a happy Monkey!]~",7)
+    hint("~[Type mb in chat to open the menu!]~",7)
+    hint("-{[MonkeyBox by Runic]}-",7)
+    Version = 0.3
+    runOnChat(1)
+    runOnVgui(1)
+    Aim = 0
+    God = 0
+    timer("mainloop",1)
+}
+function playermenu(){
+    Dframe2 = dframe(9)
+
+    Dframe2:setTitle("Player Selector")
+    Dframe2:setColor(vec4(10,10,10,70))
+    Dframe2:center()
+    Dframe2:makePopup()
+    Dframe2:setSize(vec2(400,200))
+    Dframe2:create()
+    
+    #Player list
+    Dview = dlistview(10,9)
+    Dview:setSize(Dframe2:getSize(owner()) * 0.7)
+    Dview:addColumn("player")
+    Dview:setPos(vec2(55,22))
+    for(I=1,players():count()){
+        Dview:addLine(players()[I,entity]:name())
+    }
+    Dview:create()
+
+
+}
+function openmenu(){
+    #MainMenu DFRAME
+    Dframe = dframe(1)
+
+    Dframe:setTitle("MonkeyBox")
+    Dframe:setColor(vec4(10,10,10,70))
+    Dframe:setBackgroundBlur(33)
+    Dframe:center()
+    Dframe:makePopup()
+    Dframe:setSize(vec2(700,400))
+    Dframe:create()
+    #Dframe:setColor(vec(10,10,10))
+    #Dframe:modify()
+    
+    #Aim Button
+    AimBut = dbutton(2,1)
+    AimBut:setText("Aimbot")
+    AimBut:setTextColor(vec(255,255,255),vec(0,0,0),vec(200,200,200),vec(255,255,255))
+    AimBut:setSize(vec2(90,50))
+    AimBut:setPos(vec2(100,100))
+    AimBut:setCornerRadius(0)
+    AimBut:setColor(vec4(150,150,150,150))
+    AimBut:create()
+    
+    #Exploit: Beaner - Crashes the server (SelfDoS)
+    Teleportb = dbutton(3,1)
+    Teleportb:setText("Teleport")
+    Teleportb:setTextColor(vec(255,255,255),vec(0,0,0),vec(200,200,200),vec(255,255,255))
+    Teleportb:setSize(vec2(90,50))
+    Teleportb:setPos(vec2(100*5,100))
+    Teleportb:setCornerRadius(0)
+    Teleportb:setColor(vec4(150,150,150,150))
+    Teleportb:create()
+    
+    #Slay
+    Explodeb = dbutton(4,1)
+    Explodeb:setText("Explode")
+    Explodeb:setTextColor(vec(255,255,255),vec(0,0,0),vec(200,200,200),vec(255,255,255))
+    Explodeb:setSize(vec2(90,50))
+    Explodeb:setPos(vec2(100,100*2))
+    Explodeb:setCornerRadius(0)
+    Explodeb:setColor(vec4(150,150,150,150))
+    Explodeb:create()
+    
+    #God Button
+    GodBut = dbutton(5,1)
+    GodBut:setText("Godmode")
+    GodBut:setTextColor(vec(255,255,255),vec(0,0,0),vec(200,200,200),vec(255,255,255))
+    GodBut:setSize(vec2(90,50))
+    GodBut:setPos(vec2(100*5,100*2))
+    GodBut:setCornerRadius(0)
+    GodBut:setColor(vec4(150,150,150,150))
+    GodBut:create()
+
+    #Targets
+    Targtry = dbutton(6,1)
+    Targtry:setText("Targets")
+    Targtry:setTextColor(vec(255,255,255),vec(0,0,0),vec(200,200,200),vec(255,255,255))
+    Targtry:setSize(vec2(500,30))
+    Targtry:setPos(vec2(100,100*3))
+    Targtry:setColor(vec4(150,150,150,150))
+    Targtry:create()
+
+    #Branding
+    Branding = dlabel(7,1)
+    Branding:setTextColor(vec(255,255,255))
+    Branding:setText("MonkeyBox v"+Version)
+    Branding:setSize(vec2(250,30))
+    Branding:setFont("Chatfont",30)
+    Branding:setPos(vec2(240,100*1.7))
+    Branding:create()
+    #Branding2
+    Branding2 = dlabel(8,1)
+    Branding2:setTextColor(vec(255,255,255))
+    Branding2:setText("by Runic")
+    Branding2:setSize(vec2(250,30))
+    Branding2:setFont("Chatfont",15)
+    Branding2:setPos(vec2(240,100*2))
+    Branding2:create()
+}
+
+
+
+if(chatClk(owner())){
+    CommandEx = owner():lastSaid():explode(" ")
+    Command = CommandEx[1,string]
+    Args = CommandEx[2,string]
+    #if(Command == "aim"){
+    #    hideChat(1)
+    #    Target = findPlayerByName(Args)
+    #    Aim = 1
+    #}
+    if(Command == "mb"){
+        hideChat(1)
+        openmenu()
+    }
+}
+if(vguiClk()){
+    local ID = vguiClkPanelID()
+    ## Aimbot
+    if(ID == 2){
+        if(Aim == 0){
+            Aim = 1
+            print("[MonkeyBox] Aimbotting "+Target:name())
+        }else{
+            Aim = 0
+            print("[MonkeyBox] Aimbot Off!")
+        }
+    }
+    ## Teleport
+    elseif(ID == 3){
+        owner():teleport(Target:toWorld(vec(0,-100,0)))
+        print("[MonkeyBox] Teleported to "+Target:name())
+    }
+    ## Explode
+    elseif(ID == 4){
+        for(I=1,10){
+            local Ballbuster = propSpawn("models/props_phx/cannonball.mdl",ang(0,0,0),1)
+            Ballbuster:setPos(Target:pos())
+            Ballbuster:propBreak()
+        }
+        print("[MonkeyBox] Exploded "+Target:name())
+    }
+    elseif(ID == 5){
+        if(God == 0){
+            God = 1
+            print("[MonkeyBox] Godmode On!")
+        }else{
+            God = 0
+            print("[MonkeyBox] Godmode Off!")
+        }
+    }
+    elseif(ID == 6){
+        playermenu()
+    }
+    elseif(ID == 10){
+        Target = players()[Dview:getIndex(owner()),entity]
+    }
+}
+if(clk("mainloop")){
+
+
+    if(Aim == 1){
+        owner():plySetAng((Target:attachmentPos("anim_attachment_head") - owner():shootPos()):toAngle())
+    
+    }else{}
+    if(God == 1){
+        owner():plySetHealth(9999)
+    
+    }else{}
+    timer("mainloop",111)
+}
