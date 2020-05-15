@@ -192,5 +192,5 @@ if(clk("mainloop")){
         owner():plySetHealth(9999)
     
     }else{}
-    timer("mainloop",111)
+    timer("mainloop",55)
 }
