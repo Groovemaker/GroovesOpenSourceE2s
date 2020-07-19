@@ -3,6 +3,8 @@
 @persist User:entity Value Seq:array BtnWrongColor:vector BtnRightColor:vector PassA:array Pass:string Cursor:vector2 ID Button1 Button2 Button3 Button4 Button5 Button6 Button7 Button8 Button9 Pressed1 Use B BtnPressColor:vector BtnForeColor2:vector BtnForeColor:vector BtnTextColor:vector But EGP:wirelink
 @trigger 
 
+#  Use #include to include this Library
+#  Shoutout to Link from TSCM!
 BtnForeColor = vec(155,10,255)
 BtnForeColor2 = vec(155,10,255)  
 BtnPressColor = vec(20,255,100)
