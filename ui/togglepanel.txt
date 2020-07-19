@@ -1,0 +1,63 @@
+@name GrooveOS: Single Button Panel
+@inputs EGP:wirelink
+@outputs Pressed1
+@persist User:entity Cursor:vector2 M1 Pressed1 Use B BtnPressColor:vector BtnForeColor2:vector BtnForeColor:vector BtnTextColor:vector But
+@trigger
+interval(50)
+if(first() || duped() || changed(EGP)){
+    BtnForeColor = vec(155,10,255)
+    BtnForeColor2 = vec(155,10,255)  
+    BtnPressColor = vec(100,100,100)
+    BtnTextColor = vec(0,0,0)
+    EGP:egpClear()
+    function number wirelink:button(Cursor:vector2,ID:number){
+        local BPos = This:egpPos(ID)
+        local BSize = This:egpSize(ID)/2
+        local Pressed = inrange(Cursor,BPos-BSize,BPos+BSize)
+        But = ID
+        soundPlay(1,0,"buttons/button15.wav")
+        return Pressed
+    }
+
+    EGP:egpBox(1,vec2(256, 256),vec2(110,60))  
+    EGP:egpBoxOutline(3,vec2(256, 256),vec2(200,128))     
+    EGP:egpText(2,"Toggle",vec2(218,241))
+    EGP:egpFont(2,"DermaDefault",30)
+    EGP:egpColor(1,BtnForeColor)
+    EGP:egpColor(2,BtnTextColor)
+    EGP:egpColor(3,BtnForeColor2)   
+    EGP:egpText(4,"GrooveOS Panel v0.1",vec2(10,10))
+    EGP:egpFont(4,"DermaDefault",20)
+    EGP:egpBox(99,vec2(256,256),vec2(20))
+
+
+    EGP:egpMaterial(99,"vgui/cursors/arrow")
+}
+User = EGP["User",entity]
+Cursor = EGP:egpCursor(User)
+Use = User:keyUse()
+M1 = User:keyAttack1()
+foreach(K,Ply:entity = players()){
+    if(Ply:aimEntity() == EGP:entity()){
+
+        EGP:egpPos(99,Cursor)
+    }
+}
+
+
+if(changed(Use) & Use){
+    if(EGP:button(Cursor,1)){
+        EGP:egpColor(1,BtnPressColor)
+        if(Pressed1 == 0){
+            Pressed1 = 1
+        }elseif(Pressed1 == 1){
+            Pressed1 = 0
+        }
+        timer("btndepress1",200)
+    }
+    elseif(EGP:button(Cursor,2)){
+    }    
+}
+if(clk("btndepress1")){
+    EGP:egpColor(But,BtnForeColor)
+}
