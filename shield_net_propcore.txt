@@ -1,0 +1,131 @@
+@name Rasputin Subroutine: IKELOS SUNDOWN
+@inputs Warmind:number WarmindStr:string
+@persist Shield:number Whitelist:array Radius Number Speed Message P1:entity
+@trigger 
+@model models/maxofs2d/thruster_propeller.mdl
+runOnChat(1)
+if(chatClk(owner())){
+    Exp = owner():lastSaid():explode(":::")
+    Prefix = Exp[1,string]:lower()
+    Command = Exp[2,string]:lower()
+    Args = Exp[3,string]
+    if(Prefix == "warmind"){
+        if(Command == "whitelist"){
+            Targ = findPlayerByName(Args)
+            TID = Targ:steamID()
+            Whitelist:pushString(TID)
+            printColor(vec(255,155,0),"INDIVIDUAL $["+TID+"] WHITELISTED!")
+        }
+    }
+}
+entity():setMaterial("models/props_combine/Combine_Citadel001")
+#entity():propNotSolid(1)
+function number steamidcheck(Ent:entity){
+    for(I=1,Whitelist:count() + 1){
+        Entry = Whitelist[I,string]
+        #print(Entry)
+        #print(Ent:steamID())
+        if(Entry == Ent:steamID()){
+            return 1
+        }
+    }
+    return 0   
+}
+if(first()){
+    Message = 0
+    concmd("say WARMIND::SUBROUTINE:::IKELOS_SUNDOWN IS NOW ACTIVATED AS OF $["+time()+"]!")
+    Whitelist = array()
+    Whitelist[1,string] = "STEAM_0:0:0" # DEBUG Singleplayer Owner
+    Whitelist[2,string] = owner():steamID()
+    Whitelist:pushString("STEAM_0:0:79644736") # Darkstorm staff - Onyxia
+    Whitelist:pushString("STEAM_0:0:5675161") # Darkstorm staff - Midnite
+    Whitelist:pushString("STEAM_0:1:96173579") # Darkstorm staff - Killer
+    Whitelist:pushString("STEAM_0:1:110280640") # Darkstorm staff - Apart
+    Whitelist:pushString("STEAM_0:0:25993527") # Darkstorm staff - Niko
+    Whitelist:pushString("STEAM_0:0:138724565") # Elitedino
+    Whitelist:pushString("STEAM_0:0:140816818") # Bird
+    Whitelist:pushString("STEAM_0:0:68469117") # Fusion
+    Whitelist:pushString("STEAM_0:1:104940001") # Warlord
+    Whitelist:pushString("STEAM_0:1:114511507") # Hound
+    Whitelist:pushString("STEAM_0:0:160995564") # Mae/Sak
+    Whitelist:pushString("STEAM_0:1:445463795") # Gundam
+    Whitelist:pushString("STEAM_0:1:43284791") # Rj
+    Whitelist:pushString("STEAM_0:1:53193910") # Krip
+    Whitelist:pushString("STEAM_0:0:193145624") # Burger
+    Number = 20
+    Radius = 1000
+    Speed = 20
+    holoCreate(1)
+    holoAlpha(1,0)
+    holoPos(1,entity():pos())
+    holoCreate(122)
+    holoAlpha(122,0)
+    holoPos(122,entity():pos())
+    #holoParent(122,1)
+    for(I=2,Number){
+        holoCreate(I)
+        holoPos(I,holoEntity(1):toWorld(vec(0,Radius,0)))
+        holoParent(I,holoEntity(1))
+        holoAng(1,holoEntity(1):angles()+ang(0,20,0))
+        holoUnparent(I)
+        holoAlpha(I,0)
+        holoEntity(I):setTrails(122,122,120,"trails/laser",vec(255,133,0), 255)
+    }
+    for(I=Number,Number * 2){
+        holoCreate(I)
+        holoPos(I,holoEntity(1):toWorld(vec(0,Radius,0)))
+        holoParent(I,holoEntity(1))
+        holoAng(1,holoEntity(1):angles()+ang(0,20,0))
+        holoUnparent(I)
+        holoAlpha(I,0)
+        holoEntity(I):setTrails(122,122,120,"trails/laser",vec(255,211,0), 255)
+        timer("Parent",500)
+    }
+}
+if(clk("Parent")){
+    for(I=2,Number){
+        #print(I)
+        holoParent(I,122)
+    }
+    for(I=Number,Number * 2){
+        #print(I)
+        holoParent(I,1)
+    }
+    timer("mainloop",700)
+}
+if(clk("mainloop")){
+    if(changed(Warmind)){
+        print("[Shield] Got Bit: "+Warmind)
+    }
+    if(changed(WarmindStr)){
+        print("[Shield] Whitelisted: "+WarmindStr)
+        Whitelist:pushString(findPlayerByName(WarmindStr):steamID())
+    }
+    if(Warmind == 1){
+    findIncludeClass("player")
+    findInSphere(entity():pos(),Radius)
+    Allents = findToArray()
+    for(I=1,Allents:count()){
+        GuyE = Allents[I,entity]
+        if(GuyE:type() == "player" && steamidcheck(GuyE)){
+        }
+        elseif(GuyE:type() == "player" && !steamidcheck(GuyE) && GuyE:isAlive()){
+            if(GuyE:inVehicle()){
+                P1:propDelete()
+                P1=propSpawn("models/hunter/blocks/cube05x05x05.mdl",GuyE:vehicle():pos()+vec(0,0,0),0)
+                P1:applyForce(( P1:up()) * P1:mass() * 99999999e999)
+                P1:setMass(999)
+
+            }
+            for(I=1,50){
+            local P=propSpawn("models/props_phx/oildrum001_explosive.mdl",entity():pos()+vec(0,0,30),0)
+            P:setPos(GuyE:pos())
+            P:propBreak()
+            }        
+        }
+    }
+    holoAng(1,holoEntity(1):toWorld(ang(Speed,0,0)))
+    holoAng(122,holoEntity(122):toWorld(ang(-Speed,0,0)))
+    }
+    timer("mainloop",111)
+}
