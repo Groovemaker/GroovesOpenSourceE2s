@@ -1,0 +1,24 @@
+@name 
+@inputs 
+@persist User:entity Value Seq:array BtnWrongColor:vector BtnRightColor:vector PassA:array Pass:string Cursor:vector2 ID Button1 Button2 Button3 Button4 Button5 Button6 Button7 Button8 Button9 Pressed1 Use B BtnPressColor:vector BtnForeColor2:vector BtnForeColor:vector BtnTextColor:vector But EGP:wirelink
+@trigger 
+
+function number wirelink:createbutton(Pos:vector2,Size:vector2,Txt:string,TxtSiz){
+    ID+=3
+    EGP:egpBox(ID,Pos,Size)  
+    EGP:egpBoxOutline(ID+2,Pos,Size * 2)     
+    EGP:egpText(ID+1,Txt,vec2(Pos[1]-13,Pos[2]-20))
+    EGP:egpFont(ID+1,"DermaDefault",TxtSiz)
+    EGP:egpColor(ID,BtnForeColor)
+    EGP:egpColor(ID+1,BtnTextColor)
+    EGP:egpColor(ID+2,BtnForeColor2) 
+    return ID
+}
+function number wirelink:button(Cursor:vector2,ID:number){
+    local BPos = This:egpPos(ID)
+    local BSize = This:egpSize(ID)/2
+    local Pressed = inrange(Cursor,BPos-BSize,BPos+BSize)
+    But = ID
+    soundPlay(1,0,"buttons/button15.wav")
+    return Pressed
+}
