@@ -3,11 +3,17 @@
 @persist User:entity Value Seq:array BtnWrongColor:vector BtnRightColor:vector PassA:array Pass:string Cursor:vector2 ID Button1 Button2 Button3 Button4 Button5 Button6 Button7 Button8 Button9 Pressed1 Use B BtnPressColor:vector BtnForeColor2:vector BtnForeColor:vector BtnTextColor:vector But EGP:wirelink
 @trigger 
 
-function number wirelink:createbutton(Pos:vector2,Size:vector2,Txt:string,TxtSiz){
+BtnForeColor = vec(155,10,255)
+BtnForeColor2 = vec(155,10,255)  
+BtnPressColor = vec(20,255,100)
+BtnTextColor = vec(0,0,0)
+BtnWrongColor = vec(255,0,0)
+BtnRightColor = vec(0,255,0)
+function number wirelink:createbutton(Pos:vector2,Size:vector2,Txt:string,TxtSiz,OffsetX,OffsetY){
     ID+=3
     EGP:egpBox(ID,Pos,Size)  
     EGP:egpBoxOutline(ID+2,Pos,Size * 2)     
-    EGP:egpText(ID+1,Txt,vec2(Pos[1]-13,Pos[2]-20))
+    EGP:egpText(ID+1,Txt,vec2(Pos[1]+OffsetX,Pos[2]+OffsetY))
     EGP:egpFont(ID+1,"DermaDefault",TxtSiz)
     EGP:egpColor(ID,BtnForeColor)
     EGP:egpColor(ID+1,BtnTextColor)

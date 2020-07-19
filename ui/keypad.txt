@@ -1,10 +1,10 @@
 @name GrooveOS: Keypad Panel
 @inputs EGP:wirelink
 @outputs Value
-@persist User:entity Value Seq:array BtnWrongColor:vector BtnRightColor:vector PassA:array Pass:string Cursor:vector2 ID Button1 Button2 Button3 Button4 Button5 Button6 Button7 Button8 Button9 Pressed1 Use B BtnPressColor:vector BtnForeColor2:vector BtnForeColor:vector BtnTextColor:vector But
 @trigger
 interval(1)
 if(first() || duped() || changed(EGP)){
+    #include "ui/uilib"
     Pass = "1234"
     PassA = Pass:explode("")
     
@@ -15,34 +15,15 @@ if(first() || duped() || changed(EGP)){
     BtnWrongColor = vec(255,0,0)
     BtnRightColor = vec(0,255,0)
     EGP:egpClear()
-    function number wirelink:createbutton(Pos:vector2,Size:vector2,Txt:string,TxtSiz){
-        ID+=3
-        EGP:egpBox(ID,Pos,Size)  
-        EGP:egpBoxOutline(ID+2,Pos,Size * 2)     
-        EGP:egpText(ID+1,Txt,vec2(Pos[1]-13,Pos[2]-20))
-        EGP:egpFont(ID+1,"DermaDefault",TxtSiz)
-        EGP:egpColor(ID,BtnForeColor)
-        EGP:egpColor(ID+1,BtnTextColor)
-        EGP:egpColor(ID+2,BtnForeColor2) 
-        return ID
-    }
-    function number wirelink:button(Cursor:vector2,ID:number){
-        local BPos = This:egpPos(ID)
-        local BSize = This:egpSize(ID)/2
-        local Pressed = inrange(Cursor,BPos-BSize,BPos+BSize)
-        But = ID
-        soundPlay(1,0,"buttons/button15.wav")
-        return Pressed
-    }
-    Button1 = EGP:createbutton(vec2(100, 130),vec2(55),"1",44)
-    Button2 = EGP:createbutton(vec2(260, 130),vec2(55),"2",44)
-    Button3 = EGP:createbutton(vec2(420, 130),vec2(55),"3",44)
-    Button4 = EGP:createbutton(vec2(100, 275),vec2(55),"4",44)
-    Button5 = EGP:createbutton(vec2(260, 275),vec2(55),"5",44)
-    Button6 = EGP:createbutton(vec2(420, 275),vec2(55),"6",44)
-    Button7 = EGP:createbutton(vec2(100, 420),vec2(55),"7",44)
-    Button8 = EGP:createbutton(vec2(260, 420),vec2(55),"8",44)
-    Button9 = EGP:createbutton(vec2(420, 420),vec2(55),"9",44)
+    Button1 = EGP:createbutton(vec2(100, 130),vec2(55),"1",44,-13,-20)
+    Button2 = EGP:createbutton(vec2(260, 130),vec2(55),"2",44,-13,-20)
+    Button3 = EGP:createbutton(vec2(420, 130),vec2(55),"3",44,-13,-20)
+    Button4 = EGP:createbutton(vec2(100, 275),vec2(55),"4",44,-13,-20)
+    Button5 = EGP:createbutton(vec2(260, 275),vec2(55),"5",44,-13,-20)
+    Button6 = EGP:createbutton(vec2(420, 275),vec2(55),"6",44,-13,-20)
+    Button7 = EGP:createbutton(vec2(100, 420),vec2(55),"7",44,-13,-20)
+    Button8 = EGP:createbutton(vec2(260, 420),vec2(55),"8",44,-13,-20)
+    Button9 = EGP:createbutton(vec2(420, 420),vec2(55),"9",44,-13,-20)
     EGP:egpText(99,"GrooveOS Panel v0.1",vec2(10,10))
     EGP:egpFont(99,"DermaDefault",20)
  
