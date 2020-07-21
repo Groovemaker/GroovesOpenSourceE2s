@@ -50,6 +50,7 @@ if(clk("drunk")){
             holoPos(3,User:pos())
             holoParent(3,User)
             holoEntity(3):soundPlay(3,0,"player/taunt_burp.wav")
+            soundPitch(3,randint(70,130))
         }
 
         User:plyApplyForce(vec(randint(Min,Max),randint(Min,Max),0))
