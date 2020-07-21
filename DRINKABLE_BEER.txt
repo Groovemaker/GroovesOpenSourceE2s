@@ -44,12 +44,12 @@ for(I=1,Allps:count()){
 
 if(clk("drunk")){
     if(PlyDrunk){
-        if(randint(1,33) == 3){
+        if(randint(1,9) == 3){
             holoCreate(3)
             holoAlpha(3,0.1)
             holoPos(3,User:pos())
             holoParent(3,User)
-            holoEntity(3):soundPlay(3,0,"items/halloween/crazy0"+randint(1,3)+".wav")
+            holoEntity(3):soundPlay(3,0,"player/taunt_burp.wav")
         }
 
         User:plyApplyForce(vec(randint(Min,Max),randint(Min,Max),0))
