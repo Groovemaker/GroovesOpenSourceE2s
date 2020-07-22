@@ -2,7 +2,7 @@
 @inputs 
 @persist Stones User:entity Min Max Plyhigh
 
-@model models/hunter/plates/plate025.mdl
+@model models/props_c17/TrapPropeller_Lever.mdl
 
 interval(100)
 if(first() || duped()){
@@ -11,10 +11,10 @@ if(first() || duped()){
     Max = 500
     Stones = 0
     holoCreate(99)
-    entity():setAlpha(1)
-    entity():setMaterial("Models/effects/vol_light001")
-    holoModel(99,"models/weapons/w_models/w_syringe_proj.mdl")
-    holoScale(99,vec(1.3))
+    entity():setAlpha(255)
+    #entity():setMaterial("Models/effects/vol_light001")
+    holoModel(99,"models/props_c17/TrapPropeller_Lever.mdl")
+    holoScale(99,vec(0))
     holoAng(99,entity():toWorld(ang(0,90,0)))
     holoParent(99,entity())
     timer("high",1000)
@@ -43,7 +43,7 @@ for(I=1,Allps:count()){
             holoAlpha(2,0.1)
             holoPos(2,User:pos())
             holoParent(2,User)
-            holoEntity(2):soundPlay(2,0,"vo/demoman_gibberish13.mp3")
+            holoEntity(2):soundPlay(2,0,"ambient/voices/citizen_beaten3.wav")
             timer("dehigh",60000)
         }
     }
@@ -56,7 +56,7 @@ if(clk("high")){
             holoAlpha(3,0.1)
             holoPos(3,User:pos())
             holoParent(3,User)
-            holoEntity(3):soundPlay(3,0,"vo/demoman_gibberish0"+randint(1,9)+".mp3")
+            holoEntity(3):soundPlay(3,0,"ambient/creatures/town_scared_breathing2.wav")
             soundPitch(3,randint(70,130))
         }
         if(randint(1,12) == 2){
@@ -68,11 +68,10 @@ if(clk("high")){
             holoPos(4,User:attachmentPos("head"))
             #holoParent(4,User)
             holoParentAttachment(4,User,"head")
-            holoEntity(4):soundPlay(4,0,"items/halloween/spooky0"+randint(1,3)+".mp3")
-            holoEntity(4):soundPlay(4,0,"items/halloween/spooky0"+randint(1,3)+".mp3")
+            holoEntity(4):soundPlay(4,0,"npc/stalker/go_alert2.wav")
             
         }
-        if(randint(1,12) == 2){
+        if(randint(1,7) == 1){
             holoCreate(6)
             holoModel(6,"sphere")
             holoScale(6,vec(-6))
@@ -83,10 +82,9 @@ if(clk("high")){
             holoPos(6,User:attachmentPos("forward"))
             #holoParent(4,User)
             holoParentAttachment(6,User,"head")
-            holoEntity(6):soundPlay(6,0,"items/halloween/spooky0"+randint(1,3)+".wav")
+            holoEntity(6):soundPlay(4,0,"npc/stalker/breathing3.wav")
             
         }
-
         if(randint(1,9) == 7){
             if(holoEntity(6):isValid()){
                 holoDelete(6)
@@ -98,8 +96,8 @@ if(clk("high")){
             holoAlpha(5,0.1)
             holoPos(5,User:pos())
             holoParent(5,User)
-            holoEntity(5):soundPlay(5,0,"ambient/halloween/male_scream_1"+randint(1,9)+".wav")
-            soundPitch(5,randint(133,188))
+            holoEntity(5):soundPlay(5,0,"npc/stalker/go_alert2.wav")
+            soundPitch(5,randint(77,188))
                 
             }
         }
