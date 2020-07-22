@@ -12,6 +12,14 @@ if(first() || duped()){
     Max = 333
     Drinccs = 0
     timer("drunk",1000)
+    holoCreate(99)
+    holoModel(99,entity():model())
+    holoMaterial(99,"models/props_combine/stasisfield_beam")
+    holoAlpha(99,254)
+    holoScale(99,vec(1.1))
+    holoParent(99,entity())
+    entity():setMaterial("models/debug/debugwhite")
+    entity():setColor(vec(26, 92, 11))
 }
 Allps = players()
 for(I=1,Allps:count()){

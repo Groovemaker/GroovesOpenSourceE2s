@@ -1,4 +1,4 @@
-@name Consumable Alcoholic Beverage (c) Runic
+@name Runic's Headcrab Pilsner
 @inputs 
 @outputs 
 @persist Drinccs User:entity Min Max PlyDrunk
@@ -12,6 +12,8 @@ if(first() || duped()){
     Max = 500
     Drinccs = 0
     timer("drunk",1000)
+    entity():setMaterial("models/debug/debugwhite")
+    entity():setColor(vec(77, 48, 8))
 }
 Allps = players()
 for(I=1,Allps:count()){
@@ -38,6 +40,7 @@ for(I=1,Allps:count()){
             holoPos(2,User:pos())
             holoParent(2,User)
             holoEntity(2):soundPlay(2,0,"vo/burp04.mp3")
+            timer("dedrunk",60000)
         }
     }
 }
@@ -58,3 +61,7 @@ if(clk("drunk")){
     timer("drunk",1000)
 }
 
+if(clk("dedrunk")){
+    PlyDrunk = 0
+    selfDestruct()
+}
