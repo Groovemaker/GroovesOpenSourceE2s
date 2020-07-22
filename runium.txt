@@ -2,7 +2,7 @@
 @inputs 
 @persist Stones User:entity Min Max Plyhigh
 
-@model models/weapons/c_models/c_dart.mdl
+@model models/hunter/plates/plate025.mdl
 
 interval(100)
 if(first() || duped()){
@@ -10,6 +10,12 @@ if(first() || duped()){
     Min = -500
     Max = 500
     Stones = 0
+    holoCreate(99)
+    entity():setAlpha(1)
+    entity():setMaterial("Models/effects/vol_light001")
+    holoModel(99,"models/weapons/w_models/w_syringe_proj.mdl")
+    holoScale(99,vec(1.3))
+    holoAng(99,entity():toWorld(ang(0,90,0)))
     timer("high",1000)
 }
 Allps = players()
