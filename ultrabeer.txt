@@ -1,0 +1,68 @@
+@name Runic's Ultrabeer Light
+@inputs 
+@outputs 
+@persist Drinccs User:entity Min Max PlyDrunk
+@trigger 
+@model models/props_junk/GlassBottle01a.mdl
+
+interval(100)
+if(first() || duped()){
+    PlyDrunk = 0
+    Min = -333
+    Max = 333
+    Drinccs = 0
+    timer("drunk",1000)
+}
+Allps = players()
+for(I=1,Allps:count()){
+    Guy = Allps[I,entity]
+    if(Guy:pos():distance(entity():pos()) < 70 && Guy:keyUse()){
+
+        if(Drinccs < 4){
+        User = Guy
+        holoCreate(1)
+        holoAlpha(1,0.1)
+        holoPos(1,User:pos())
+        holoParent(1,User)
+        holoEntity(1):soundPlay(1,0,"npc/barnacle/barnacle_gulp2.wav")
+        Drinccs++
+        }
+        elseif(Drinccs >= 4 && PlyDrunk != 1){
+            PlyDrunk = 1
+            holoCreate(1)
+            holoAlpha(1,0.1)
+            holoPos(1,entity():pos())
+            holoEntity(1):soundPlay(1,0,"npc/barnacle/barnacle_gulp2.wav")
+            holoCreate(2)
+            holoAlpha(2,0.1)
+            holoPos(2,User:pos())
+            holoParent(2,User)
+            holoEntity(2):soundPlay(2,0,"vo/burp04.mp3")
+            timer("dedrunk",60000)
+        }
+    }
+}
+
+if(clk("drunk")){
+    if(PlyDrunk){
+        if(randint(1,9) == 3){
+            holoCreate(3)
+            holoAlpha(3,0.1)
+            holoPos(3,User:pos())
+            holoParent(3,User)
+            holoEntity(3):soundPlay(3,0,"player/taunt_burp.wav")
+            soundPitch(3,randint(66,99))
+
+        }
+
+            User:teleport(User:toWorld(randvec(Min,Max)))
+            timer("down",300)
+    }
+    timer("drunk",555)
+}
+if(clk("down")){
+}
+if(clk("dedrunk")){
+    PlyDrunk = 0
+    selfDestruct()
+}
