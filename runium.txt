@@ -16,6 +16,7 @@ if(first() || duped()){
     holoModel(99,"models/weapons/w_models/w_syringe_proj.mdl")
     holoScale(99,vec(1.3))
     holoAng(99,entity():toWorld(ang(0,90,0)))
+    holoParent(99,entity())
     timer("high",1000)
 }
 Allps = players()
