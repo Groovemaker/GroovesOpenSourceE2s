@@ -1,0 +1,137 @@
+@name Runium (Hold E)
+@inputs 
+@persist Stones User:entity Min Max Plyhigh
+
+@model models/props_c17/TrapPropeller_Lever.mdl
+
+interval(100)
+if(first() || duped()){
+    Plyhigh = 0
+    Min = -500
+    Max = 500
+    Stones = 0
+    holoCreate(99)
+    entity():setAlpha(255)
+    #entity():setMaterial("Models/effects/vol_light001")
+    holoModel(99,"models/props_c17/TrapPropeller_Lever.mdl")
+    holoScale(99,vec(0))
+    holoAng(99,entity():toWorld(ang(0,90,0)))
+    holoParent(99,entity())
+    timer("high",1000)
+    timer("footsteps",3000)
+}
+Allps = players()
+for(I=1,Allps:count()){
+    Guy = Allps[I,entity]
+    if(Guy:pos():distance(entity():pos()) < 70 && Guy:keyUse()){
+
+        if(Stones < 4){
+        User = Guy
+        holoCreate(1)
+        holoAlpha(1,0.1)
+        holoPos(1,User:pos())
+        holoParent(1,User)
+        holoEntity(1):soundPlay(1,0,"items/medshot4.wav")
+        Stones++
+        }
+        elseif(Stones >= 4 && Plyhigh != 1){
+            Plyhigh = 1
+            holoCreate(1)
+            holoAlpha(1,0.1)
+            holoPos(1,entity():pos())
+            holoEntity(1):soundPlay(1,0,"items/medshot4.wav")
+            holoCreate(2)
+            holoAlpha(2,0.1)
+            holoPos(2,User:pos())
+            holoParent(2,User)
+            holoEntity(2):soundPlay(2,0,"ambient/voices/citizen_beaten3.wav")
+            timer("dehigh",60000)
+        }
+    }
+}
+
+if(clk("high")){
+    if(Plyhigh){
+        if(randint(1,8) == 3){
+            holoCreate(3)
+            holoAlpha(3,0.1)
+            holoPos(3,User:pos())
+            holoParent(3,User)
+            holoEntity(3):soundPlay(3,0,"ambient/creatures/town_scared_breathing2.wav")
+            soundPitch(3,randint(70,130))
+        }
+        if(randint(1,11) == 2){
+            holoCreate(4)
+            holoModel(4,"hq_sphere")
+            holoScale(4,vec(-6.3))
+            holoMaterial(4,"models/screenspace")
+            holoAlpha(4,255)
+    
+            holoPos(4,User:attachmentPos("forward"))
+            #holoParent(4,User)
+            holoParentAttachment(4,User,"forward")
+            holoEntity(6):soundPlay(13,0,"ambient/levels/citadel/strange_talk"+randint(5,10)+".wav")
+            
+        }
+        if(randint(1,7) == 1){
+            holoCreate(6)
+            holoModel(6,"sphere")
+            holoScale(6,vec(-6))
+            holoDisableShading(6,1)
+            holoMaterial(6,"models/props_c17/fisheyelens")
+        
+
+            holoAlpha(6,254)
+            holoPos(6,User:attachmentPos("forward"))
+            #holoParent(4,User)
+            holoParentAttachment(6,User,"head")
+            holoEntity(6):soundPlay(5,0,"vo/npc/male01/moan"+randint(10,11)+".wav")
+            
+        }
+        if(randint(1,9) == 7){
+            if(holoEntity(6):isValid()){
+                holoDelete(6)
+            }
+        }
+        if(randint(1,4) == 3){
+            if(holoEntity(4):isValid()){
+                holoDelete(4)
+            }
+        }
+        if(randint(1,16) == 4){
+            if(holoEntity(4):isValid()){
+            holoCreate(5)
+            holoAlpha(5,0.1)
+            holoPos(5,User:pos())
+            holoParent(5,User)
+            holoEntity(5):soundPlay(35,0,"ambient/atmosphere/cave_hit"+randint(1,4)+".wav")
+            soundPitch(5,randint(77,188))
+                
+            }
+        }
+        
+
+        #User:plyApplyForce(vec(randint(Min,Max),randint(Min,Max),0))
+    }
+    timer("high",1000)
+}
+
+if(clk("dehigh")){
+    Plyhigh = 0
+    selfDestruct()
+}
+if(clk("footsteps")){
+    if(Plyhigh == 1){
+            holoCreate(11)
+            holoAlpha(11,0.1)
+            holoPos(11,User:pos())
+            holoParent(11,User)
+            holoEntity(11):soundPlay(11,0,"npc/footsteps/hardboot_generic"+randint(1,5)+".wav")
+            soundPitch(11,randint(100,100))
+        
+    }
+    timer("footsteps",1000)
+}
+holoAng(6,holoEntity(6):toWorld(ang(20,20,10)))
+holoAlpha(4,(sin(curtime()*130)*255)+155)
+holoAng(4,holoEntity(4):toWorld(ang(-20,20,-10)))
