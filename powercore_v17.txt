@@ -245,8 +245,9 @@ if(Counter >= MaxSpeed){
     PowerSocket = 0
 }
 holoScale(88,vec(ACounter))
-holoAng(88,holoEntity(88):toWorld(ang(21,30,10)))
-holoAng(88,holoEntity(88):toWorld(ang(21,30,10)))
+if(Overheating == 0){
+    holoAng(88,holoEntity(88):toWorld(ang(21,30,10)))
+}
 if(OverDrive == 0 && Counter >= MaxSpeed && PCounter >= MaxPitch && ACounter >= MaxA){
     Counter-=Speed
     PCounter-=PSpeed
@@ -298,7 +299,7 @@ Red = TempRound / 500
 }
 holoColor(1,vec(Red,0,0))
 
-if(changed(Temp) && Temp >= MaxTemp){
+if(changed(Temp) && Temp >= MaxTemp && OverDriven == 1){
     Overheating = 1
     entity():soundPlay(28,0,"ambient/alarms/alarm_citizen_loop1.wav")
     timer("Singularity",20000)
