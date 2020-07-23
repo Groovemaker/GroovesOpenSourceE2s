@@ -288,7 +288,7 @@ if(clk("overdriveeffects")){
         Ballbuster:setAlpha(0)
         timer("ODTP",5)
     }
-    timer("overdriveeffects",(7000000 / TempOut))
+    timer("overdriveeffects",(8500000 / TempOut))
 }
 if(clk("ODTP")){
         holoPos(98,Pos)
