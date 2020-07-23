@@ -135,3 +135,14 @@ if(clk("footsteps")){
 holoAng(6,holoEntity(6):toWorld(ang(20,20,10)))
 holoAlpha(4,(sin(curtime()*130)*255)+155)
 holoAng(4,holoEntity(4):toWorld(ang(-20,20,-10)))
+
+foreach(V,Ply:entity = players()){
+    if(Ply != User){
+        holoVisible(3,Ply,0)
+        holoVisible(4,Ply,0)        
+        holoVisible(5,Ply,0)
+        holoVisible(6,Ply,0)
+        
+        holoVisible(11,Ply,0)
+    }
+}
