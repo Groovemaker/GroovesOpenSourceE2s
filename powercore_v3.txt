@@ -40,6 +40,32 @@ if(first() || duped()){
     holoPos(3,entity():toWorld(vec(-35,-35,150)))   
     holoCreate(4)
     holoPos(4,entity():toWorld(vec(47,0,150)))
+    
+    holoCreate(66)
+    holoAlpha(66,0)
+    holoPos(66,holoEntity(88):pos())
+    holoParent(66,holoEntity(88))
+    holoCreate(67)
+    holoAlpha(67,0)
+    holoPos(67,holoEntity(88):pos())
+    holoParent(67,holoEntity(88))
+    holoCreate(68)
+    holoAlpha(68,0)
+    holoPos(68,holoEntity(88):pos())
+    holoParent(68,holoEntity(88))
+    
+    holoCreate(70)
+    holoAlpha(70,0)
+    holoPos(70,holoEntity(88):toWorld(vec(30,0,0)))
+    holoParent(70,holoEntity(66))
+    holoCreate(71)
+    holoAlpha(71,0)
+    holoPos(71,holoEntity(88):toWorld(vec(30,0,0)))
+    holoParent(71,holoEntity(67))
+    holoCreate(72)
+    holoAlpha(72,0)
+    holoPos(72,holoEntity(88):toWorld(vec(30,0,0)))
+    holoParent(72,holoEntity(68))
     for(I=2,4){
         holoParent(I,1)
         holoModel(I,"icosphere")
@@ -92,6 +118,9 @@ if(Power == 1){
     }
 }
 else{
+    for(I=70,72){
+
+    }
     Counter-=Speed    
     if(Counter <= 0){
         Counter = 0
@@ -107,9 +136,14 @@ else{
 }
 if(changed(Power) && Power == 1){
     holoEntity(1):soundPlay(1,0,"ambient/machines/lab_loop1.wav")
+    for(I=70,72){
+        holoEntity(I):setTrails(11,11,0.1,"trails/laser",vec(0,255,60), 255)
+    }
 
 }elseif(changed(Power) && Power == 0){
-
+    for(I=70,72){
+        holoEntity(I):removeTrails()
+    }
 }
 if(changed(PowerSocket) && PowerSocket == 1){
     holoEntity(1):soundPlay(2,0,"ambient/machines/thumper_hit.wav")
@@ -127,10 +161,13 @@ if(Counter >= MaxSpeed){
 }
 holoScale(88,vec(ACounter))
 holoAng(88,holoEntity(88):toWorld(ang(21,30,10)))
+holoAng(88,holoEntity(88):toWorld(ang(21,30,10)))
 if(OverDrive == 0 && Counter >= MaxSpeed && PCounter >= MaxPitch && ACounter >= MaxA){
     Counter-=Speed
     PCounter-=PSpeed
     ACounter-=ASpeed
 }
 OverDriven = OverDrive
-
+holoAng(66,holoEntity(66):toWorld(ang(Counter + randint(-20,20),Counter + randint(-20,20),33)))
+holoAng(67,holoEntity(67):toWorld(ang(Counter + randint(-20,20),Counter + randint(-20,20),12)))
+holoAng(68,holoEntity(68):toWorld(ang(Counter + randint(-20,20),Counter + randint(-20,20),23)))
