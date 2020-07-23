@@ -201,10 +201,12 @@ if(OverDriven == 1 && Power == 1){
     }
 }
 else{
-
-    Temp-=TempSpeed
+    
+    
     if(Temp <= MinTemp){
-        Temp = MinTemp
+        Temp += TempSpeed
+    }else{
+        Temp-=TempSpeed
     }
     PCounter2-=PSpeed2
     if(PCounter2 <= 0){
