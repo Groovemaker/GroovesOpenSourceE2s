@@ -132,7 +132,7 @@ else{
 
 if(OverDrive == 1){
     Speed = 1
-    TempSpeed +=0.3
+    TempSpeed +=0.8
     PSpeed = 5
     ASpeed = 0.05
     MaxSpeed = 111
