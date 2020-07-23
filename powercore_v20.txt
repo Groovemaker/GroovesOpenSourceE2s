@@ -332,6 +332,10 @@ if(Overheating == 1){
     holoScale(88,vec(CoreScale))
 }
 if(clk("Singularity")){
+    Power = 0
+    PowerSocket = 0
+    PowerReadings = 0
+    Temp = 99999999999
     Off = 1
     Ballbuster = propSpawn("models/props_c17/oildrum001_explosive.mdl",ang(0,0,0),1)
     Ballbuster:setPos(holoEntity(88):pos())
