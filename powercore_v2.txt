@@ -1,0 +1,114 @@
+@name Runic's Power Core
+@inputs ToggleButton
+@outputs PowerSocket PowerReadings
+@persist RingModel:string Power ToggleButton Mat:string ASpeed Counter Speed ACounter MaxA MaxSpeed MaxPitch PCounter PSpeed PowerSocket
+@trigger 
+@model models/props_combine/combine_mine01.mdl
+interval(100)
+if(first()){
+    Power = 0
+}
+if(first() || duped()){
+    Counter = 0
+    PCounter = 0
+    ACounter = 0
+    Speed = 2
+    PSpeed = 5
+    ASpeed = 0.05
+    MaxSpeed = 111
+    MaxPitch = 233
+    MaxA = 2
+    RingModel = "models/props_interiors/BathTub01a.mdl"
+    Mat = "models/shiny"
+    holoCreate(88)
+    holoModel(88,"hq_sphere")
+    holoScale(88,vec(2,2,2))
+    holoPos(88,entity():toWorld(vec(0,0,75)))
+    holoDisableShading(88,1)
+    holoColor(88,vec(0,255,50))
+    holoMaterial(88,"models/props_c17/fisheyelens")
+    holoShadow(88,0)
+    holoCreate(1)
+    holoPos(1,entity():toWorld(vec(0,0,150)))
+    holoModel(1,"icosphere")
+    holoMaterial(1,"models/shiny")
+    holoColor(1,vec(0))
+    holoScale(1,vec(2))
+    holoCreate(2)
+    holoPos(2,entity():toWorld(vec(-35,35,150)))    
+    holoCreate(3)
+    holoPos(3,entity():toWorld(vec(-35,-35,150)))   
+    holoCreate(4)
+    holoPos(4,entity():toWorld(vec(47,0,150)))
+    for(I=2,4){
+        holoParent(I,1)
+        holoModel(I,"icosphere")
+        holoMaterial(I,"models/shiny")
+        holoColor(I,vec(0))
+    }  
+    for(I=44,64){
+        holoCreate(I)
+        holoPos(I,entity():toWorld(vec(0,0,0)))        
+        holoModel(I,RingModel)
+        holoMaterial(I,Mat)
+        holoAng(I,entity():toWorld(ang(0,I*10,0)))
+        holoColor(I,vec(0))
+    }
+}
+if(ToggleButton == 1){
+    Power = ToggleButton
+    
+}
+else{
+    Power = ToggleButton
+}
+if(Power == 1){
+    Counter+=Speed
+    if(Counter > MaxSpeed){
+        Counter = MaxSpeed
+    }
+    ACounter+=ASpeed
+    if(ACounter > MaxA){
+        ACounter = MaxA
+    }
+    PCounter+=PSpeed
+    if(PCounter > MaxPitch){
+        PCounter = MaxPitch
+    }
+}
+else{
+    Counter-=Speed
+    if(Counter <= 0){
+        Counter = 0
+    }
+    PCounter-=PSpeed
+    if(PCounter <= 0){
+        PCounter = 0
+    }
+    ACounter-=ASpeed
+    if(ACounter <= 0){
+        ACounter = 0
+    }
+}
+if(changed(Power) && Power == 1){
+    holoEntity(1):soundPlay(1,0,"ambient/machines/lab_loop1.wav")
+
+}elseif(changed(Power) && Power == 0){
+
+}
+if(changed(PowerSocket) && PowerSocket == 1){
+    holoEntity(1):soundPlay(2,0,"ambient/machines/thumper_hit.wav")
+}
+PosZ = (sin(curtime()*100)*22)+155
+holoPos(1,entity():toWorld(vec(0,0,PosZ)))
+holoAng(1,holoEntity(1):toWorld(ang(0,Counter,0)))
+soundPitch(1,PCounter)
+PowerReadings = Counter
+if(Counter >= MaxSpeed){
+    PowerSocket = 1
+
+}else{
+    PowerSocket = 0
+}
+holoScale(88,vec(ACounter))
+holoAng(88,holoEntity(88):toWorld(ang(21,30,10)))
