@@ -140,7 +140,7 @@ if(OverDrive == 1){
 }
 if(OverDrive == 1){
     Speed = 2
-    TempSpeed +=0.5
+    TempSpeed +=0.3
     PSpeed = 5
     ASpeed = 0.05
     MaxSpeed = 211
@@ -286,7 +286,7 @@ if(clk("overdriveeffects")){
         Ballbuster:setAlpha(0)
         timer("ODTP",5)
     }
-    timer("overdriveeffects",(60000000 / TempOut))
+    timer("overdriveeffects",(30000000 / TempOut))
 }
 if(clk("ODTP")){
         holoPos(98,Pos)
