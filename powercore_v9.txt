@@ -1,0 +1,243 @@
+@name Runic's Power Core
+@inputs ToggleButton OverDrive
+@outputs PowerSocket PowerReadings OverDriven Off
+@persist RingModel:string Power ToggleButton Mat:string ASpeed Counter PCounter2 PSpeed2 MaxPitch2 Speed ACounter MaxA MaxSpeed MaxPitch PCounter PSpeed PowerSocket
+@trigger 
+@model models/props_combine/combine_mine01.mdl
+interval(100)
+if(first()){
+    Power = 0
+}
+if(first() || duped()){
+    Counter = 0
+    PCounter = 0
+    PCounter2 = 0
+    ACounter = 0
+    Speed = 2
+    PSpeed = 5
+    PSpeed2 = 10
+    ASpeed = 0.05
+    MaxSpeed = 111
+    MaxPitch = 233
+    MaxPitch2 = 155
+    MaxA = 2
+    RingModel = "models/Mechanics/gears2/pinion_40.mdl"
+    Mat = "models/shiny"
+    holoCreate(88)
+    holoModel(88,"hq_sphere")
+    holoScale(88,vec(2,2,2))
+    holoPos(88,entity():toWorld(vec(0,0,105)))
+    holoDisableShading(88,1)
+    holoColor(88,vec(0,255,50))
+    holoMaterial(88,"models/props_c17/fisheyelens")
+    holoShadow(88,0)
+    holoCreate(1)
+    holoPos(1,entity():toWorld(vec(0,0,240)))
+    holoModel(1,"icosphere")
+    holoMaterial(1,"models/shiny")
+    holoColor(1,vec(0))
+    holoScale(1,vec(2))
+    
+    holoCreate(11)
+    holoPos(11,entity():toWorld(vec(0,0,0)))
+    holoAlpha(11,0)
+    
+    holoCreate(12)
+    holoPos(12,entity():toWorld(vec(-40,0,10)))
+
+    holoCreate(13)
+    holoPos(13,entity():toWorld(vec(40,0,10)))
+ 
+    holoParent(12,11)
+    holoParent(13,11)
+    holoModel(12,"models/props_wasteland/coolingtank02.mdl")
+    holoModel(13,"models/props_wasteland/coolingtank02.mdl")    
+    holoMaterial(12,"models/shiny")
+    holoColor(12,vec(0))
+    holoMaterial(13,"models/shiny")
+    holoColor(13,vec(0))    
+    holoScale(12,vec(0.1))
+    holoScale(13,vec(0.1))
+    
+    holoColor(1,vec(0))
+    holoScale(1,vec(2))
+    holoCreate(2)
+    holoPos(2,entity():toWorld(vec(-35,35,240)))    
+    holoCreate(3)
+    holoPos(3,entity():toWorld(vec(-35,-35,240)))   
+    holoCreate(4)
+    holoPos(4,entity():toWorld(vec(47,0,240)))
+    
+    holoCreate(66)
+    holoAlpha(66,0)
+    holoPos(66,holoEntity(88):pos())
+    holoCreate(67)
+    holoAlpha(67,0)
+    holoPos(67,holoEntity(88):pos())
+    holoCreate(68)
+    holoAlpha(68,0)
+    holoPos(68,holoEntity(88):pos())
+
+    
+    holoCreate(70)
+    holoAlpha(70,0)
+    holoPos(70,holoEntity(88):toWorld(vec(30,0,0)))
+    holoParent(70,holoEntity(66))
+    holoCreate(71)
+    holoAlpha(71,0)
+    holoPos(71,holoEntity(88):toWorld(vec(30,0,0)))
+    holoParent(71,holoEntity(67))
+    holoCreate(72)
+    holoAlpha(72,0)
+    holoPos(72,holoEntity(88):toWorld(vec(30,0,0)))
+    holoParent(72,holoEntity(68))
+    for(I=2,4){
+        holoParent(I,1)
+        holoModel(I,"icosphere")
+        holoMaterial(I,"models/shiny")
+        holoColor(I,vec(0))
+        
+    }  
+    for(I=44,64){
+        holoCreate(I)
+        holoPos(I,entity():toWorld(vec(0,0,0)))        
+        holoModel(I,RingModel)
+        holoMaterial(I,Mat)
+        holoAng(I,entity():toWorld(ang(0,I*10,0)))
+        holoColor(I,vec(0))
+        holoPos(I,entity():toWorld(vec(0,0,-3)))
+    }
+    for(I=70,72){
+        holoEntity(I):setTrails(11,11,0.1,"trails/laser",vec(0,255,60), 255)
+    }
+}
+if(changed(ToggleButton) == 1){
+    Power = ToggleButton
+  
+}
+else{
+    Power = ToggleButton
+}
+if(OverDrive == 1){
+    Speed = 2
+    PSpeed = 5
+    ASpeed = 0.05
+    MaxSpeed = 211
+    MaxPitch = 333
+    MaxA = 4     
+    
+}
+else{
+    Speed = 2
+    PSpeed = 5
+    ASpeed = 0.05
+    MaxSpeed = 111
+    MaxPitch = 233
+    MaxA = 2
+}
+if(Power == 1){
+
+    if(Counter < MaxSpeed){
+        Counter+=Speed
+    }
+    if(ACounter < MaxA){
+        ACounter+=ASpeed
+    }
+    if(PCounter < MaxPitch){
+        PCounter+=PSpeed
+    }
+}
+else{
+    PCounter2-=PSpeed2
+    if(PCounter2 <= 0){
+        PCounter2 = 0
+    }
+    Counter-=Speed    
+    if(Counter <= 0){
+        Counter = 0
+    }
+    PCounter-=PSpeed
+    if(PCounter <= 0){
+        PCounter = 0
+    }
+    ACounter-=ASpeed
+    if(ACounter <= 0){
+        ACounter = 0
+    }
+}
+if(OverDriven == 1 && Power == 1){
+
+    if(PCounter2 < MaxPitch2){
+        PCounter2+=PSpeed2
+    }
+}
+else{
+  
+    PCounter2-=PSpeed2
+    if(PCounter2 <= 0){
+        PCounter2 = 0
+    }
+
+}
+if(changed(Power) && Power == 1){
+    holoEntity(1):soundPlay(1,0,"ambient/machines/lab_loop1.wav")
+
+
+}elseif(changed(Power) && Power == 0){
+    for(I=70,72){
+        #holoEntity(I):removeTrails()
+    }
+}
+if(changed(OverDriven) && OverDriven == 1 && Power == 1 || changed(Power) && Power == 1 && OverDriven == 1){
+    holoEntity(1):soundPlay(4,0,"npc/combine_gunship/dropship_engine_distant_loop1.wav")
+    holoEntity(1):soundPlay(10,0,"ambient/alarms/alarm_citizen_loop1.wav")
+    soundPitch(10,66)
+
+
+}elseif(changed(OverDriven) && OverDriven == 0 || Power == 0 || changed(Power) && Power == 0 && OverDriven == 0){
+
+    soundStop(10)
+
+}
+if(changed(PowerSocket) && PowerSocket == 1){
+    holoEntity(1):soundPlay(2,0,"ambient/machines/thumper_hit.wav")
+}
+PosZ = (sin(curtime()*100)*22)+190
+
+holoPos(1,entity():toWorld(vec(0,0,PosZ)))
+holoAng(1,holoEntity(1):toWorld(ang(0,Counter,0)))
+holoAng(11,holoEntity(11):toWorld(ang(0,Counter * -1,0)))
+
+soundPitch(1,PCounter)
+soundPitch(4,PCounter2)
+PowerReadings = Counter
+if(Counter >= MaxSpeed){
+    PowerSocket = 1
+
+}else{
+    PowerSocket = 0
+}
+holoScale(88,vec(ACounter))
+holoAng(88,holoEntity(88):toWorld(ang(21,30,10)))
+holoAng(88,holoEntity(88):toWorld(ang(21,30,10)))
+if(OverDrive == 0 && Counter >= MaxSpeed && PCounter >= MaxPitch && ACounter >= MaxA){
+    Counter-=Speed
+    PCounter-=PSpeed
+    ACounter-=ASpeed
+}
+OverDriven = OverDrive
+if(Counter > 0){
+holoAng(66,holoEntity(66):toWorld(ang(Counter + randint(-20,20),Counter + randint(-20,20),Counter + randint(-20,20))))
+holoAng(67,holoEntity(67):toWorld(ang(Counter + randint(-20,20),Counter + randint(-20,20),Counter + randint(-20,20))))
+holoAng(68,holoEntity(68):toWorld(ang(Counter + randint(-20,20),Counter + randint(-20,20),Counter + randint(-20,20))))
+}
+if(Counter > 0 && OverDriven == 1){
+holoAng(66,holoEntity(66):toWorld(ang(Counter + randint(-70,70),Counter + randint(-70,70),Counter + randint(-70,70))))
+holoAng(67,holoEntity(67):toWorld(ang(Counter + randint(-70,70),Counter + randint(-70,70),Counter + randint(-70,70))))
+holoAng(68,holoEntity(68):toWorld(ang(Counter + randint(-70,70),Counter + randint(-70,70),Counter + randint(-70,70))))
+}
+if(PowerSocket == 0){
+    Off = 1
+}else{
+    Off = 0
+}
