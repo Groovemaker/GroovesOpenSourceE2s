@@ -106,6 +106,7 @@ if(first() || duped()){
         holoAng(I,entity():toWorld(ang(0,I*10,0)))
         holoColor(I,vec(0))
         holoPos(I,entity():toWorld(vec(0,0,-3)))
+        holoScale(I,vec(1,1,2))
     }
     for(I=70,72){
         holoEntity(I):setTrails(11,11,0.1,"trails/laser",vec(0,255,60), 255)
