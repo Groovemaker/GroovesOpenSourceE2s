@@ -1,6 +1,6 @@
 @name Runic's Power Core
 @inputs ToggleButton OverDrive
-@outputs PowerSocket PowerReadings 
+@outputs PowerSocket PowerReadings OverDriven
 @persist RingModel:string Power ToggleButton Mat:string ASpeed Counter Speed ACounter MaxA MaxSpeed MaxPitch PCounter PSpeed PowerSocket
 @trigger 
 @model models/props_combine/combine_mine01.mdl
@@ -92,7 +92,7 @@ if(Power == 1){
     }
 }
 else{
-    
+    Counter-=Speed    
     if(Counter <= 0){
         Counter = 0
     }
@@ -132,3 +132,5 @@ if(OverDrive == 0 && Counter >= MaxSpeed && PCounter >= MaxPitch && ACounter >= 
     PCounter-=PSpeed
     ACounter-=ASpeed
 }
+OverDriven = OverDrive
+
