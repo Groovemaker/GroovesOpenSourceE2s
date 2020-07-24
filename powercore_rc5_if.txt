@@ -352,7 +352,7 @@ if(changed(SingulReady) && SingulReady == 1){
     findIncludeClass("prop_physics")
     findIncludeClass("player")
     findExcludeEntity(entity())
-    findInSphere(entity():pos(),8000) 
+    findInSphere(entity():pos(),3000) 
     AvailProps = findToArray()
 }
 if(clk("Singularity2")){
@@ -397,6 +397,7 @@ if(clk("SingulLoop")){
 ####  Y    O    U         R     O     C     K    !   !     ####
 ###############################################################
 if(clk("SingulLoop")){
+    print(X)
     if(X < AvailProps:count()){
         X++
     }else{
