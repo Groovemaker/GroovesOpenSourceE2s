@@ -1,0 +1,29 @@
+@name Meowmix
+@inputs 
+@outputs 
+@persist I Target:entity
+@trigger 
+interval(100)
+runOnChat(1)
+if(first() || duped()){
+    Target = findPlayerByName("snip")
+    I = 0
+}
+
+if(chatClk(Target)){
+    I+=1
+    if(I == 1){
+        concmd("say i want Chicken!")
+    }
+    elseif(I == 2){
+        concmd("say i want LIVER!")
+    }
+    elseif(I == 3){
+        concmd("say Meow mix, Meow mix,")
+    }
+    elseif(I == 4){
+        concmd("say Pls deliver! :)")
+        I = 0
+    }
+
+}

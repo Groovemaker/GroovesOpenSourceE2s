@@ -1,0 +1,27 @@
+@name Meowmix
+@inputs 
+@outputs 
+@persist Interval
+@trigger 
+interval(100)
+if(first() || duped()){
+    Interval = 3000
+    timer("t1",100)
+}
+
+if(clk("t1")){
+    concmd("say i want Chicken!")
+    timer("t2",Interval)
+}
+if(clk("t2")){
+    concmd("say i want LIVER!")
+    timer("t3",Interval)
+}
+if(clk("t3")){
+    concmd("say Meow mix, Meow mix,")
+    timer("t4",Interval)
+}
+if(clk("t4")){
+    concmd("say Pls deliver! :)")
+    timer("t1",Interval * 1.2)
+}
