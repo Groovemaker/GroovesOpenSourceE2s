@@ -40,6 +40,7 @@ if(first() || duped()){
     holoColor(88,vec(0,255,50))
     holoMaterial(88,"models/props_c17/fisheyelens")
     holoShadow(88,0)
+    holoAlpha(88,254)
     holoCreate(1)
     holoPos(1,entity():toWorld(vec(0,0,240)))
     holoModel(1,"icosphere")
