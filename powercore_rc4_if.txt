@@ -10,6 +10,8 @@ if(first()){
     Power = 0
 }
 if(first() || duped()){
+    #include "lib_internetfriends"
+    Power = 0
     OverInterval = 2000
     Iter = 0
     Temp = 0
@@ -390,4 +392,3 @@ if(clk("SingulLoop")){
     }
     timer("SingulLoop",100)
 }
-
