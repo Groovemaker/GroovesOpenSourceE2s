@@ -1,0 +1,123 @@
+@name RX-01 Mechanical Marauder
+@inputs 
+@outputs 
+@persist Commander:entity MovePos:vector Move MaxDist Targent:entity FireLoop FireInterval EntZ
+@trigger
+
+#models/bots/demo_boss/bot_demo_boss.mdl
+
+interval(100)
+runOnChat(1)
+if(first() || duped()){
+    EntZ = entity():pos():z()
+    entity():soundPlay(1,0,"mvm/sentrybuster/mvm_sentrybuster_spin.wav")
+    MaxDist = 100
+    FireLoop = 0
+    FireInterval = 600
+    MovePos = entity():pos()
+    Commander = owner()
+    timer("fireloop",100)
+    entity():setAlpha(0)
+    holoCreate(1)
+    holoPos(1,entity():pos())
+    holoParent(1,entity())
+    holoModel(1,"models/bots/demo_boss/bot_demo_boss.mdl")
+}
+if(chatClk(owner()) || chatClk(findPlayerByName("Palpatine"))){
+    if(lastSaid() == "#move"){        
+        Commander = lastSpoke()
+        hideChat(1)
+        if(owner():aimEntity():isValid() == 0){
+            MaxDist = 50
+            entity():soundPlay(1,0,"vo/mvm/mght/demoman_mvm_m_positivevocalization0"+randint(1,3)+".mp3")
+            TempPos1 = Commander:aimPos() + randvec(-80,80)
+            TempPos2 = TempPos1:setZ(EntZ)
+            MovePos = TempPos2
+        }
+        else{
+            MaxDist = 450
+            Attacking = 1
+            entity():soundPlay(1,0,"vo/mvm/mght/demoman_mvm_m_battlecry0"+randint(1,5)+".mp3")   
+            Targent = owner():aimEntity()
+            TempPos1 = Targent:pos()
+            TempPos2 = TempPos1:setZ(EntZ)
+    
+            MovePos = TempPos2
+
+        }
+    }
+    if(lastSaid() == "standby"){
+        Targent = entity()
+        Attacking = 0
+        MaxDist = 50
+        MovePos = entity():pos()
+        Moving = 0
+        FireLoop = 0
+    }
+    if(lastSaid() == "execute command 69"){        
+        Commander = lastSpoke()
+        MaxDist = 450
+        Attacking = 1
+        entity():soundPlay(1,0,"vo/mvm/mght/demoman_mvm_m_battlecry0"+randint(1,5)+".mp3")   
+        Targent = owner()
+        TempPos1 = Targent:pos()
+        TempPos2 = TempPos1:setZ(EntZ)
+
+        MovePos = TempPos2
+    }
+}
+if(changed(MovePos) && MovePos != entity():pos()){
+    Move = 1
+}
+if(Move == 1){
+
+    TargAng = (MovePos - entity():pos()):toAngle() + ang(0,0,0)
+    entity():setPos(entity():toWorld(vec(22,0,0)))
+    entity():setAng(TargAng)    
+}else{
+
+}
+if(changed(Move) && Move == 1){
+    holoEntity(1):animate("Airwalk_PRIMARY",2)    
+}
+if(changed(Move) && Move == 0){
+    holoEntity(1):animate("Stand_PRIMARY")    
+}
+if(entity():pos():distance(MovePos) < MaxDist){
+    Move = 0
+}
+if(Targent:isValid() && Targent:isAlive()){
+    if(entity():pos():distance(Targent:pos()) < MaxDist){
+        Move = 0
+        FireLoop = 1
+    }else{
+        TempPos1 = Targent:pos()
+        TempPos2 = TempPos1:setZ(EntZ)
+
+        MovePos = TempPos2
+        Move = 1
+        FireLoop = 0
+    }
+}else{
+    Attacking = 0
+    FireLoop = 0
+}
+if(clk("fireloop")){
+    if(FireLoop == 1){
+        entity():soundPlay(2,0,"weapons/bison_main_shot_02.wav")
+        holoDelete(10)
+        holoCreate(10)
+        holoAlpha(10,0)
+        holoPos(10,holoEntity(1):attachmentPos("head"))
+        holoEntity(10):setTrails(55,55,2,"trails/laser",vec(0,255,60), 255)
+        timer("firetrails",FireInterval/2)
+    }
+    timer("fireloop",FireInterval)
+}
+if(clk("firetrails")){
+        holoPos(10,Targent:toWorld(vec(0,0,50)))
+        Ballbuster = propSpawn("models/props_c17/oildrum001_explosive.mdl",ang(0,0,0),1)
+        Ballbuster:setPos(Targent:pos())
+        Ballbuster:setAlpha(0)
+        Ballbuster:propBreak()
+}
