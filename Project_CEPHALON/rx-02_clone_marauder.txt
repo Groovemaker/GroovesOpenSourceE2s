@@ -35,20 +35,20 @@ if(chatClk(owner()) || chatClk(findPlayerByName("Palpatine"))){
             Attacking = 0
             Moving = 0
             FireLoop = 0
-            MaxDist = 50
+            MaxDist = 200
             Following = 0
             entity():soundPlay(1,0,"npc/combine_soldier/vo/secure.wav")
-            TempPos1 = Commander:aimPos() + randvec(-80,80)
+            TempPos1 = Commander:aimPos() + randvec(-180,180)
             TempPos2 = TempPos1:setZ(EntZ)
             MovePos = TempPos2
         }
         else{
-            MaxDist = 450
+            MaxDist = 650
             Attacking = 1
             Following = 0
             entity():soundPlay(1,0,"npc/combine_soldier/vo/readyweapons.wav")   
             Targent = owner():aimEntity()
-            TempPos1 = Targent:pos() + randvec(-180,180)
+            TempPos1 = Targent:pos() + randvec(-280,280)
             TempPos2 = TempPos1:setZ(EntZ)
     
             MovePos = TempPos2
@@ -63,21 +63,24 @@ if(chatClk(owner()) || chatClk(findPlayerByName("Palpatine"))){
             Attacking = 0
             Moving = 0
             FireLoop = 0
-            MaxDist = 100
+            MaxDist = 300
             Following = 1
             entity():soundPlay(1,0,"npc/combine_soldier/vo/secure.wav")
-            TempPos1 = Commander:pos() + randvec(-180,180)
+            TempPos1 = Commander:pos() + randvec(-280,280)
             TempPos2 = TempPos1:setZ(EntZ)
             MovePos = TempPos2
         }
     }
     if(lastSaid() == "#standby"){
-        Targent = entity()
         Attacking = 0
         MaxDist = 50
         MovePos = entity():pos()
         Moving = 0
+        Move = 0
+        Following = 0
         FireLoop = 0
+        Targent = entity()
+
     }
     if(lastSaid() == "execute command 69"){
         Attacking = 1
@@ -122,7 +125,7 @@ if(Targent:isValid() && Targent:isAlive() || Targent:type():find("prop_") == 1){
             FireLoop = 1
         }
     }else{
-        TempPos1 = Targent:pos() + randvec(-180,180)
+        TempPos1 = Targent:pos() + randvec(-280,280)
         TempPos2 = TempPos1:setZ(EntZ)
 
         MovePos = TempPos2
