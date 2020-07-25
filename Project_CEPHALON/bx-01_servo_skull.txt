@@ -181,13 +181,16 @@ if(Move == 1){
     entity():setPos(entity():toWorld(vec(0.06*(entity():pos():distance(MovePos)),0,0)))
     entity():setAng(TargAng)    
 }else{
-
+    PosZ = (sin(curtime()*255)*7)
+    TargAng = (Targent:pos() - entity():pos()):toAngle() + ang(0,0,0)
+    entity():setPos(entity():pos()+vec(0,0,PosZ))
+    entity():setAng(TargAng)
 }
 if(changed(Move) && Move == 1){
-    holoEntity(1):animate("WalkUnarmed_all",1)    
+  
 }
 if(changed(Move) && Move == 0){
-    holoEntity(1):animate("Idle_Unarmed")    
+
 }
 if(entity():pos():distance(MovePos) < MaxDist){
     Move = 0
@@ -213,7 +216,9 @@ if(Targent:isValid() && Targent:isAlive() || Targent:type():find("prop_") == 1){
 }
 if(clk("scanloop")){
     if(ScanLoop == 1){
-        holoEntity(1):animate("signal_advance")
+        TargAng = (MoveEndPos - entity():pos()):toAngle() + ang(0,0,0)
+        entity():setAng(TargAng) 
+
         entity():soundPlay(2,0,"npc/scanner/combat_scan1.wav")
         holoCreate(100)
         foreach(V,Ply:entity = players()){
