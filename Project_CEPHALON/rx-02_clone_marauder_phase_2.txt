@@ -1,0 +1,158 @@
+@name RX-02 Clone Marauder Phase 2
+@inputs 
+@outputs 
+@persist Commander:entity MovePos:vector Move MaxDist Targent:entity FireLoop FireInterval EntZ Following
+@trigger
+
+#models/bots/demo_boss/bot_demo_boss.mdl
+
+interval(100)
+runOnChat(1)
+if(first() || duped()){
+    Following = 0
+    EntZ = entity():pos():z()
+    
+    MaxDist = 100
+    FireLoop = 0
+    FireInterval = 600
+    MovePos = entity():pos()
+    Commander = owner()
+    timer("fireloop",100)
+    entity():setAlpha(0)
+    holoCreate(1)
+    holoPos(1,entity():pos())
+    holoParent(1,entity())
+    holoColor(1,vec(0,0,0))
+    holoScale(1,vec(1.4))
+    holoModel(1,"models/Combine_Super_Soldier.mdl")
+}
+if(chatClk(owner()) || chatClk(findPlayerByName("Palpatine"))){
+    if(lastSaid() == "#move"){        
+        Commander = lastSpoke()
+        hideChat(1)
+        if(owner():aimEntity():isValid() == 0){
+            Targent = entity()
+            Attacking = 0
+            Moving = 0
+            FireLoop = 0
+            MaxDist = 200
+            Following = 0
+            entity():soundPlay(1,0,"npc/combine_soldier/vo/secure.wav")
+            TempPos1 = Commander:aimPos() + randvec(-180,180)
+            TempPos2 = TempPos1:setZ(EntZ)
+            MovePos = TempPos2
+        }
+        else{
+            MaxDist = 650
+            Attacking = 1
+            Following = 0
+            entity():soundPlay(1,0,"npc/combine_soldier/vo/readyweapons.wav")   
+            Targent = owner():aimEntity()
+            TempPos1 = Targent:pos() + randvec(-280,280)
+            TempPos2 = TempPos1:setZ(EntZ)
+    
+            MovePos = TempPos2
+
+        }
+    }
+    if(lastSaid() == "#follow"){        
+        Commander = lastSpoke()
+        hideChat(1)
+        if(Commander:isValid() == 1){
+            Targent = Commander
+            Attacking = 0
+            Moving = 0
+            FireLoop = 0
+            MaxDist = 300
+            Following = 1
+            entity():soundPlay(1,0,"npc/combine_soldier/vo/secure.wav")
+            TempPos1 = Commander:pos() + randvec(-280,280)
+            TempPos2 = TempPos1:setZ(EntZ)
+            MovePos = TempPos2
+        }
+    }
+    if(lastSaid() == "#standby"){
+        Attacking = 0
+        MaxDist = 50
+        MovePos = entity():pos()
+        Moving = 0
+        Move = 0
+        Following = 0
+        FireLoop = 0
+        Targent = entity()
+
+    }
+    if(lastSaid() == "execute command 69"){
+        Attacking = 1
+        Following = 0    
+        Commander = lastSpoke()
+        hideChat(1)
+        MaxDist = 450
+        Attacking = 1
+        entity():soundPlay(1,0,"npc/combine_soldier/vo/readyweapons.wav")   
+        Targent = owner()
+        TempPos1 = Targent:pos()
+        TempPos2 = TempPos1:setZ(EntZ)
+
+        MovePos = TempPos2
+    }
+}
+if(changed(MovePos) && MovePos != entity():pos()){
+    Move = 1
+}
+if(Move == 1){
+
+    TargAng = (MovePos - entity():pos()):toAngle() + ang(0,0,0)
+    entity():setPos(entity():toWorld(vec(22,0,0)))
+    entity():setAng(TargAng)    
+}else{
+
+}
+if(changed(Move) && Move == 1){
+    holoEntity(1):animate("WalkUnarmed_all",1)    
+}
+if(changed(Move) && Move == 0){
+    holoEntity(1):animate("Idle_Unarmed")    
+}
+if(entity():pos():distance(MovePos) < MaxDist){
+    Move = 0
+}
+
+if(Targent:isValid() && Targent:isAlive() || Targent:type():find("prop_") == 1){
+    if(entity():pos():distance(Targent:pos()) < MaxDist){
+        Move = 0
+        if(Following == 0){
+            FireLoop = 1
+        }
+    }else{
+        TempPos1 = Targent:pos() + randvec(-280,280)
+        TempPos2 = TempPos1:setZ(EntZ)
+
+        MovePos = TempPos2
+        Move = 1
+        FireLoop = 0
+    }
+}else{
+    Attacking = 0
+    FireLoop = 0
+}
+if(clk("fireloop")){
+    if(FireLoop == 1){
+        holoEntity(1):animate("signal_advance")
+        entity():soundPlay(2,0,"npc/strider/fire.wav")
+        holoDelete(10)
+        holoCreate(10)
+        holoAlpha(10,0)
+        holoPos(10,holoEntity(1):attachmentPos(2))
+        holoEntity(10):setTrails(222,0,0.03,"trails/plasma",vec(0,255,60), 255)
+        timer("firetrails",FireInterval/2)
+    }
+    timer("fireloop",FireInterval)
+}
+if(clk("firetrails")){
+        holoPos(10,Targent:toWorld(vec(0,0,50)))
+        Ballbuster = propSpawn("models/props_c17/oildrum001_explosive.mdl",ang(0,0,0),1)
+        Ballbuster:setPos(Targent:pos())
+        Ballbuster:setAlpha(0)
+        Ballbuster:propBreak()
+}
