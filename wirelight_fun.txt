@@ -1,0 +1,30 @@
+@name Colorium
+@inputs 
+@outputs 
+@persist Col:vector Depth Cols Rows Mult Amount I J K Seconds Size Speed HSVAMT
+@trigger
+interval(100)
+
+if(first() || duped()){
+    Speed = 33
+    HSVAMT = 3
+
+    timer("timer",100)
+}
+if(clk("timer")){
+    findByClass("gmod_wire_light")
+    Lamps = findToArray()
+    findSortByDistance(Lamps[1,entity]:pos())
+    Lamps = findToArray()
+    foreach(I,Lamp:entity = Lamps){
+
+        WL = Lamp:wirelink()
+        Col = hsv2rgb(((curtime() * Speed)+(I*HSVAMT)),1,1)
+        WL:setVector("RGB",Col)
+        Lamp:setColor(Col)
+    }
+    timer("timer",100)
+}
+
+
+
