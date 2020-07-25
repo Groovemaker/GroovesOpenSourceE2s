@@ -1,7 +1,7 @@
 @name RX-01 Mechanical Marauder
 @inputs 
 @outputs 
-@persist Commander:entity MovePos:vector Move MaxDist Targent:entity FireLoop FireInterval EntZ
+@persist Commander:entity MovePos:vector Move MaxDist Targent:entity FireLoop FireInterval EntZ Following
 @trigger
 
 #models/bots/demo_boss/bot_demo_boss.mdl
@@ -9,6 +9,7 @@
 interval(100)
 runOnChat(1)
 if(first() || duped()){
+    Following = 0
     EntZ = entity():pos():z()
     entity():soundPlay(1,0,"mvm/sentrybuster/mvm_sentrybuster_spin.wav")
     MaxDist = 100
@@ -28,7 +29,12 @@ if(chatClk(owner()) || chatClk(findPlayerByName("Palpatine"))){
         Commander = lastSpoke()
         hideChat(1)
         if(owner():aimEntity():isValid() == 0){
+            Targent = entity()
+            Attacking = 0
+            Moving = 0
+            FireLoop = 0
             MaxDist = 50
+            Following = 0
             entity():soundPlay(1,0,"vo/mvm/mght/demoman_mvm_m_positivevocalization0"+randint(1,3)+".mp3")
             TempPos1 = Commander:aimPos() + randvec(-80,80)
             TempPos2 = TempPos1:setZ(EntZ)
@@ -37,16 +43,33 @@ if(chatClk(owner()) || chatClk(findPlayerByName("Palpatine"))){
         else{
             MaxDist = 450
             Attacking = 1
+            Following = 0
             entity():soundPlay(1,0,"vo/mvm/mght/demoman_mvm_m_battlecry0"+randint(1,5)+".mp3")   
             Targent = owner():aimEntity()
-            TempPos1 = Targent:pos()
+            TempPos1 = Targent:pos() + randvec(-180,180)
             TempPos2 = TempPos1:setZ(EntZ)
     
             MovePos = TempPos2
 
         }
     }
-    if(lastSaid() == "standby"){
+    if(lastSaid() == "#follow"){        
+        Commander = lastSpoke()
+        hideChat(1)
+        if(Commander:isValid() == 1){
+            Targent = Commander
+            Attacking = 0
+            Moving = 0
+            FireLoop = 0
+            MaxDist = 100
+            Following = 1
+            entity():soundPlay(1,0,"vo/mvm/mght/demoman_mvm_m_positivevocalization0"+randint(1,3)+".mp3")
+            TempPos1 = Commander:pos() + randvec(-180,180)
+            TempPos2 = TempPos1:setZ(EntZ)
+            MovePos = TempPos2
+        }
+    }
+    if(lastSaid() == "#standby"){
         Targent = entity()
         Attacking = 0
         MaxDist = 50
@@ -54,8 +77,11 @@ if(chatClk(owner()) || chatClk(findPlayerByName("Palpatine"))){
         Moving = 0
         FireLoop = 0
     }
-    if(lastSaid() == "execute command 69"){        
+    if(lastSaid() == "execute command 69"){
+        Attacking = 1
+        Following = 0    
         Commander = lastSpoke()
+        hideChat(1)
         MaxDist = 450
         Attacking = 1
         entity():soundPlay(1,0,"vo/mvm/mght/demoman_mvm_m_battlecry0"+randint(1,5)+".mp3")   
@@ -86,12 +112,16 @@ if(changed(Move) && Move == 0){
 if(entity():pos():distance(MovePos) < MaxDist){
     Move = 0
 }
+
 if(Targent:isValid() && Targent:isAlive()){
     if(entity():pos():distance(Targent:pos()) < MaxDist){
         Move = 0
-        FireLoop = 1
+        if(Following == 0){
+            print("a")
+            FireLoop = 1
+        }
     }else{
-        TempPos1 = Targent:pos()
+        TempPos1 = Targent:pos() + randvec(-180,180)
         TempPos2 = TempPos1:setZ(EntZ)
 
         MovePos = TempPos2
@@ -104,12 +134,12 @@ if(Targent:isValid() && Targent:isAlive()){
 }
 if(clk("fireloop")){
     if(FireLoop == 1){
-        entity():soundPlay(2,0,"weapons/bison_main_shot_02.wav")
+        entity():soundPlay(2,0,"weapons/capper_shoot.wav")
         holoDelete(10)
         holoCreate(10)
         holoAlpha(10,0)
         holoPos(10,holoEntity(1):attachmentPos("head"))
-        holoEntity(10):setTrails(55,55,2,"trails/laser",vec(0,255,60), 255)
+        holoEntity(10):setTrails(55,55,0.7,"trails/laser",vec(0,255,60), 255)
         timer("firetrails",FireInterval/2)
     }
     timer("fireloop",FireInterval)
