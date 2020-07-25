@@ -51,7 +51,7 @@ if(first() || duped()){
     holoScale(4,vec(0.1,0.1,1))
     holoAng(4,holoEntity(1):toWorld(ang(0,0,0)))
     holoModel(4,"models/props_junk/metal_paintcan001b.mdl")
-    holoMaterial(4,"models/shiny")
+    holoMaterial(4,"debug/debugwhite")
     
 
 
@@ -212,7 +212,7 @@ if(Targent:isValid() && Targent:isAlive() || Targent:type():find("prop_") || Tar
         TempPos1 = Targent:pos()
 
 
-        MovePos = TempPos1 + RandSeed
+        MovePos = TempPos1 + RandSeed + vec(0,0,100)
         Move = 1
         ScanLoop = 0
     }
