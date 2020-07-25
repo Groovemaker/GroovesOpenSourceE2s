@@ -156,7 +156,7 @@ if(chatClk(owner()) || chatClk(findPlayerByName("Palpatine"))){
         Following = 0
         ScanLoop = 0
         Targent = entity()
-
+        entity():soundPlay(1,0,"npc/dog/dog_servo"+randint(1,10)+".wav")  
     }
     if(lastSaid() == "execute command 69"){
         Attacking = 1
@@ -165,7 +165,7 @@ if(chatClk(owner()) || chatClk(findPlayerByName("Palpatine"))){
         hideChat(1)
         MaxDist = 450
         Attacking = 1
-        entity():soundPlay(1,0,"npc/combine_soldier/vo/readyweapons.wav")   
+        entity():soundPlay(1,0,"npc/dog/dog_servo"+randint(1,10)+".wav") 
         Targent = owner()
         TempPos1 = Targent:pos() + randvec(-100,100)
 
@@ -184,7 +184,13 @@ if(Move == 1){
     PosZ = (sin(curtime()*255)*7)
     TargAng = (Targent:pos() - entity():pos()):toAngle() + ang(0,0,0)
     entity():setPos(entity():pos()+vec(0,0,PosZ))
-    entity():setAng(TargAng)
+    if(Targent != entity()){
+        entity():setAng(TargAng)
+    }
+
+}
+if(!Targent:isValid()){
+    entity():setAng(ang(0,0,0))    
 }
 if(changed(Move) && Move == 1){
   
@@ -226,13 +232,14 @@ if(clk("scanloop")){
                 holoVisible(100,Ply,0)
             }
         }
-        holoModel(100,"hq_cylinder")
-        holoPos(100,Targent:pos())
-        holoScale(100,vec(1,1,900))
-        holoAng(100,ang(0,0,0))
+        holoModel(100,"pyramid")
+        holoPos(100,Targent:toWorld(vec(0,0,330)))
+        holoScale(100,vec(2,2,11))
+        holoAng(100,ang(0,0,180))
         holoColor(100,vec(255,0,0))
         holoParent(100,Targent)
         holoDisableShading(100,1)
+        print(_HUD_PRINTCENTER,"Distance: "+Commander:pos():distance(Targent:pos()):toString())
         timer("scantrails",ScanInterval/2)
     }
     timer("scanloop",ScanInterval)
