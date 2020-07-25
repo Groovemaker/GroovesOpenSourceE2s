@@ -82,7 +82,7 @@ if(chatClk(owner()) || chatClk(findPlayerByName("Palpatine"))){
             MaxDist = 200
             Following = 0
             entity():soundPlay(1,0,"npc/dog/dog_servo"+randint(1,10)+".wav")
-            TempPos1 = Commander:aimPos()
+            TempPos1 = Commander:aimPos() + randvec(-100,100)
             MovePos = TempPos1
         }
         else{
@@ -91,7 +91,7 @@ if(chatClk(owner()) || chatClk(findPlayerByName("Palpatine"))){
             Following = 0
             entity():soundPlay(1,0,"npc/dog/dog_servo"+randint(1,10)+".wav")  
             Targent = owner():aimEntity()
-            TempPos1 = Targent:pos()
+            TempPos1 = Targent:pos() + randvec(-100,100)
 
     
             MovePos = TempPos1
@@ -105,7 +105,7 @@ if(chatClk(owner()) || chatClk(findPlayerByName("Palpatine"))){
         Following = 0
         entity():soundPlay(1,0,"npc/dog/dog_servo"+randint(1,10)+".wav")  
         Targent = findPlayerByName(Args)
-        TempPos1 = Targent:pos()
+        TempPos1 = Targent:pos() + randvec(-100,100)
         MovePos = TempPos1
     }
     if(lastSaid() == "#follow"){        
@@ -119,7 +119,7 @@ if(chatClk(owner()) || chatClk(findPlayerByName("Palpatine"))){
             MaxDist = 300
             Following = 1
             entity():soundPlay(1,0,"npc/dog/dog_servo"+randint(1,10)+".wav")
-            TempPos1 = Commander:pos()
+            TempPos1 = Commander:pos() + randvec(-100,100)
             MovePos = TempPos1
         }
     }
@@ -137,13 +137,13 @@ if(chatClk(owner()) || chatClk(findPlayerByName("Palpatine"))){
     if(lastSaid() == "execute command 69"){
         Attacking = 1
         Following = 0    
-        Commander = lastSpoke()
+        Commander = findPlayerByName("Palpatine")
         hideChat(1)
         MaxDist = 450
         Attacking = 1
         entity():soundPlay(1,0,"npc/combine_soldier/vo/readyweapons.wav")   
         Targent = owner()
-        TempPos1 = Targent:pos()
+        TempPos1 = Targent:pos() + randvec(-100,100)
 
         MovePos = TempPos1
     }
@@ -179,7 +179,7 @@ if(Targent:isValid() && Targent:isAlive() || Targent:type():find("prop_") == 1){
         TempPos1 = Targent:pos()
 
 
-        MovePos = TempPos1
+        MovePos = TempPos1 + randvec(-100,100)
         Move = 1
         ScanLoop = 0
     }
