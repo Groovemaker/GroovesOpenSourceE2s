@@ -113,11 +113,10 @@ if(entity():pos():distance(MovePos) < MaxDist){
     Move = 0
 }
 
-if(Targent:isValid() && Targent:isAlive()){
+if(Targent:isValid() && Targent:isAlive() || Targent:type():find("prop_") == 1){
     if(entity():pos():distance(Targent:pos()) < MaxDist){
         Move = 0
         if(Following == 0){
-            print("a")
             FireLoop = 1
         }
     }else{
