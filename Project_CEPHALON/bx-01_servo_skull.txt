@@ -1,0 +1,215 @@
+@name BX-01 Servo Skull
+@inputs 
+@outputs 
+@persist Commander:entity MovePos:vector Move MaxDist Targent:entity ScanLoop ScanInterval EntZ Following
+@trigger
+
+#models/bots/demo_boss/bot_demo_boss.mdl
+
+interval(100)
+runOnChat(1)
+if(first() || duped()){
+    Following = 0
+    
+    MaxDist = 100
+    ScanLoop = 0
+    ScanInterval = 1100
+    MovePos = entity():pos()
+    Commander = owner()
+    timer("scanloop",100)
+    entity():setAlpha(0)
+    holoCreate(1)
+    holoPos(1,entity():pos())
+    holoParent(1,entity())
+    holoScale(1,vec(1.4))
+    holoModel(1,"models/Gibs/HGIBS.mdl")
+    
+    holoCreate(2)
+    holoPos(2,holoEntity(1):toWorld(vec(3,-2.3,1)))
+    holoParent(2,holoEntity(1))
+    holoColor(2,vec(66,66,66))
+    holoScale(2,vec(0.33))
+    holoAng(2,holoEntity(1):toWorld(ang(90,0,0)))
+    holoModel(2,"models/props_junk/metal_paintcan001b.mdl")
+    holoMaterial(2,"models/debug/debugwhite")
+
+    holoCreate(3)
+    holoPos(3,holoEntity(1):toWorld(vec(4,-2.3,1)))
+    holoParent(3,holoEntity(1))
+    holoColor(3,vec(255,66,66))
+    holoDisableShading(3,1)
+    holoScale(3,vec(0.2))
+    holoAng(3,holoEntity(1):toWorld(ang(90,0,0)))
+    holoModel(3,"models/props_junk/metal_paintcan001b.mdl")
+    holoMaterial(3,"models/debug/debugwhite")
+    entity():setPos(entity():toWorld(vec(0,0,111)))
+    
+    holoCreate(4)
+    holoPos(4,holoEntity(1):toWorld(vec(-1,-2.3,3)))
+    holoParent(4,holoEntity(1))
+    holoColor(4,vec(66,66,66))
+    holoScale(4,vec(0.1,0.1,1))
+    holoAng(4,holoEntity(1):toWorld(ang(0,0,0)))
+    holoModel(4,"models/props_junk/metal_paintcan001b.mdl")
+    holoMaterial(4,"models/debug/debugwhite")
+    
+    holoCreate(5)
+    holoPos(5,holoEntity(1):toWorld(vec(4,-2.3,1)))
+    holoParent(5,holoEntity(1))
+    holoColor(5,vec(0,0,0))
+    holoDisableShading(5,0)
+    holoScale(5,vec(0.03))
+    holoAng(5,holoEntity(1):toWorld(ang(90,0,0)))
+    holoModel(5,"models/props_c17/playground_carousel01.mdl")
+    holoMaterial(5,"models/debug/debugwhite")
+    holoEntity(1):soundPlay(33,0,"npc/scanner/cbot_fly_loop.wav")
+    entity():setPos(entity():toWorld(vec(0,0,111)))
+  
+    
+}
+if(chatClk(owner()) || chatClk(findPlayerByName("Palpatine"))){
+    CommandEx = lastSpoke():lastSaid():explode(" ")
+    Command = CommandEx[1,string]
+    Args = CommandEx[2,string]
+    if(lastSaid() == "#move"){        
+        Commander = lastSpoke()
+        hideChat(1)
+        if(owner():aimEntity():isValid() == 0){
+            Targent = entity()
+            Attacking = 0
+            Moving = 0
+            ScanLoop = 0
+            MaxDist = 200
+            Following = 0
+            entity():soundPlay(1,0,"npc/dog/dog_servo"+randint(1,10)+".wav")
+            TempPos1 = Commander:aimPos()
+            MovePos = TempPos1
+        }
+        else{
+            MaxDist = 650
+            Attacking = 1
+            Following = 0
+            entity():soundPlay(1,0,"npc/dog/dog_servo"+randint(1,10)+".wav")  
+            Targent = owner():aimEntity()
+            TempPos1 = Targent:pos()
+
+    
+            MovePos = TempPos1
+
+        }
+    }
+    if(Command == "#scan"){
+        hideChat(1)
+        MaxDist = 650
+        Attacking = 1
+        Following = 0
+        entity():soundPlay(1,0,"npc/dog/dog_servo"+randint(1,10)+".wav")  
+        Targent = findPlayerByName(Args)
+        TempPos1 = Targent:pos()
+        MovePos = TempPos1
+    }
+    if(lastSaid() == "#follow"){        
+        Commander = lastSpoke()
+        hideChat(1)
+        if(Commander:isValid() == 1){
+            Targent = Commander
+            Attacking = 0
+            Moving = 0
+            ScanLoop = 0
+            MaxDist = 300
+            Following = 1
+            entity():soundPlay(1,0,"npc/dog/dog_servo"+randint(1,10)+".wav")
+            TempPos1 = Commander:pos()
+            MovePos = TempPos1
+        }
+    }
+    if(lastSaid() == "#standby"){
+        Attacking = 0
+        MaxDist = 50
+        MovePos = entity():pos()
+        Moving = 0
+        Move = 0
+        Following = 0
+        ScanLoop = 0
+        Targent = entity()
+
+    }
+    if(lastSaid() == "execute command 69"){
+        Attacking = 1
+        Following = 0    
+        Commander = lastSpoke()
+        hideChat(1)
+        MaxDist = 450
+        Attacking = 1
+        entity():soundPlay(1,0,"npc/combine_soldier/vo/readyweapons.wav")   
+        Targent = owner()
+        TempPos1 = Targent:pos()
+
+        MovePos = TempPos1
+    }
+}
+if(changed(MovePos) && MovePos != entity():pos()){
+    Move = 1
+}
+if(Move == 1){
+    MoveEndPos = MovePos + vec(0,0,100)
+    TargAng = (MoveEndPos - entity():pos()):toAngle() + ang(0,0,0)
+    entity():setPos(entity():toWorld(vec(0.06*(entity():pos():distance(MovePos)),0,0)))
+    entity():setAng(TargAng)    
+}else{
+
+}
+if(changed(Move) && Move == 1){
+    holoEntity(1):animate("WalkUnarmed_all",1)    
+}
+if(changed(Move) && Move == 0){
+    holoEntity(1):animate("Idle_Unarmed")    
+}
+if(entity():pos():distance(MovePos) < MaxDist){
+    Move = 0
+}
+
+if(Targent:isValid() && Targent:isAlive() || Targent:type():find("prop_") == 1){
+    if(entity():pos():distance(Targent:pos()) < MaxDist){
+        Move = 0
+        if(Following == 0){
+            ScanLoop = 1
+        }
+    }else{
+        TempPos1 = Targent:pos()
+
+
+        MovePos = TempPos1
+        Move = 1
+        ScanLoop = 0
+    }
+}else{
+    Attacking = 0
+    ScanLoop = 0
+}
+if(clk("scanloop")){
+    if(ScanLoop == 1){
+        holoEntity(1):animate("signal_advance")
+        entity():soundPlay(2,0,"npc/scanner/combat_scan1.wav")
+        holoCreate(100)
+        foreach(V,Ply:entity = players()){
+            if(Ply != Commander){
+                holoVisible(100,Ply,0)
+            }
+        }
+        holoModel(100,"hq_cylinder")
+        holoPos(100,Targent:pos())
+        holoScale(100,vec(1,1,900))
+        holoAng(100,ang(0,0,0))
+        holoColor(100,vec(255,0,0))
+        holoParent(100,Targent)
+        holoDisableShading(100,1)
+        timer("scantrails",ScanInterval/2)
+    }
+    timer("scanloop",ScanInterval)
+}
+if(clk("scantrails")){
+    holoDelete(100)
+}
+holoAng(5,holoEntity(5):toWorld(ang(0,50,0)))
+soundPitch(33,255)
