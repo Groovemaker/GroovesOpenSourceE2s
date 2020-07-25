@@ -31,7 +31,7 @@ if(first() || duped()){
     holoScale(2,vec(0.33))
     holoAng(2,holoEntity(1):toWorld(ang(90,0,0)))
     holoModel(2,"models/props_junk/metal_paintcan001b.mdl")
-    holoMaterial(2,"models/debug/debugwhite")
+    holoMaterial(2,"models/shiny")
 
     holoCreate(3)
     holoPos(3,holoEntity(1):toWorld(vec(4,-2.3,1)))
@@ -51,7 +51,19 @@ if(first() || duped()){
     holoScale(4,vec(0.1,0.1,1))
     holoAng(4,holoEntity(1):toWorld(ang(0,0,0)))
     holoModel(4,"models/props_junk/metal_paintcan001b.mdl")
-    holoMaterial(4,"models/debug/debugwhite")
+    holoMaterial(4,"models/shiny")
+    
+
+
+    holoCreate(6)
+    holoPos(6,holoEntity(1):toWorld(vec(4,-2.3,1)))
+    holoParent(6,holoEntity(1))
+    holoColor(6,vec(0,0,0))
+    holoDisableShading(6,0)
+    holoScale(6,vec(0.1))
+    holoAng(6,holoEntity(1):toWorld(ang(90,0,0)))
+    holoModel(6,"models/Combine_Helicopter/helicopter_bomb01.mdl")
+    holoMaterial(6,"models/shiny")
     
     holoCreate(5)
     holoPos(5,holoEntity(1):toWorld(vec(4,-2.3,1)))
@@ -61,8 +73,20 @@ if(first() || duped()){
     holoScale(5,vec(0.03))
     holoAng(5,holoEntity(1):toWorld(ang(90,0,0)))
     holoModel(5,"models/props_c17/playground_carousel01.mdl")
-    holoMaterial(5,"models/debug/debugwhite")
+    holoMaterial(5,"models/shiny")
+
+    
+    holoCreate(7)
+    holoPos(7,holoEntity(1):toWorld(vec(0,0,-2)))
+    holoParent(7,holoEntity(1))
+    holoColor(7,vec(0,0,0))
+    holoDisableShading(7,0)
+    holoScale(7,vec(0.26))
+    holoAng(7,holoEntity(1):toWorld(ang(90,0,0)))
+    holoModel(7,"models/Combine_Helicopter/helicopter_bomb01.mdl")
+    holoMaterial(7,"models/shiny")    
     holoEntity(1):soundPlay(33,0,"npc/scanner/cbot_fly_loop.wav")
+
     entity():setPos(entity():toWorld(vec(0,0,111)))
   
     
@@ -212,4 +236,5 @@ if(clk("scantrails")){
     holoDelete(100)
 }
 holoAng(5,holoEntity(5):toWorld(ang(0,50,0)))
-soundPitch(33,255)
+holoAng(7,holoEntity(7):toWorld(ang(10,50,30)))
+soundPitch(33,(entity():pos():distance(MovePos))*0.3)
