@@ -1,15 +1,21 @@
 @name Runics Analog Clock
 @inputs 
 @outputs 
-@persist Scale StepsH StepsM H M S StepsS Gong NumCol:vector Color1:vector MidColor:vector Adder
+@persist Scale StepsH StepsM H M S StepsS Gong NumCol:vector Color1:vector MidColor:vector Delay Tone1 Tone2 Tone3
 @trigger 
 interval(1000)
 if(first() || duped()){
+    #### GONG STUFF
     Gong = 1
+    Delay = 1100
+    Multiplier = 0.5
+    Tone1 = 150 * Multiplier
+    Tone2 = 100 * Multiplier
+    Tone3 = 180 * Multiplier
+    #### CLOCK STUFF
     Color1 = vec(0,0,0)
     MidColor = vec(0,0,0)
-    NumCol = vec(0,0,0)
-    Scale = 0.35
+    Scale = 0.4
     StepsH = 30
     StepsM = 6
     StepsS = 6
@@ -82,6 +88,20 @@ holoAng(32,entity():toWorld(ang(0,-((S*StepsS)),0)))
 entity():soundPlay(1,0,"buttons/lightswitch2.wav")
 soundPitch(1,155)
 if(Gong && changed(M) && M == 15 || Gong && changed(M) && M == 30 || Gong && changed(M) && M == 45 || Gong && changed(M) && M == 60){
+    timer("tone1",100)
+}
+if(clk("tone1")){
     entity():soundPlay(2,0,"ambient/rottenburg/rottenburg_belltower.wav")
-    soundPitch(2,66)
+    soundPitch(2,Tone1)
+    timer("tone2",Delay)
+}
+if(clk("tone2")){
+    entity():soundPlay(2,0,"ambient/rottenburg/rottenburg_belltower.wav")
+    soundPitch(2,Tone2)    
+    timer("tone3",Delay)
+}
+if(clk("tone3")){
+    entity():soundPlay(2,0,"ambient/rottenburg/rottenburg_belltower.wav")
+    soundPitch(2,Tone3)
+    
 }
