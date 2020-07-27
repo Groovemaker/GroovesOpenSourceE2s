@@ -1,0 +1,48 @@
+--@name RuneCMD
+--@author Runic
+--@shared
+
+RuneCMD = {}
+
+function RuneCMD.AddCommand(name,argscount,func,hide,ownerOnly)
+
+    if CLIENT then
+        print("[RuneCMD] Command Loaded: "..name)
+    end
+    if SERVER then
+        hook.add("PlayerSay","RuneCMD_"..name,function(ply,txt,teamc)
+            CommandEx = txt:explode(" ")
+            Command = txt[1]
+            net.start("commandnet")
+                net.writeEntity(ply)
+                net.writeTable(CommandEx)
+            net.send(owner())
+            if(Command == name) then
+                if hide == 1 then
+                    return "";
+                else
+                    return nil;
+                end
+                print(RetVal)
+                if argscount != 0 then
+                    for I=1,argscount do
+                        bit.lshift(CommandEx)
+                    end
+                end
+
+                local RestOfLine = CommandEx:concat(" ")
+                func(ply,CommandEx)
+            end
+
+
+        end)
+    end
+    if CLIENT then
+        net.receive("commandnet",function()
+            ply = net.readEntity()
+            CommandEX = net.readTable()
+            func(ply,CommandEx)
+        end)
+    end
+end
+

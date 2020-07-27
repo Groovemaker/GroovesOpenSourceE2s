@@ -1,0 +1,13 @@
+--@name Runemod Rewrite
+--@author Runic
+--@shared
+--@include RuneCMD.txt
+Runemod = {}
+require("RuneCMD.txt")
+
+if CLIENT then
+    function Runemod.Test(ply,args)
+        concmd("say Runemod.Test() called!")
+    end
+end
+RuneCMD.AddCommand("-test",1,Runemod.Test,1)

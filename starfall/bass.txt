@@ -1,0 +1,31 @@
+--@name Moellen
+--@author
+--@client
+--@include bass
+Query = "runic"
+Link = "https://dl.dropboxusercontent.com/s/o07p4j5mrovqhv1/melon.mp3?dl=1"
+Brass = nil
+Plys = find.allPlayers()
+for k,v in pairs(Plys) do
+    if v:getName():lower():find(Query:lower()) then
+        Target = v
+    end
+end
+timer.create("tamborwatlol",1,0,function()
+
+    if !Brass then
+        bass.loadURL(Link,"3d noblock",function(Ass)
+            Brass = Ass
+            Ass:setLooping(1)
+            Ass:play()
+        end)
+
+    elseif Brass then
+        //print("lol")
+        Brass:setPos(Target:getPos())
+        if Brass:getTime() == Brass:getLength() then
+            Brass:destroy()
+        end
+    end
+end)
+timer.start("tamborwatlol")

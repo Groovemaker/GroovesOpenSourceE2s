@@ -1,0 +1,29 @@
+--@name Dis is mai peepee (peepee)
+--@author
+--@client
+--@include bass
+--@model models/maxofs2d/companion_doll.mdl
+Query = "jo3"
+Brass = nil
+Plys = find.allPlayers()
+for k,v in pairs(Plys) do
+    if v:getName():lower():find(Query:lower()) then
+        Target = v
+    end
+end
+bass.loadURL("https://dl.dropboxusercontent.com/s/x8zshfps1th3von/peepee.mp3?dl=1","3d noblock",function(Ass)
+    Brass = Ass
+    Ass:setLooping(1)
+    Ass:play()
+end)
+timer.create("tamborwatlol",0.1,0,function()
+
+    if !Brass then
+
+
+    elseif Brass then
+        //print("lol")
+        Brass:setPos(Target:getPos())
+    end
+end)
+timer.start("tamborwatlol")

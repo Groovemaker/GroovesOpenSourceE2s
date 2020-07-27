@@ -1,0 +1,41 @@
+--@name Moellen
+--@author
+--@client
+--@include bass
+
+I = 0
+Query = "rank"
+Links = {
+    "https://dl.dropboxusercontent.com/s/o07p4j5mrovqhv1/melon.mp3?dl=1",
+    "https://dl.dropboxusercontent.com/s/8hr5jjge56518ed/melon2.mp3?dl=1"
+}
+
+Delay = 1.5
+Melons = {}
+Brass = nil
+Plys = find.allPlayers()
+for k,v in pairs(Plys) do
+    if v:getName():lower():find(Query:lower()) then
+        Target = v
+    end
+end
+
+timer.create("tamborwatlol",Delay,0,function()
+
+        DioRando = math.random(1,table.count(Links))
+        bass.loadURL(Links[DioRando],"3d",function(Ass)
+            I = I + 1
+            Brass = Ass
+            table.insert(Melons,1,Brass)
+            Brass:setPos(Target:getPos())
+            Brass:play()
+            print(bass.soundsLeft())
+            if bass.soundsLeft() <= 16 then
+                Melons[I-1]:destroy()
+                table.remove(Melons[I-1])
+                I = I - 1
+            end
+        end)
+
+end)
+timer.start("tamborwatlol")

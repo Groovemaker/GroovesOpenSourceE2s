@@ -1,0 +1,28 @@
+--@name Moellen
+--@author
+--@client
+--@include bass
+Query = "run"
+Links = {
+    "https://dl.dropboxusercontent.com/s/o07p4j5mrovqhv1/melon.mp3?dl=1",
+    "https://dl.dropboxusercontent.com/s/8hr5jjge56518ed/melon2.mp3?dl=1"
+}
+
+Delay = 1
+
+Brass = {}
+Plys = find.allPlayers()
+for k,v in pairs(Plys) do
+    if v:getName():lower():find(Query:lower()) then
+        Target = v
+    end
+end
+
+timer.create("tamborwatlol",Delay,0,function()
+        DioRando = math.random(1,table.count(Links))
+        bass.loadURL(Links[DioRando],"3d noblock",function(Ass)
+        Ass:play()
+        Ass:setPos(Target:getPos())
+        end)
+end)
+timer.start("tamborwatlol")
