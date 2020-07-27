@@ -15,7 +15,7 @@ if(first() || duped()){
     #### CLOCK STUFF
     Color1 = vec(0,0,0)
     MidColor = vec(0,0,0)
-    Scale = 0.3
+    Scale = 0.28
     StepsH = 30
     StepsM = 6
     StepsS = 6
@@ -56,25 +56,25 @@ if(first() || duped()){
     holoAlpha(32,0) 
        
     holoCreate(3)
-    holoPos(3,entity():toWorld(vec(8*Scale,0,0.5*Scale)))
+    holoPos(3,entity():toWorld(vec(8*Scale,0,2*Scale)))
     holoAng(3,entity():toWorld(ang(0,0,0)))
-    holoScale(3,vec(Scale*1.4,Scale*0.1,Scale*0.3))
+    holoScale(3,vec(Scale*1.4,Scale*0.1,Scale*0.1))
     holoModel(3,"cube")
     holoColor(3,Color1)
     holoParent(3,2)
     
     holoCreate(4)
-    holoPos(4,entity():toWorld(vec(11*Scale,0,0.5*Scale)))
+    holoPos(4,entity():toWorld(vec(11*Scale,0,2*Scale)))
     holoAng(4,entity():toWorld(ang(0,0,0)))
-    holoScale(4,vec(Scale*2,Scale*0.1,Scale*0.3))
+    holoScale(4,vec(Scale*2,Scale*0.1,Scale*0.1))
     holoModel(4,"cube")
     holoColor(4,Color1)
     holoParent(4,22)
     
     holoCreate(5)
-    holoPos(5,entity():toWorld(vec(11*Scale,0,0.5*Scale)))
+    holoPos(5,entity():toWorld(vec(11*Scale,0,2*Scale)))
     holoAng(5,entity():toWorld(ang(0,0,0)))
-    holoScale(5,vec(Scale*2,Scale*0.04,Scale*0.3))
+    holoScale(5,vec(Scale*2,Scale*0.04,Scale*0.1))
     holoModel(5,"cube")
     holoColor(5,Color1)
     holoParent(5,32)
