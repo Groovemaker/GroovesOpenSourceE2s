@@ -1,10 +1,11 @@
 @name Runics Analog Clock
 @inputs 
 @outputs 
-@persist Scale StepsH StepsM H M S StepsS I Gong NumCol:vector Color1:vector MidColor:vector Delay Tone1 Tone2 Tone3
+@persist Scale StepsH StepsM H M S Tick StepsS I Gong NumCol:vector Color1:vector MidColor:vector Delay Tone1 Tone2 Tone3
 @trigger 
 interval(1000)
 if(first() || duped()){
+    Tick = 1
     I = 0
     #### GONG STUFF
     Gong = 1
@@ -14,11 +15,13 @@ if(first() || duped()){
     Tone2 = 150 * Multiplier
     Tone3 = 100 * Multiplier
     #### CLOCK STUFF
-    ClockColor = vec(135,135,255)
-    Color1 = vec(111,255,111)
+    ClockMaterial = "debug/debugwhite"
+    ClockColor = vec(74, 56, 32)
+    Color1 = vec(0,0,0)
     MidColor = vec(0,0,0)
-    OuterColor = vec(0,0,255)
-    Scale = 2
+    OuterColor = vec(0,0,0)
+    InnerColor = vec(135, 134, 76)
+    Scale = 0.3
     Scale2 = Scale/0.2
     StepsH = 30
     StepsM = 6
@@ -30,6 +33,7 @@ if(first() || duped()){
     holoAng(188,entity():toWorld(ang(0,0,0)))
     holoScale(188,vec(Scale2,Scale2,0.045*Scale))
     holoParent(188,entity())
+    holoColor(188,InnerColor)
     holoCreate(128)
     holoAlpha(128,0)
     holoParent(128,entity())
@@ -56,7 +60,7 @@ if(first() || duped()){
     holoModel(1,"models/props_trainstation/trainstation_clock001.mdl")
     holoParent(1,entity())
     holoColor(1,ClockColor)
-
+    holoMaterial(1,ClockMaterial)
     holoCreate(2)
     holoPos(2,entity():toWorld(vec(0,0,1*Scale)))
     holoAng(2,entity():toWorld(ang(0,180,0)))
@@ -113,8 +117,15 @@ S = date()["sec",number]
 holoAng(2,entity():toWorld(ang(0,-((H*StepsH)),0)))
 holoAng(22,entity():toWorld(ang(0,-((M*StepsM)),0)))
 holoAng(32,entity():toWorld(ang(0,-((S*StepsS)),0)))
-entity():soundPlay(1,0,"buttons/lightswitch2.wav")
-soundPitch(1,155)
+if(Tick == 1){
+    entity():soundPlay(1,0,"buttons/lightswitch2.wav")
+    soundPitch(1,111)
+    Tick = 0
+}elseif(Tick == 0){
+    entity():soundPlay(1,0,"buttons/lightswitch2.wav")
+    soundPitch(1,105)
+    Tick = 1
+}
 if(Gong && changed(M) && M == 15 || Gong && changed(M) && M == 30 || Gong && changed(M) && M == 45 || Gong && changed(M) && M == 60){
     timer("tone1",100)
 }
@@ -149,4 +160,4 @@ if(clk("SecondRim")){
             timer("SecondRim",11)
         }
 }
-print(S*StepsS)
+
