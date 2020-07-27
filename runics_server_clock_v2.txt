@@ -15,13 +15,12 @@ if(first() || duped()){
     Tone2 = 150 * Multiplier
     Tone3 = 100 * Multiplier
     #### CLOCK STUFF
-    ClockMaterial = "debug/debugwhite"
-    ClockColor = vec(74, 56, 32)
-    Color1 = vec(0,0,0)
-    MidColor = vec(0,0,0)
-    OuterColor = vec(0,0,0)
-    InnerColor = vec(135, 134, 76)
-    Scale = 0.3
+
+    ClockColor = vec(110, 225, 255)
+    Color1 = vec(110,110,255)
+    MidColor = vec(0,0,255)
+    InnerColor = vec(255, 255, 255)
+    Scale = 1
     Scale2 = Scale/0.2
     StepsH = 30
     StepsM = 6
@@ -35,6 +34,8 @@ if(first() || duped()){
     holoParent(188,entity())
     holoColor(188,InnerColor)
     holoCreate(128)
+    holoShadow(128,0)
+    holoScale(128,vec(0.01))
     holoAlpha(128,0)
     holoParent(128,entity())
     entity():setAlpha(0)
@@ -48,6 +49,7 @@ if(first() || duped()){
         holoScale(Cr,vec(Scale*0.1,Scale*0.05,Scale*0.3))
         holoAng(Cr,holoEntity(128):toWorld(ang(0,90,90)))
         holoModel(Cr,"cube")
+
         holoParent(Cr,entity())
         holoAng(128,entity():toWorld(ang(0,-((I*(StepsH))+90),0)))
     }
@@ -60,7 +62,6 @@ if(first() || duped()){
     holoModel(1,"models/props_trainstation/trainstation_clock001.mdl")
     holoParent(1,entity())
     holoColor(1,ClockColor)
-    holoMaterial(1,ClockMaterial)
     holoCreate(2)
     holoPos(2,entity():toWorld(vec(0,0,1*Scale)))
     holoAng(2,entity():toWorld(ang(0,180,0)))
