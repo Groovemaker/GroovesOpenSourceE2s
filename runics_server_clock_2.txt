@@ -8,14 +8,14 @@ if(first() || duped()){
     #### GONG STUFF
     Gong = 1
     Delay = 1100
-    Multiplier = 0.5
+    Multiplier = 0.9
     Tone1 = 150 * Multiplier
     Tone2 = 100 * Multiplier
     Tone3 = 180 * Multiplier
     #### CLOCK STUFF
     Color1 = vec(0,0,0)
     MidColor = vec(0,0,0)
-    Scale = 0.4
+    Scale = 0.3
     StepsH = 30
     StepsM = 6
     StepsS = 6
