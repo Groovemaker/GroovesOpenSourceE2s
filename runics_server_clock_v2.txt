@@ -1,0 +1,152 @@
+@name Runics Analog Clock
+@inputs 
+@outputs 
+@persist Scale StepsH StepsM H M S StepsS I Gong NumCol:vector Color1:vector MidColor:vector Delay Tone1 Tone2 Tone3
+@trigger 
+interval(1000)
+if(first() || duped()){
+    I = 0
+    #### GONG STUFF
+    Gong = 1
+    Delay = 1100
+    Multiplier = 0.9
+    Tone1 = 180 * Multiplier
+    Tone2 = 150 * Multiplier
+    Tone3 = 100 * Multiplier
+    #### CLOCK STUFF
+    ClockColor = vec(135,135,255)
+    Color1 = vec(111,255,111)
+    MidColor = vec(0,0,0)
+    OuterColor = vec(0,0,255)
+    Scale = 2
+    Scale2 = Scale/0.2
+    StepsH = 30
+    StepsM = 6
+    StepsS = 6
+    entity():setAlpha(0)
+    holoCreate(188)
+    holoModel(188,"hq_cylinder")
+    holoPos(188,entity():toWorld(vec(0,0,1.8*Scale)))
+    holoAng(188,entity():toWorld(ang(0,0,0)))
+    holoScale(188,vec(Scale2,Scale2,0.045*Scale))
+    holoParent(188,entity())
+    holoCreate(128)
+    holoAlpha(128,0)
+    holoParent(128,entity())
+    entity():setAlpha(0)
+    holoPos(128,entity():toWorld(vec(0,0,1*Scale)))
+    holoAng(128,entity():toWorld(ang(0,0,0)))
+    for(I=1,13){
+        Cr = 129+I
+        holoCreate(Cr)
+        holoPos(Cr,holoEntity(128):toWorld(vec(23*Scale,0,1*Scale)))
+        holoColor(Cr,NumCol)
+        holoScale(Cr,vec(Scale*0.1,Scale*0.05,Scale*0.3))
+        holoAng(Cr,holoEntity(128):toWorld(ang(0,90,90)))
+        holoModel(Cr,"cube")
+        holoParent(Cr,entity())
+        holoAng(128,entity():toWorld(ang(0,-((I*(StepsH))+90),0)))
+    }
+    timer("SecondRim",400)
+
+    holoCreate(1)
+    holoPos(1,entity():toWorld(vec(0,0,3*Scale)))
+    holoAng(1,entity():toWorld(ang(-90,0,0)))
+    holoScale(1,vec(1,1,1)*Scale)
+    holoModel(1,"models/props_trainstation/trainstation_clock001.mdl")
+    holoParent(1,entity())
+    holoColor(1,ClockColor)
+
+    holoCreate(2)
+    holoPos(2,entity():toWorld(vec(0,0,1*Scale)))
+    holoAng(2,entity():toWorld(ang(0,180,0)))
+    holoScale(2,vec(Scale*0.3))
+    holoModel(2,"hq_sphere")
+    holoColor(2,MidColor)
+    holoParent(2,entity())
+    
+    holoCreate(22)
+    holoPos(22,entity():toWorld(vec(0,0,1*Scale)))
+    holoAng(22,entity():toWorld(ang(0,180,0)))
+    holoScale(22,vec(Scale*0.3))
+    holoModel(22,"hq_sphere")
+    holoColor(22,MidColor)
+    holoParent(22,entity())
+    holoAlpha(22,0)
+    
+    holoCreate(32)
+    holoPos(32,entity():toWorld(vec(0,0,1*Scale)))
+    holoAng(32,entity():toWorld(ang(0,180,0)))
+    holoScale(32,vec(Scale*0.3))
+    holoModel(32,"hq_sphere")
+    holoColor(32,MidColor)
+    holoParent(32,entity())
+    holoAlpha(32,0) 
+       
+    holoCreate(3)
+    holoPos(3,entity():toWorld(vec(8*Scale,0,2*Scale)))
+    holoAng(3,entity():toWorld(ang(0,0,0)))
+    holoScale(3,vec(Scale*1.4,Scale*0.1,Scale*0.1))
+    holoModel(3,"cube")
+    holoColor(3,Color1)
+    holoParent(3,2)
+    
+    holoCreate(4)
+    holoPos(4,entity():toWorld(vec(11*Scale,0,2*Scale)))
+    holoAng(4,entity():toWorld(ang(0,0,0)))
+    holoScale(4,vec(Scale*2,Scale*0.1,Scale*0.1))
+    holoModel(4,"cube")
+    holoColor(4,Color1)
+    holoParent(4,22)
+    
+    holoCreate(5)
+    holoPos(5,entity():toWorld(vec(11*Scale,0,2*Scale)))
+    holoAng(5,entity():toWorld(ang(0,0,0)))
+    holoScale(5,vec(Scale*2,Scale*0.04,Scale*0.1))
+    holoModel(5,"cube")
+    holoColor(5,Color1)
+    holoParent(5,32)
+}
+H = date()["hour",number]
+M = date()["min",number]
+S = date()["sec",number]
+holoAng(2,entity():toWorld(ang(0,-((H*StepsH)),0)))
+holoAng(22,entity():toWorld(ang(0,-((M*StepsM)),0)))
+holoAng(32,entity():toWorld(ang(0,-((S*StepsS)),0)))
+entity():soundPlay(1,0,"buttons/lightswitch2.wav")
+soundPitch(1,155)
+if(Gong && changed(M) && M == 15 || Gong && changed(M) && M == 30 || Gong && changed(M) && M == 45 || Gong && changed(M) && M == 60){
+    timer("tone1",100)
+}
+if(clk("tone1")){
+    entity():soundPlay(2,0,"ambient/rottenburg/rottenburg_belltower.wav")
+    soundPitch(2,Tone1)
+    timer("tone2",Delay)
+}
+if(clk("tone2")){
+    entity():soundPlay(2,0,"ambient/rottenburg/rottenburg_belltower.wav")
+    soundPitch(2,Tone2)    
+    timer("tone3",Delay)
+}
+if(clk("tone3")){
+    entity():soundPlay(2,0,"ambient/rottenburg/rottenburg_belltower.wav")
+    soundPitch(2,Tone3)
+    
+}
+if(clk("SecondRim")){
+
+        if(I <= 61){
+            I++
+            holoAng(128,entity():toWorld(ang(0,-((I*(StepsS))+90),0)))
+            Cr = 230+I
+            holoCreate(Cr)
+            holoPos(Cr,holoEntity(128):toWorld(vec(23*Scale,0,1*Scale)))
+            holoColor(Cr,NumCol)
+            holoScale(Cr,vec(Scale*0.03,Scale*0.05,Scale*0.3))
+            holoAng(Cr,holoEntity(128):toWorld(ang(0,90,90)))
+            holoModel(Cr,"cube")
+            holoParent(Cr,entity())
+            timer("SecondRim",11)
+        }
+}
+print(S*StepsS)
