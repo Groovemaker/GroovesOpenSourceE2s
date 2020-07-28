@@ -4,18 +4,43 @@
 --@model models/props_lab/reciever01b.mdl
 -- This example draws pixels to a rendertarget and then displays the result
 BN = 0
-SB = 1
+SB = 0
+Prog = "News"
 hook.add("PlayerChat","DarkCastSay",function(ply,txt,teamc)
     CommandEx = string.split(txt," ")
-    Command = txt[1]
-    if(txt == "sb" && ply:getName():lower() == "runic") then
-        if SB == 1 then
+    Command = CommandEx[1]
+    if(Command == "sb" && ply:getName():lower() == "runic") then
+        if CommandEx[2] == "0" then
             SB = 0
-        else
+            print("Live")
+        elseif CommandEx[2] == "1" then
             SB = 1
+            print("Standby")
         end
         return "";
-
+    end
+    if(Command == "cprog" && ply:getName():lower() == "runic") then
+        if CommandEx[2] == "news" then
+            Prog = "DSN News"
+            print("Next up: "..Prog)
+        end
+        if CommandEx[2] == "talk" then
+            Prog = "DSN Talk"
+            print("Next up: "..Prog)
+        end
+        if CommandEx[2] == "cookshit" then
+            Prog = "Cook Shit with Darkside"
+            print("Next up: "..Prog)
+        end
+        if CommandEx[2] == "report" then
+            Prog = "DSN LIVE REPORT"
+            print("Next up: "..Prog)
+        end
+        return "";
+    end
+    if(Command == "!teletext" && ply == owner()) then
+            print("Current Program: "..Prog)
+        return "";
     end
 end)
 if BN == 0 then
