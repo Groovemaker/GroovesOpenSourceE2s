@@ -38,6 +38,21 @@ hook.add("PlayerChat","DarkCastSay",function(ply,txt,teamc)
         end
         return "";
     end
+    if(Command == "breaking" && ply:getName():lower() == "runic") then
+        if CommandEx[2] == "0" then
+            BN = 0
+        end
+        if CommandEx[2] != "0" then
+            BN = 1
+            BreakingT = CommandEx
+            table.remove(BreakingT,1)
+            BreakingArgs = table.concat(BreakingT," ")
+            BK = "BREAKING NEWS: "
+            News = BK..BreakingArgs
+        end
+
+        return "";
+    end
     if(Command == "!teletext" && ply == owner()) then
             print("Current Program: "..Prog)
         return "";
