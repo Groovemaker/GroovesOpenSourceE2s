@@ -1,0 +1,83 @@
+--@name DS Networks Receiver
+--@author Sparky, Runic
+--@client
+--@model models/props_lab/reciever01b.mdl
+-- This example draws pixels to a rendertarget and then displays the result
+BN = 0
+SB = 1
+hook.add("PlayerChat","DarkCastSay",function(ply,txt,teamc)
+    CommandEx = string.split(txt," ")
+    Command = txt[1]
+    if(txt == "sb" && ply:getName():lower() == "runic") then
+        if SB == 1 then
+            SB = 0
+        else
+            SB = 1
+        end
+        return "";
+
+    end
+end)
+if BN == 0 then
+    News = "DSCast gets rebranded to DSNetworks - DSN gets new overlay - Darkstorm empty for the most part"
+else
+    BK = "BREAKING NEWS: "
+    News = BK.."This is a test line."
+end
+NPos = 0
+render.createRenderTarget("myrendertarget")
+DSC = render.createFont("Arial",31,500,true,false)
+DSCL = render.createFont("Arial",142,111,true,false)
+DSCNews = render.createFont("Arial",35,1100,true,false)
+local livemat = material.create("UnlitGeneric")
+livemat:setTexture("$basetexture", "_rt_Camera")
+livemat:setTexture("$model", "1")
+function paint()
+    render.setMaterial(livemat)
+    render.setColor(Color(255,255,255))
+    render.drawTexturedRect(0,0,1024,1024)
+    
+    render.setColor(Color(0,150,255))
+    if BN == 1 then render.setColor(Color(255,55,55)) end
+    render.drawRectFast(0,460,9999,66)
+    render.setColor(Color(0,150,255))
+    render.drawRectFast(775,35,66,35)
+    render.setColor(Color(255,255,255))
+    render.setFont(DSC)
+    render.drawText(780,35,"DSN",TEXT_ALIGN_CENTER)
+    render.setFont(DSCNews)
+    render.drawText(NPos,470,News,TEXT_ALIGN_CENTER)
+    if NPos <= -((News:len()*21)/(News:len() / 67)) then
+        NPos = ((News:len()*21)/(News:len() / 50))
+    else
+        NPos = NPos - 0.05
+    end
+    
+    if SB == 0 then
+    else
+        render.setColor(Color(0,0,0))
+        render.drawRectFast(0,0,1024,1024)
+        render.setColor(Color(0,150,255))
+        render.drawRectFast(287,168,287,155)
+        render.setColor(Color(255,255,255))
+        render.setFont(DSCL)
+        render.drawText(290,186,"DSN",TEXT_ALIGN_CENTER)
+        render.setFont(DSCNews)
+        render.drawText(288,355,"Where the fun is at...",TEXT_ALIGN_CENTER)
+    end
+    return true
+end
+
+hook.add("renderoffscreen","",function()
+    render.selectRenderTarget("myrendertarget")
+    while quotaAverage()<quotaMax()*0.1 do
+        if paint() then
+        end
+    end
+end)
+
+hook.add("render","",function()
+ 
+    render.setRenderTargetTexture("myrendertarget")
+    render.drawTexturedRect(0,0,1024,1024)
+end)
