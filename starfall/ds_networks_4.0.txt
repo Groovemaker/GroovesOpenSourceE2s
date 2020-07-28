@@ -41,6 +41,7 @@ hook.add("PlayerChat","DarkCastSay",function(ply,txt,teamc)
     if(Command == "breaking" && ply:getName():lower() == "runic") then
         if CommandEx[2] == "0" then
             BN = 0
+            News = NormalNews
         end
         if CommandEx[2] != "0" then
             BN = 1
@@ -59,7 +60,8 @@ hook.add("PlayerChat","DarkCastSay",function(ply,txt,teamc)
     end
 end)
 if BN == 0 then
-    News = "DSCast gets rebranded to DSNetworks - DSN gets new overlay - Darkstorm empty for the most part"
+    NormalNews = "DSCast gets rebranded to DSNetworks - DSN gets new overlay - Darkstorm empty for the most part"
+    News = NormalNews
 else
     BK = "BREAKING NEWS: "
     News = BK.."This is a test line."
