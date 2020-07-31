@@ -1,7 +1,7 @@
 @name BX-01 Servo Skull Phase 3
 @inputs 
 @outputs 
-@persist Commander:entity MovePos:vector Move MaxDist RandSeed:vector Targent:entity ScanLoop ScanInterval EntZ Following
+@persist Commander:entity Damage:entity MovePos:vector Move MaxDist RandSeed:vector Targent:entity ScanLoop ScanInterval EntZ Following
 @trigger
 
 #models/bots/demo_boss/bot_demo_boss.mdl
@@ -10,7 +10,11 @@ interval(100)
 runOnChat(1)
 if(first() || duped()){
     Following = 0
-    
+
+    Damage = propSpawn("models/props_junk/gascan001a.mdl",ang(0,0,0),1)
+    noCollide(Damage,entity())
+    Damage:setPos(Targent:pos())
+    Damage:setAlpha(0)    
     MaxDist = 100
     ScanLoop = 0
     ScanInterval = 1100
@@ -120,7 +124,7 @@ if(chatClk(owner()) || chatClk(findPlayerByName("Palpatine"))){
         }
         else{
             RandSeed = randvec(-100,100)
-            MaxDist = 650
+            MaxDist = 222
             Attacking = 1
             Following = 0
             entity():soundPlay(1,0,"npc/dog/dog_servo"+randint(1,10)+".wav")  
@@ -135,7 +139,7 @@ if(chatClk(owner()) || chatClk(findPlayerByName("Palpatine"))){
     if(Command == "#scan"){
         hideChat(1)
         RandSeed = randvec(-100,100)
-        MaxDist = 650
+        MaxDist = 222
         Attacking = 1
         Following = 0
         entity():soundPlay(1,0,"npc/dog/dog_servo"+randint(1,10)+".wav")  
@@ -176,9 +180,9 @@ if(changed(MovePos) && MovePos != entity():pos()){
     Move = 1
 }
 if(Move == 1){
-    MoveEndPos = MovePos + vec(0,0,100)
+    MoveEndPos = MovePos + vec(0,0,55)
     TargAng = (MoveEndPos - entity():pos()):toAngle() + ang(0,0,0)
-    entity():setPos(entity():toWorld(vec(0.06*(entity():pos():distance(MovePos)),0,0)))
+    entity():setPos(entity():toWorld(vec(0.065*(entity():pos():distance(MovePos)),0,0)))
     entity():setAng(TargAng)    
 }else{
     PosZ = (sin(curtime()*255)*7)
@@ -212,7 +216,7 @@ if(Targent:isValid() && Targent:isAlive() || Targent:type():find("prop_") || Tar
         TempPos1 = Targent:pos()
 
 
-        MovePos = TempPos1 + RandSeed + vec(0,0,100)
+        MovePos = TempPos1 + RandSeed + vec(0,0,55)
         Move = 1
         ScanLoop = 0
     }
@@ -232,8 +236,9 @@ if(clk("scanloop")){
                 holoVisible(100,Ply,0)
             }
         }
-        holoModel(100,"pyramid")
-        holoPos(100,Targent:toWorld(vec(0,0,330)))
+        holoModel(100,"hq_rcube")
+        holoMaterial(100,"hlmv/debugmrmwireframe")
+        holoPos(100,Targent:toWorld(vec(0,0,44)))
         holoScale(100,vec(2,2,11))
         holoAng(100,ang(0,0,180))
         holoColor(100,vec(255,0,0))
@@ -247,6 +252,13 @@ if(clk("scanloop")){
 if(clk("scantrails")){
     holoDelete(100)
 }
+if(!Damage){
+    timer("die",500)
+}
+if(clk("die")){
+    selfDestruct()
+}
+Damage:setPos(holoEntity(1):pos())
 holoAng(5,holoEntity(5):toWorld(ang(0,50,0)))
 holoAng(7,holoEntity(7):toWorld(ang(10,50,30)))
 soundPitch(33,(entity():pos():distance(MovePos))*0.3)
