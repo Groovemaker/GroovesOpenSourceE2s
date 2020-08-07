@@ -1,0 +1,71 @@
+@name Runics Firework (Model 2)
+@inputs 
+@outputs 
+@persist Teig:entity Apply FireworkColor:vector Rands:array Range
+@trigger 
+
+if(first() || duped()){
+    Rands = array()
+    Range = 55
+    FireworkColor = vec(233,55,255)
+    Apply = 0
+    timer("usesystem",10)
+    Teig = propSpawn("models/Roller.mdl",ang(0,0,0),1)
+}
+
+if(clk("usesystem")){
+    Allps = players()
+    for(I=1,Allps:count()){
+        Guy = Allps[I,entity]
+        if(Guy:keyUse() && Guy:aimEntity() == Teig){
+            Teig:propFreeze(0)
+            Teig:ignite()
+            Apply = 1
+            Teig:setTrails(30,30,120,"trails/smoke",vec(255,255,255), 255)
+            timer("fly",10)
+            timer("splode",4000)
+        }
+    }
+
+    timer("usesystem",140)
+}
+if(clk("fly")){
+    if(Apply == 1){
+        Teig:applyForce(vec(0,0,Teig:mass() * 10000000))
+
+    }
+    timer("fly",2000)
+}
+if(clk("splode")){
+    foreach(V,Ply:entity = players()){
+        if(Ply:pos():distance(entity():pos()) < 1700){
+            Ply:soundPlay(10+V,0,"items/summer/summer_fireworks"+randint(1,4)+".wav")
+        }
+    }
+    Killa = propSpawn("models/props_phx/cannonball.mdl",ang(0,0,0),1)
+    Killa:setPos(Teig:pos())
+    Killa:propBreak()
+    Apply = 0
+    for(I=1,55){
+        holoCreate(I)
+        holoPos(I,Teig:pos())
+        holoAlpha(I,0)
+        holoAng(I,randvec(-360,360):toAngle())
+        Rands[I,vector] = randvec(-Range,Range)
+        holoEntity(I):setTrails(33,22,4,"trails/laser",FireworkColor,255)
+        holoEntity(I):ignite()
+        print(FireworkColor)
+    }
+    Teig:propDelete()
+    #Teig:setAlpha(0)
+    timer("cleanup",8000)
+}
+
+if(clk("cleanup")){
+    selfDestructAll()
+}
+for(I=1,55){
+
+    holoPos(I,holoEntity(I):toWorld(Rands[I,vector]))
+    holoAng(I,holoEntity(I-randint(1,10)):toWorld(ang(100,0,0)))
+}
