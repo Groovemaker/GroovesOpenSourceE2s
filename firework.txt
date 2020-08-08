@@ -16,7 +16,7 @@ if(clk("usesystem")){
         Guy = Allps[I,entity]
         if(Guy:keyUse() && Guy:aimEntity() == Teig){
             Teig:propFreeze(0)
-
+            Teig:soundPlay(188,0,"thrusters/rocket04.wav")
             Apply = 1
             Teig:setTrails(30,30,120,"trails/smoke",vec(255,255,255), 255)
             timer("fly",10)
@@ -38,7 +38,7 @@ if(clk("splode")){
     Killa:setPos(Teig:pos())
     Killa:propBreak()
     Apply = 0
-    for(I=1,55){
+    for(I=1,88){
         holoCreate(I)
         holoPos(I,Teig:pos())
         holoAlpha(I,0)
@@ -47,12 +47,20 @@ if(clk("splode")){
     }
     Teig:propDelete()
     #Teig:setAlpha(0)
+    #
+    Plyers = players()
+    for(I=1,Plyers:count()){
+        #print(Plyers[I,entity]:toString())
+        #Plyers[I,entity]:soundPlay(I,0,"ambient/atmosphere/mill_bigwarehouseamb_loop.wav")
+        Plyers[I,entity]:soundPlay(I+30,0,"items/summer/summer_fireworks"+randint(1,4)+".wav")
+    }
     timer("cleanup",8000)
+
 }
 
 if(clk("cleanup")){
     selfDestructAll()
 }
-for(I=1,55){
+for(I=1,88){
     holoPos(I,holoEntity(I):toWorld(vec(0,100,0)))
 }
