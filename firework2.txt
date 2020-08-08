@@ -54,7 +54,7 @@ if(clk("splode")){
         Rands[I,vector] = randvec(-Range,Range)
         holoEntity(I):setTrails(33,22,4,"trails/laser",FireworkColor,255)
         holoEntity(I):ignite()
-        print(FireworkColor)
+        #print(FireworkColor)
     }
     Teig:propDelete()
     #Teig:setAlpha(0)
