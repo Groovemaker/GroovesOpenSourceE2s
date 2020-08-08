@@ -31,7 +31,7 @@ if(clk("usesystem")){
 }
 if(clk("fly")){
     if(Apply == 1){
-        Teig:applyForce(vec(0,0,Teig:mass() * 10000000))
+        #Teig:applyForce(vec(0,0,Teig:mass() * 10000000))
 
     }
     timer("fly",2000)
