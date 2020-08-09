@@ -1,0 +1,159 @@
+@name Runics Slots
+@inputs Spin EGP:wirelink
+@outputs Win
+@persist DoSpin Spinterval Icons:array SpinTime Icon1:string Icon2:string Icon3:string PlayMusic
+@trigger 
+
+interval(11)
+
+if(first() || dupefinished() || changed(EGP)){
+    EGP:egpClear()
+    PlayMusic = 1
+    timer("Music",111)
+    Icon1 = "gui/gmod_logo"
+    Icon2 = "vgui/notices/generic"
+    Icon3 = "weapons/swep"
+    Icons:pushString(Icon1)
+    Icons:pushString(Icon2)
+    Icons:pushString(Icon3)
+    Spinterval = 11
+    SpinTime = 3000
+
+    ######### 1
+    EGP:egpBox(36,vec2(0,0),vec2(1024,1024))
+    EGP:egpMaterial(36,"console/background03")
+    EGP:egpOrder(36,1)
+    EGP:egpBox(37,vec2(255,255),vec2(499,233))
+    EGP:egpColor(37,vec(22))
+    EGP:egpAlpha(37,155)
+    EGP:egpOrder(37,2)
+    
+    EGP:egpText(38,"Lucky Modder Slots",vec2(266,55))
+    EGP:egpFont(38,"Coolvetica",55)
+    EGP:egpAlign(38,1)
+    EGP:egpColor(38,vec(255))
+    EGP:egpAlpha(38,155)
+    EGP:egpOrder(38,2)
+    
+    EGP:egpBox(1,vec2(88,260),vec2(130,160))
+    
+    EGP:egpBox(2,vec2(88,210),vec2(130,40))
+    EGP:egpMaterial(2,"gui/gradient_down")
+    EGP:egpColor(2,vec(0))
+    EGP:egpAlpha(2,233)
+    
+    EGP:egpBox(3,vec2(88,310),vec2(130,40))
+    EGP:egpMaterial(3,"gui/gradient_up")
+    EGP:egpColor(3,vec(0))
+    EGP:egpAlpha(3,233)
+    
+    ######### 2
+    EGP:egpBox(4,vec2(255,260),vec2(130,160))
+    
+    EGP:egpBox(5,vec2(255,210),vec2(130,40))
+    EGP:egpMaterial(5,"gui/gradient_down")
+    EGP:egpColor(5,vec(0))
+    EGP:egpAlpha(5,233)
+    
+    EGP:egpBox(6,vec2(255,310),vec2(130,40))
+    EGP:egpMaterial(6,"gui/gradient_up")
+    EGP:egpColor(6,vec(0))
+    EGP:egpAlpha(6,233)
+    
+    ######### 3
+    EGP:egpBox(7,vec2(422,260),vec2(130,160))
+    
+    EGP:egpBox(8,vec2(422,210),vec2(130,40))
+    EGP:egpMaterial(8,"gui/gradient_down")
+    EGP:egpColor(8,vec(0))
+    EGP:egpAlpha(8,233)
+    
+    EGP:egpBox(9,vec2(422,310),vec2(130,40))
+    EGP:egpMaterial(9,"gui/gradient_up")
+    EGP:egpColor(9,vec(0))
+    EGP:egpAlpha(9,233)
+
+    EGP:egpBox(10,vec2(88,260),vec2(143,173))
+    EGP:egpMaterial(10,"gui/sm_hover.png")
+
+    EGP:egpBox(11,vec2(255,260),vec2(143,173))
+    EGP:egpMaterial(11,"gui/sm_hover.png")
+    
+    EGP:egpBox(12,vec2(422,260),vec2(143,173))
+    EGP:egpMaterial(12,"gui/sm_hover.png")
+    
+    EGP:egpBox(99,vec2(0,0),vec2(1024,1024))
+    EGP:egpMaterial(99,"vgui/screens/vgui_overlay")
+    EGP:egpOrder(99,1)
+    
+    #### ICONS
+    
+    EGP:egpBox(33,vec2(88,263),vec2(111,111))
+    EGP:egpMaterial(33,Icon1)
+    
+    EGP:egpBox(34,vec2(255,263),vec2(111,111))
+    EGP:egpMaterial(34,Icon1)
+
+    EGP:egpBox(35,vec2(422,263),vec2(111,111))
+    EGP:egpMaterial(35,Icon1)
+
+}
+
+if(changed(Spin) && Spin == 1){
+    DoSpin = 1
+    EGP:entity():soundPlay(1,0,"misc/ks_tier_03.wav")
+    timer("spinner",10)
+}
+
+if(clk("spinner")){
+    if(DoSpin == 1){
+        soundStop(11)
+        PlayMusic = 0
+        EGP:egpMaterial(33,Icons[randint(1,Icons:count()),string])
+        EGP:egpMaterial(34,Icons[randint(1,Icons:count()),string])
+        EGP:egpMaterial(35,Icons[randint(1,Icons:count()),string])
+        timer("spinner",Spinterval+randint(100,300))
+        timer("spinDone",SpinTime)
+    }
+}
+if(clk("spinDone")){
+    DoSpin = 0
+
+    Mat1 = EGP:egpMaterial(33)
+    Mat2 = EGP:egpMaterial(34)
+    Mat3 = EGP:egpMaterial(35)
+    if(Mat1 == Icon1 && Mat2 == Icon1 && Mat3 == Icon1){
+        print("Won Jackpot!")
+        EGP:entity():soundPlay(1,0,"misc/ks_tier_02.wav")
+    }
+    elseif(Mat1 == Icon1 && Mat2 == Icon1 && Mat3 == Icon2){
+        print("Won 50")
+        EGP:entity():soundPlay(1,0,"misc/ks_tier_01_kill.wav")
+    }
+    elseif(Mat1 == Icon2 && Mat2 == Icon2 && Mat3 == Icon2){
+        print("Won 45")
+        EGP:entity():soundPlay(1,0,"misc/ks_tier_01_kill.wav")
+    }
+    elseif(Mat1 == Icon1 && Mat2 == Icon3 && Mat3 == Icon3){
+        print("Won 30")
+        EGP:entity():soundPlay(1,0,"misc/ks_tier_01_kill.wav")
+    }
+    elseif(Mat1 == Icon1 && Mat2 == Icon1 && Mat3 == Icon3){
+        print("Won 15")
+        EGP:entity():soundPlay(1,0,"misc/ks_tier_01_kill.wav")
+    }
+    elseif(Mat1 == Icon3 && Mat2 == Icon3){
+        print("Won 5")
+        EGP:entity():soundPlay(1,0,"misc/ks_tier_01_kill.wav")
+    }else{
+        EGP:entity():soundPlay(1,0,"misc/ks_tier_01_death.wav")
+    }
+    timer("Music",5000)
+}
+if(clk("Music")){
+    PlayMusic = 1
+    if(PlayMusic == 1){
+        EGP:entity():soundPlay(11,0,"music/hl2_song1.mp3")
+        PlayMusic = 0
+    }
+}
