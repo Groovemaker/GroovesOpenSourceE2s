@@ -22,7 +22,7 @@ if(first() || duped() || changed(EGP)){
     Button1 = EGP:createbutton(vec2(250, 300),vec2(255,88),"Admin Hack",33)
     Txt1 = EGP:createtextfield(vec2(250, 444),vec2(333,88),"Idle",33)
     I = 0
-    EGP:entity():soundPlay(33,0,"hl1/ambience/labdrone2.wav")
+    EGP:entity():soundPlay(33,0,"npc/vort/vort_pain3.wav")
     soundPitch(33,0)
 
 }
@@ -43,7 +43,7 @@ if(changed(Use) & Use){
         Multi = 3
         Pitch = 100
         Prog = 0
-        EGP:entity():soundPlay(33,0,"hl1/ambience/labdrone2.wav")
+        EGP:entity():soundPlay(33,0,"npc/vort/vort_pain3.wav")
         soundPitch(33,0)
         
         timer("Step1",Interval)
