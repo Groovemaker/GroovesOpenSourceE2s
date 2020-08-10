@@ -1,0 +1,100 @@
+@name GrooveOS: Progress Bar Example
+@inputs EGP:wirelink
+@outputs Pressed1
+@persist Funny:array Txt1 Prog Bar Go Interval Multi Iter I Finished Pitch Models:array Guy:entity
+@trigger
+
+interval(111)
+
+if(first() || duped() || changed(EGP)){
+    #include "ui/uilib"
+    Models:pushString("cube")
+    Models:pushString("pyramid")
+    Models:pushString("hq_sphere")
+    Finished = 0
+    Interval = 111
+    Multi = 3
+    Iter = 1111
+    Pitch = 100
+    EGP:egpClear()
+    EGP:initUI()
+    Bar = EGP:createprogressbar(vec2(250, 180),vec2(333,88))
+    EGP:egpText(99,"GrooveOS Panel v0.1",vec2(10,10))
+    EGP:egpFont(99,"DermaDefault",20)
+    Prog = 0
+    Button1 = EGP:createbutton(vec2(250, 300),vec2(255,88),"Admin Hack",33)
+    Txt1 = EGP:createtextfield(vec2(250, 444),vec2(333,88),"Idle",33)
+    I = 0
+    EGP:entity():soundPlay(33,0,"hl1/ambience/labdrone2.wav")
+    soundPitch(33,0)
+
+}
+
+User = EGP["User",entity]
+Cursor = EGP:egpCursor(User)
+Use = User:keyUse()
+
+if(changed(Use) & Use){
+    if(EGP:button(Cursor,Button1)){
+        EGP:egpSetText(Txt1,"Copying Files")
+        Guy = User
+        EGP:egpColor(Button1,BtnPressColor)
+        holoDeleteAll()
+        I = 0
+        Finished = 0
+        Interval = 11
+        Multi = 3
+        Pitch = 100
+        Prog = 0
+        EGP:entity():soundPlay(33,0,"hl1/ambience/labdrone2.wav")
+        soundPitch(33,0)
+        
+        timer("Step1",Interval)
+        timer("btndepress1",200)
+    }
+}
+if(clk("btndepress1")){
+    EGP:egpColor(Button1,BtnForeColor)
+    Pressed1 = 0
+}
+
+if(clk("Step1")){
+    if(I>Iter*0.3 && I<Iter){
+        EGP:egpSetText(Txt1,"Injecting Bytes")
+    }
+    if(I>Iter*0.5 && I<Iter){
+        EGP:egpSetText(Txt1,"Modding Rcon")
+    }
+    if(I<Iter){
+
+        I++
+        Prog+= 100/Iter
+        Pitch+= 100/Iter
+        soundPitch(33,Pitch)
+        EGP:updateprogress(Bar,Prog)
+        timer("Step1",Interval)
+    }else{
+        Finished = 1
+        EGP:egpSetText(Txt1,"FUCK YOU!")
+        timer("Done",5000)
+    }
+}
+if(changed(Finished) && Finished == 1){
+    soundStop(33)
+    EGP:entity():soundPlay(1,0,"items/halloween/crazy01.wav")
+    local Exploder = propSpawn("models/props_junk/gascan001a.mdl",0)
+    Exploder:setPos(Guy:pos())
+    Exploder:propBreak()
+    local Exploder = propSpawn("models/props_junk/gascan001a.mdl",0)
+    Exploder:setPos(Guy:pos())
+    Exploder:propBreak()
+    local Exploder = propSpawn("models/props_junk/gascan001a.mdl",0)
+    Exploder:setPos(Guy:pos())
+    Exploder:propBreak()
+    local Exploder = propSpawn("models/props_junk/gascan001a.mdl",0)
+    Exploder:setPos(Guy:pos())
+    Exploder:propBreak()
+}
+if(clk("Done")){
+    EGP:egpSetText(Txt1,"Idle")
+}
