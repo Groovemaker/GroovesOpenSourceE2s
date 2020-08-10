@@ -1,16 +1,13 @@
-@name GrooveOS: Progress Bar Example
+@name Admin Hack lol
 @inputs EGP:wirelink
 @outputs Pressed1
-@persist Funny:array Txt1 Prog Bar Go Interval Multi Iter I Finished Pitch Models:array Guy:entity
+@persist Funny:array Txt1 Prog Bar Go Interval Multi Iter I Finished Pitch Guy:entity
 @trigger
 
 interval(111)
 
 if(first() || duped() || changed(EGP)){
     #include "ui/uilib"
-    Models:pushString("cube")
-    Models:pushString("pyramid")
-    Models:pushString("hq_sphere")
     Finished = 0
     Interval = 111
     Multi = 3
@@ -65,8 +62,10 @@ if(clk("Step1")){
     if(I>Iter*0.5 && I<Iter){
         EGP:egpSetText(Txt1,"Modding Rcon")
     }
+    if(I>Iter*0.8 && I<Iter){
+        EGP:egpSetText(Txt1,"Copying Lua: "+I+"/"+Iter)
+    }
     if(I<Iter){
-
         I++
         Prog+= 100/Iter
         Pitch+= 100/Iter
