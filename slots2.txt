@@ -1,12 +1,14 @@
 @name Runics Slots
-@inputs Spin EGP:wirelink
+@inputs EGP:wirelink
 @outputs Win
-@persist DoSpin Spinterval Icons:array SpinTime Icon1:string Icon2:string Icon3:string PlayMusic
+@persist DoSpin Spinterval Icons:array SpinTime Icon1:string Icon2:string Icon3:string PlayMusic Spin
 @trigger 
 
 interval(11)
 
 if(first() || dupefinished() || changed(EGP)){
+    #include "ui/uilib"
+    Spin = 0
     EGP:egpClear()
     PlayMusic = 1
     timer("Music",111)
@@ -96,6 +98,7 @@ if(first() || dupefinished() || changed(EGP)){
 
     EGP:egpBox(35,vec2(422,263),vec2(111,111))
     EGP:egpMaterial(35,Icon1)
+    Button1 = EGP:createbuttonEx(88,vec2(250, 430),vec2(200,88),"Spin",33)
 
 }
 
@@ -156,4 +159,19 @@ if(clk("Music")){
         EGP:entity():soundPlay(11,0,"music/hl2_song1.mp3")
         PlayMusic = 0
     }
+}
+User = EGP["User",entity]
+Cursor = EGP:egpCursor(User)
+Use = User:keyUse()
+
+if(changed(Use) & Use){
+    if(EGP:button(Cursor,Button1)){
+        EGP:egpColor(Button1,BtnPressColor)
+        Spin = 1
+        timer("btndepress1",200)
+    }
+}
+if(clk("btndepress1")){
+    EGP:egpColor(Button1,BtnForeColor)
+    Spin = 0
 }
