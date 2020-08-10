@@ -1,0 +1,115 @@
+@name GrooveOS: Menu Example
+@inputs EGP:wirelink PowerIn TempIn
+@outputs Overdrive PowerOut
+@persist Funny:array Txt1 Page ScanInterval PowerIn TempIn TxtPow TxtTemp
+@trigger
+
+interval(1)
+
+
+
+if(first() || duped() || changed(EGP)){
+    ScanInterval = 100
+    #include "ui/uilib"
+    function number page1(){
+        Page = 1
+        EGP:egpClear()
+        EGP:initUI()
+        Txt1 = EGP:createtextfield(vec2(250, 160),vec2(400,88),"Power Core Console",33)
+        Button1 = EGP:createbutton(vec2(250, 400),vec2(155,88),"Control",33)
+        Button2 = EGP:createbutton(vec2(250, 280),vec2(155,88),"Readings",33)
+        EGP:egpText(99,"GrooveOS Panel v0.1",vec2(10,10))
+        EGP:egpFont(99,"DermaDefault",20)
+        return 1
+    }
+    function number page2(){
+        Page = 2
+        EGP:egpClear()
+        EGP:initUI()
+        Button3 = EGP:createbutton(vec2(250, 160),vec2(155,88),"Power",33)
+        Button2 = EGP:createbutton(vec2(250, 280),vec2(155,88),"Overdrive",33)
+        Button1 = EGP:createbutton(vec2(250, 400),vec2(155,88),"Back",33)
+        EGP:egpText(99,"GrooveOS Panel v0.1",vec2(10,10))
+        EGP:egpFont(99,"DermaDefault",20)
+        return 1
+    }
+
+    function number page3(){
+        Page = 3
+        EGP:egpClear()
+        EGP:initUI()
+        TxtPow = EGP:createtextfield(vec2(250, 180),vec2(400,88),"Power: ",33)
+        TxtTemp = EGP:createtextfield(vec2(250, 300),vec2(400,88),"Temp: ",33)
+        Button1 = EGP:createbutton(vec2(250, 400),vec2(155,88),"Back",33)
+        EGP:egpText(99,"GrooveOS Panel v0.1",vec2(10,10))
+        EGP:egpFont(99,"DermaDefault",20)
+        return 1
+    }    
+    page1()
+    timer("ConLoop",ScanInterval)
+ 
+}
+
+User = EGP["User",entity]
+Cursor = EGP:egpCursor(User)
+Use = User:keyUse()
+
+if(Page == 1){
+    if(changed(Use) & Use){
+        if(EGP:button(Cursor,Button1)){
+            EGP:egpColor(Button1,BtnPressColor)
+            page2()   
+        }
+        if(EGP:button(Cursor,Button2)){
+            EGP:egpColor(Button2,BtnPressColor)
+            page3()   
+        }
+    }
+    timer("btndepress1",200)
+}
+if(Page == 2){
+    if(changed(Use) & Use){
+        if(EGP:button(Cursor,Button1)){
+            EGP:egpColor(Button1,BtnPressColor)
+            page1()      
+        }
+        if(EGP:button(Cursor,Button2)){
+            EGP:egpColor(Button2,BtnPressColor)
+            if(Overdrive == 0){
+                Overdrive = 1
+            }elseif(Overdrive == 1){
+                Overdrive = 0
+            }
+        }
+        if(EGP:button(Cursor,Button3)){
+            EGP:egpColor(Button3,BtnPressColor)
+            if(PowerOut == 0){
+                PowerOut = 1
+            }elseif(PowerOut == 1){
+                PowerOut = 0
+            }
+        }
+    }
+    timer("btndepress1",200)
+}
+if(Page == 3){
+    if(changed(Use) & Use){
+        if(EGP:button(Cursor,Button1)){
+            EGP:egpColor(Button1,BtnPressColor)
+            page1()   
+        }
+    }
+    timer("btndepress1",200)
+}
+if(clk("btndepress1")){
+    EGP:egpColor(Button1,BtnForeColor)
+    EGP:egpColor(Button2,BtnForeColor)
+    EGP:egpColor(Button3,BtnForeColor)
+}
+if(clk("ConLoop")){
+    if(Page == 3){
+        EGP:egpSetText(TxtPow,"Power: "+toString(PowerIn))
+        EGP:egpSetText(TxtTemp,"Temp: "+toString(TempIn))
+    }
+    timer("ConLoop",ScanInterval)
+}
