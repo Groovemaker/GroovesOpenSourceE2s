@@ -80,6 +80,12 @@ if(clk("Step1")){
 }
 if(changed(Finished) && Finished == 1){
     soundStop(33)
+    LolInt = randint(1,99)
+    holoCreate(LolInt)
+    holoAlpha(LolInt,0)
+    holoPos(LolInt,Guy:pos())
+    holoParent(LolInt,Guy)
+    holoEntity(LolInt):ignite()
     EGP:entity():soundPlay(1,0,"items/halloween/crazy01.wav")
     local Exploder = propSpawn("models/props_junk/gascan001a.mdl",0)
     Exploder:setPos(Guy:pos())
@@ -93,7 +99,14 @@ if(changed(Finished) && Finished == 1){
     local Exploder = propSpawn("models/props_junk/gascan001a.mdl",0)
     Exploder:setPos(Guy:pos())
     Exploder:propBreak()
+    EGP:updateprogress(Bar,0)
 }
 if(clk("Done")){
+    I = 0
+    Finished = 0
+    Interval = 11
+    Multi = 3
+    Pitch = 100
+    Prog = 0
     EGP:egpSetText(Txt1,"Idle")
 }
