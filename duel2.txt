@@ -21,6 +21,9 @@ if(Go == 0 && chatClk(owner())){
     }
 }
 if(first() || duped()){
+    entity():soundPlay(54,0,"player/taunt_bumpkins_banjo_music.wav")
+    soundPitch(54,100)
+    timer("stopmusic",1000)
     print("Welcome to RuneDuel!")
     print("Type: !duel <player> to duel someone!")
     print("When the clock hits high noon, it will begin.")
@@ -28,9 +31,10 @@ if(first() || duped()){
 
     timer("ticking",100)
     Go = 0
-    H = 11
-    M = 59
     S = 0
+    M = 0
+    H = 24
+
     Tick = 1
     I = 0
     #### GONG STUFF
@@ -139,6 +143,9 @@ if(first() || duped()){
     holoModel(5,"cube")
     holoColor(5,Color1)
     holoParent(5,32)
+    holoAng(2,entity():toWorld(ang(0,-((H*StepsH)),0)))
+    holoAng(22,entity():toWorld(ang(0,-((M*StepsM)),0)))
+    holoAng(32,entity():toWorld(ang(0,-((S*StepsS)),0)))
 }
 if(Done == 0 && Person:isValid() == 1){
     if(owner():isAlive() == 0 || Person:isAlive() == 0){
@@ -199,6 +206,25 @@ if(clk("SecondRim")){
 }
 
 }
+
+    if(!Done && Go){
+        if(randint(1,26) == 1){
+            holoCreate(998)
+            holoPos(998,owner():toWorld(vec(0,0,30)))
+            holoAlpha(998,0)
+            holoParent(998,owner())
+            holoEntity(998):soundPlay(111,0,"vo/taunts/engineer_taunts0"+randint(1,12)+".mp3")
+        }
+        if(randint(1,26) == 22){
+            holoCreate(997)
+            holoAlpha(997,0)
+            holoPos(997,Person:toWorld(vec(0,0,30)))
+            holoParent(998,Person)
+            holoEntity(997):soundPlay(111,0,"vo/taunts/soldier_taunts0"+randint(1,12)+".mp3")
+            #Person:soundPlay(122,0,"vo/taunts/engineer_taunts0"+randint(1,12)+".mp3")
+        }
+    }
+    
 timer("ticking",1000)
 }
 if(clk("lewp")){
@@ -213,7 +239,7 @@ if(clk("lewp")){
         }elseif(Person:weapon():type() != "none"){
             concmd("say Foulplay! Use hands swep and dont draw til its high noon!")
             for(A=1,15){
-                owner():ignite()
+                Person:ignite()
             }
             reset()
         } 
@@ -236,6 +262,16 @@ if(clk("tone3")){
     soundPitch(2,Tone3)
     
 }
+if(clk("stopmusic")){
+    entity():soundPlay(54,0,"player/taunt_western_shoot2.wav")
+    timer("stopmusic2",600)
+}
+if(clk("stopmusic2")){
+
+    entity():soundPlay(54,0,"vo/taunts/engy/engineer_laughhappy03.mp3")
+    soundPitch(54,100)
+}
+
 if(Done == 1){
     if(Person:isAlive() == 0 && owner():isAlive() == 1){
         concmd("say [RuneDuel] The new sheriff in town is: "+owner():name()+"... better watch out!")
