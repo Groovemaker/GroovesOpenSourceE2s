@@ -149,6 +149,9 @@ if(Done == 0 && Person:isValid() == 1){
 if(clk("ticking")){
 if(changed(Go) && Go == 1){
     entity():soundPlay(54,0,"ui/gamestartup15.mp3")
+    entity():soundPlay(56,0,"ambient/wind/wind_gusty1.wav")
+    soundPitch(56,77)
+    
 }
 if(Go == 1){
 S+=1
