@@ -204,10 +204,19 @@ timer("ticking",1000)
 if(clk("lewp")){
 
     if(!Done == 1 && changed(owner():weapon():type()) || !Done == 1 && changed(Person:weapon():type())){
-        if(owner():weapon():type() != "none" || Person:weapon():type() != "none"){
+        if(owner():weapon():type() != "none"){
             concmd("say Foulplay! Use hands swep and dont draw til its high noon!")
+            for(A=1,15){
+                owner():ignite()
+            }
             reset()
-        }   
+        }elseif(Person:weapon():type() != "none"){
+            concmd("say Foulplay! Use hands swep and dont draw til its high noon!")
+            for(A=1,15){
+                owner():ignite()
+            }
+            reset()
+        } 
     }
     timer("lewp",100)
 }
