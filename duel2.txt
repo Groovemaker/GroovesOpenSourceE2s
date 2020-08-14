@@ -3,7 +3,7 @@
 @outputs 
 @persist Scale Go Person:entity StepsH StepsM H M S Done Tick StepsS I Gong NumCol:vector Color1:vector MidColor:vector Delay Tone1 Tone2 Tone3
 @trigger 
-
+@model models/props_junk/sawblade001a.mdl
 interval(100)
 runOnChat(1)
 if(Go == 0 && chatClk(owner())){
@@ -23,7 +23,7 @@ if(Go == 0 && chatClk(owner())){
 if(first() || duped()){
     entity():soundPlay(54,0,"player/taunt_bumpkins_banjo_music.wav")
     soundPitch(54,100)
-    timer("stopmusic",1000)
+    timer("stopmusic",1500)
     print("Welcome to RuneDuel!")
     print("Type: !duel <player> to duel someone!")
     print("When the clock hits high noon, it will begin.")
@@ -56,7 +56,7 @@ if(first() || duped()){
     StepsM = 6
     StepsS = 6
 
-    entity():setAlpha(0)
+    #entity():setAlpha(0)
     holoCreate(188)
     holoModel(188,"hq_cylinder")
     holoPos(188,entity():toWorld(vec(0,0,2*Scale)))
@@ -69,7 +69,7 @@ if(first() || duped()){
     holoScale(128,vec(0.01))
     holoAlpha(128,0)
     holoParent(128,entity())
-    entity():setAlpha(0)
+    #entity():setAlpha(0)
     holoPos(128,entity():toWorld(vec(0,0,1*Scale)))
     holoAng(128,entity():toWorld(ang(0,0,0)))
     for(I=1,13){
