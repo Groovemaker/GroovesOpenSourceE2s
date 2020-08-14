@@ -213,14 +213,14 @@ if(clk("SecondRim")){
             holoPos(998,owner():toWorld(vec(0,0,30)))
             holoAlpha(998,0)
             holoParent(998,owner())
-            holoEntity(998):soundPlay(111,0,"vo/taunts/engineer_taunts0"+randint(1,12)+".mp3")
+            holoEntity(998):soundPlay(111,0,"vo/taunts/engineer_taunts0"+randint(1,9)+".mp3")
         }
         if(randint(1,26) == 22){
             holoCreate(997)
             holoAlpha(997,0)
             holoPos(997,Person:toWorld(vec(0,0,30)))
             holoParent(998,Person)
-            holoEntity(997):soundPlay(111,0,"vo/taunts/soldier_taunts0"+randint(1,12)+".mp3")
+            holoEntity(997):soundPlay(111,0,"vo/taunts/soldier_taunts0"+randint(1,9)+".mp3")
             #Person:soundPlay(122,0,"vo/taunts/engineer_taunts0"+randint(1,12)+".mp3")
         }
     }
