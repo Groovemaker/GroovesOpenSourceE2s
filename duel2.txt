@@ -14,6 +14,8 @@ if(Go == 0 && chatClk(owner())){
         Person = findPlayerByName(Args)
         Person:plySetHealth(1)
         owner():plySetHealth(1)
+        Person:plySetArmor(0)
+        owner():plySetArmor(0)
         Go = 1
         timer("lewp",1000)
     }
