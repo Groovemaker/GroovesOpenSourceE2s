@@ -155,7 +155,6 @@ holoAng(2,entity():toWorld(ang(0,-((H*StepsH)),0)))
 holoAng(22,entity():toWorld(ang(0,-((M*StepsM)),0)))
 holoAng(32,entity():toWorld(ang(0,-((S*StepsS)),0)))
 if(Tick == 1){
-    S+=1
     entity():soundPlay(1,0,"buttons/lightswitch2.wav")
     soundPitch(1,111)
     Tick = 0
@@ -165,8 +164,7 @@ if(Tick == 1){
     soundPitch(1,105)
     Tick = 1
 }
-print(Done)
-print(S)
+
 if(Gong && changed(S) && S >= 60 && Done == 0){
     S = 0
     M = 0
