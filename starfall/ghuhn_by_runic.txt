@@ -1,0 +1,153 @@
+--@name GHuhn by Runic
+--@author
+--@shared
+
+-- GHuhn by Runic, a Moorhuhn clone in StarfallEx!
+-- (c) 2020 Runic. 
+-- Modification and Redistribution is allowed, but attribute me as the author.
+
+
+-- CODE BEGINS HERE:
+
+-- SHARED CODE
+Range = 100
+Chickens = {}
+ChickensM = {}
+Snds = {}
+SpawnSnds = {}
+Speed = {}
+Dirs = {}
+I = 0
+
+function spawnhuhn(Pos)
+
+    I = I + 1
+    Dirs[I] = math.random(1,2)
+    if Dirs[I] == 1 then
+        Chickens[I] = holograms.create(chip():getPos()+Vector(0,0,100)+Pos, Angle(0,90,0), "models/chicken/chicken.mdl", Vector(1,1,1)*2)
+        ChickensM[I] = prop.create(chip():getPos()+Vector(0,0,100)+Pos, Angle(0,90,0), "models/hunter/blocks/cube05x05x05.mdl", Vector(1,1,1)*2,1)
+        Chickens[I]:setAnimation("flap_falling")
+        Chickens[I].Number = I
+        Speed[I] = math.random(7,22)
+        SpawnSnds[I] = sounds.create(ChickensM[I], "ambient/creatures/chicken_idle_02.wav", 1)
+        SpawnSnds[I]:play()
+    elseif Dirs[I] == 2 then
+        Chickens[I] = holograms.create(chip():getPos()+Vector(0,0,100)+Pos, Angle(0,-90,0), "models/chicken/chicken.mdl", Vector(1,1,1)*2)
+        ChickensM[I] = prop.create(chip():getPos()+Vector(0,0,100)+Pos, Angle(0,90,0), "models/hunter/blocks/cube05x05x05.mdl", Vector(1,1,1)*2,1)
+        Dirs[I] = 2 
+        Chickens[I]:setAnimation("flap_falling")
+        Chickens[I].Number = I
+        Speed[I] = math.random(-7,-22)
+        if sounds.canCreate() then
+            ChickensM[I]:emitSound("ambient/creatures/chicken_idle_02.wav")
+        end
+    end
+    ChickensM[I]:setColor(Color(0,0,0,0))
+end
+function removehuhn(Number)
+    if Number != nil && type(Chickens[Number]) == "Hologram" then
+        Speed[Number] = nil
+        Dirs[Number] = nil
+        ChickensM[Number]:remove()
+        ChickensM[Number] = nil
+        Chickens[Number]:remove()
+        Chickens[Number] = nil
+    end
+end
+function removehuhnShot(Number)
+    timer.simple(1,function()
+        if Number != nil && type(Chickens[Number]) == "Hologram" then
+            Speed[Number] = nil
+            Dirs[Number] = nil
+            ChickensM[Number]:remove()
+            ChickensM[Number] = nil
+            Chickens[Number]:remove()
+            Chickens[Number] = nil
+
+        end
+    end)
+end
+if SERVER and CLIENT then
+    Plys = find.allPlayers()
+end
+
+-- SERVERSIDE CODE
+if SERVER then
+    Points = 0
+    AimEnt = 0
+    timer.create("FlappyChicken",1,0,function()
+        for k,v in pairs(Chickens) do
+            v:setAnimation("flap_falling")
+            v:setPos(v:localToWorld(Vector(Speed[k],0,0)))
+        end
+    end)
+    timer.create("SpawnChickens",1,0,function()
+        if type(Chickens[I-4]) == "Hologram" then
+            removehuhn(Chickens[I-4])
+        end
+        --removehuhn(I-1)
+        ChickensphereR = find.inSphere(chip():getPos()+Vector(0,Range*4,0), Range*2.4)
+        for k,v in pairs(ChickensphereR) do
+            removehuhn(v.Number)
+        end
+        ChickensphereL = find.inSphere(chip():getPos()+Vector(0,-(Range*4),0), Range*2.4)
+        for k,v in pairs(ChickensphereL) do
+            removehuhn(v.Number)
+        end        
+        spawnhuhn(Vector(math.random(-Range,Range),math.random(-Range,Range),math.random(-Range,Range)))
+    end)
+    timer.create("MoveChickens",0.1,0,function()
+        if quotaAverage()<quotaMax()*0.5 then
+            AimEnt = owner():getEyeTrace().Entity
+            ChickensphereR = find.inSphere(chip():getPos()+Vector(0,Range*4,0), Range*1.8)
+            for k,v in pairs(ChickensphereR) do
+                removehuhn(v.Number)
+            end
+            ChickensphereL = find.inSphere(chip():getPos()+Vector(0,-(Range*4),0), Range*1.8)
+            for k,v in pairs(ChickensphereL) do
+                removehuhn(v.Number)
+            end
+            for k,v in pairs(Chickens) do
+                if v:isValid() then
+                    v:setPos(v:getPos() + (Vector(0,(Speed[k]),0)))
+                    ChickensM[v.Number]:setPos(v:getPos()+ Vector(0,0,22))
+                    ChickensM[v.Number]:setColor(Color(0,0,0,0))
+    
+                end
+            end
+        end
+    end)
+    timer.create("ShootymcShootface",1,0,function()
+        for k,v in pairs(Chickens) do
+            if v:isValid() then
+                if owner():keyDown(1) then
+                    if sounds.canCreate() then
+                        chip():emitSound("weapons/sg550/sg550-1.wav")
+                    end
+                end
+                if AimEnt == ChickensM[v.Number] && owner():keyDown(1) then
+                    if sounds.canCreate() then
+                        ChickensM[v.Number]:emitSound("ambient/creatures/chicken_death_02.wav")
+                        ChickensM[v.Number]:emitSound("physics/flesh/flesh_squishy_impact_hard3.wav")
+                        
+                    end
+                    Points = Points + 1
+                    print(Points)
+                    removehuhnShot(v.Number)
+                    Speed[v.Number] = 0
+                end
+            end
+        end
+    end)
+
+
+    for k,v in pairs(Chickens) do
+        v:setAnimation("flap_falling")
+    end
+    spawnhuhn(Vector(math.random(-Range,Range),math.random(-Range,Range),math.random(-Range,Range)))
+end
+
+-- CLIENTSIDE CODE
+if CLIENT then
+
+end
