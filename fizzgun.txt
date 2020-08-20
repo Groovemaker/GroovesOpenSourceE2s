@@ -1,7 +1,7 @@
-@name RuneTech F-11 Experimental Fizzgun
+@name Beta Physgun
 @inputs 
 @outputs 
-@persist On Prop:entity
+@persist On Prop:entity WeldTable:array
 @trigger 
 
 interval(1)
@@ -22,5 +22,20 @@ if(owner():weapon():type() == "weapon_physgun"){
         soundStop(2)
         Prop:propFreeze(1)
         On = 0
+    }
+    if(owner():keyAttack2()){
+        if(Prop:isValid()){
+            owner():soundPlay(4,0,"weapons/physgun_off.wav")
+            owner():soundPlay(3,0,"ambient/machines/slicer3.wav")
+            WeldTable:pushEntity(Prop)
+        }
+    }
+    if(owner():keyReload()){
+        foreach(K,V:entity = WeldTable){
+            owner():soundPlay(5,0,"weapons/crowbar/crowbar_impact1.wav")
+            soundPitch(5,88)
+            weld(V,WeldTable[1,entity])
+        }
+        WeldTable = array()
     }
 }
