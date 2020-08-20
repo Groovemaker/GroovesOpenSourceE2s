@@ -1,0 +1,26 @@
+@name RuneTech F-11 Experimental Fizzgun
+@inputs 
+@outputs 
+@persist On Prop:entity
+@trigger 
+
+interval(1)
+if(first() || dupefinished()){
+    On = 0
+}
+if(owner():weapon():type() == "weapon_physgun"){
+    Prop = owner():aimEntity()
+    if(owner():keyAttack1() && On != 1){
+        owner():soundPlay(1,0,"ambient/levels/citadel/field_loop1.wav")
+        owner():soundPlay(2,0,"hl1/ambience/labdrone2.wav")
+        soundPitch(1,155)
+        soundPitch(2,77)
+        On = 1
+    }
+    if(!owner():keyAttack1() && On != 0){
+        owner():soundPlay(1,0,"weapons/physgun_off.wav")
+        soundStop(2)
+        Prop:propFreeze(1)
+        On = 0
+    }
+}
