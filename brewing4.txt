@@ -1,0 +1,122 @@
+@name Runics Brewing Station
+@inputs 
+@outputs
+@persist Elixirs:table Pot:entity Definitions:table CurIngredients:array Headcrab:string Baby:string Skull:string Antlion:string Melon:string
+@trigger 
+
+
+Debug = 1
+if(first() || dupefinished()){
+    Pot = holoCreate(1)
+    holoModel(1,"models/props_halloween/halloween_medkit_large.mdl")
+    holoPos(1,entity():toWorld(vec(0,0,0)))
+    MaxIngredients = 3
+    Definitions["models/headcrabclassic.mdl":lower(),string] = "Headcrab"
+    Definitions["models/props_c17/doll01.mdl":lower(),string] = "Baby"
+    Definitions["models/Gibs/HGIBS.mdl":lower(),string] = "Skull"
+    Definitions["models/Gibs/Antlion_gib_Large_2.mdl":lower(),string] = "Antlion"
+    Definitions["models/props_junk/watermelon01.mdl":lower(),string] = "Melon"
+    
+    Headcrab = "models/headcrabclassic.mdl":lower()
+    Baby = "models/props_c17/doll01.mdl":lower()
+    Skull = "models/Gibs/HGIBS.mdl":lower()
+    Antlion = "models/Gibs/Antlion_gib_Large_2.mdl":lower()
+    Melon = "models/props_junk/watermelon01.mdl":lower()
+    holoParent(1,entity())
+    #entity():setNoCollideAll()
+    timer("mainloop",100)
+    timer("drincc",100)
+}
+function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredients:array){
+    
+    entity():soundPlay(1,0,"misc/halloween/strongman_bell_01.wav")
+    Formula = Ingredients:concat(" ")
+    
+    # Healing Potion
+    if(Formula == "Skull Skull Skull"){
+        local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
+        Elixirs[Elixir:id(),string] = "Health"
+        print("Elixir brewed: "+Elixirs[Elixir:id(),string])
+    }
+   
+    # Poison Potion
+    if(Formula == "Headcrab Antlion Skull"){
+        local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
+        Elixir:setColor(vec(0,255,0))
+        Elixirs[Elixir:id(),string] = "Poison"
+        print("Elixir brewed: "+Elixirs[Elixir:id(),string])
+    } 
+    
+    if(Formula == "Baby Skull Headcrab"){
+        local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
+        Elixir:setColor(vec(155,0,255))
+        Elixirs[Elixir:id(),string] = "Flying"
+        print("Elixir brewed: "+Elixirs[Elixir:id(),string])
+    }    
+     
+    Spawn = 1
+    Spawn = 0
+}
+
+
+if(clk("mainloop")){
+    if(perf(1)){
+        findInSphere(entity():pos(),55)
+        findClipToClass("prop_*")
+        Ingredients = findToArray()
+        if(CurIngredients:count() < 3){ 
+            foreach(V,C:entity = Ingredients){
+                if(C:model() == Headcrab || C:model() == Baby || C:model() == Skull || C:model() == Antlion || C:model() == Melon){                    
+                    C:propDelete()
+                    CurIngredients:pushString(Definitions[C:model(),string])
+                    Pot:soundPlay(randint(1,33),0,"misc/halloween/spell_pickup_rare.wav")
+                    print("Added Ingredient: "+Definitions[C:model(),string])
+                }
+            }
+        }elseif(CurIngredients:count() == 3){
+            #print("Finished!")
+            spawnPotion(entity():toWorld(vec(55,0,10)),entity():angles(),"models/props_halloween/hwn_flask_vial.mdl",CurIngredients)
+            CurIngredients:clear()
+        }
+        timer("mainloop",30)
+    }else{
+        timer("mainloop",450)
+    }
+
+}
+
+
+if(clk("drincc")){
+    if(perf(1)){
+        findByModel("models/props_halloween/hwn_flask_vial.mdl")
+        Cans = findToArray()
+        foreach(V,Can:entity = Cans){
+            foreach(V,Ply:entity = players()){
+                Form = Elixirs[Can:id(),string]
+                #print(Form)
+                
+                if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Health"){
+                    Can:propDelete()
+                    Ply:soundPlay(2,0,"misc/halloween/merasmus_stun.wav")
+                    Ply:plySetHealth(Ply:health()+35)
+                }
+                
+                if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Poison"){
+                    Can:propDelete()
+                    Ply:soundPlay(2,0,"misc/halloween/spell_bat_cast.wav")
+                    Ply:plySetHealth(Ply:health()-999999)
+                }
+
+                if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Flying"){
+                    Can:propDelete()
+                    Ply:soundPlay(2,0,"misc/halloween/spell_athletic.wav")
+                    Ply:plyApplyForce(vec(0,0,10000))
+                }
+            }
+        }
+        timer("drincc",10)
+    }else{
+        timer("drincc",250)
+    }
+
+}
