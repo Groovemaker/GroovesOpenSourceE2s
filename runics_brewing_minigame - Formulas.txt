@@ -1,0 +1,39 @@
+# Healing Potion
+## Skull Skull Skull
+
+------------------------
+   
+# Poison Potion
+## Headcrab Antlion Skull
+
+------------------------
+    
+# Flying Potion
+## Baby Skull Headcrab
+
+------------------------
+    
+# Invis Potion
+## Skull Skull Antlion
+
+------------------------
+    
+# Vispotion
+## Skull Skull Headcrab
+
+------------------------
+    
+# Laughing Potion
+## Skull Antlion_Venom Melon
+
+------------------------
+    
+# Gravity Defying Potion
+## Antlion_Venom Baby Baby
+
+------------------------
+    
+# Gravity Antidote
+## Antlion_Venom Baby Skull
+
+------------------------
