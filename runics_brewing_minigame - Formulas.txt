@@ -14,7 +14,7 @@
 ------------------------
     
 # Invis Potion
-## Skull Skull Antlion
+## Skull Skull [Antlion (Shadowy)]
 
 ------------------------
 
@@ -29,7 +29,7 @@
 ------------------------
         
 # Vispotion
-## Skull Skull Headcrab
+## Skull Skull [Antlion (Raw)]
 
 ------------------------
     
@@ -39,7 +39,7 @@
 ------------------------
 
 # Fire Potion
-## Skull Skull Antlion_Venom
+## Skull Skull [Skull (Ablaze)]
 
 ------------------------
 
