@@ -108,6 +108,17 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
         entity():soundPlay(1,0,"misc/halloween/strongman_bell_01.wav")
         Success = 1
     }
+    
+    # Meteor Potion
+    if(Formula == "Antlion_Venom Antlion_Venom Antlion_Venom"){
+        local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
+        Elixir:setColor(vec(100,255,0))
+        Elixirs[Elixir:id(),string] = "Meteor"
+        print("Elixir brewed: "+Elixirs[Elixir:id(),string])
+        entity():soundPlay(1,0,"misc/halloween/strongman_bell_01.wav")
+        Success = 1
+    }
+    
     # Water Potion
     if(Formula == "Skull Skull Melon"){
         local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
@@ -271,7 +282,20 @@ if(clk("throwables")){
                         HolEnt:soundPlay(2,0,"misc/halloween/spell_fireball_cast.wav")
                         Ply:plyIgnite()
                     }
-                    
+                    if(Form == "Meteor"){
+                        HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
+                        Can:propDelete()
+                        HolEnt:soundPlay(2,0,"play misc/halloween/spell_meteor_impact.wav")
+                        Exploder = propSpawn("models/props_phx/cannonball.mdl",1)
+                        Exploder:setPos(Ply:pos())
+                        Exploder:propBreak()
+                        Exploder = propSpawn("models/props_phx/cannonball.mdl",1)
+                        Exploder:setPos(Ply:pos())
+                        Exploder:propBreak()
+                        Exploder = propSpawn("models/props_phx/cannonball.mdl",1)
+                        Exploder:setPos(Ply:pos())
+                        Exploder:propBreak()
+                    }                    
                     if(Form == "Water"){
                         HolEnt:setPos(Ply:toWorld(vec(0,0,10)))       
                         Can:propDelete()
