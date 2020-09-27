@@ -27,7 +27,17 @@
 ## Skull Antlion_Venom Melon
 
 ------------------------
-    
+
+# Fire Potion
+## Skull Skull Antlion_Venom
+
+------------------------
+
+# Water Potion
+## Skull Skull Melon
+
+------------------------
+
 # Gravity Defying Potion
 ## Antlion_Venom Baby Baby
 

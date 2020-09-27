@@ -1,7 +1,7 @@
 @name Runics Brewing Station
 @inputs 
 @outputs
-@persist Elixirs:table Pot:entity Definitions:table CurIngredients:array Antlion_Venom:string Headcrab:string Baby:string Skull:string Antlion:string Melon:string
+@persist Elixirs:table HolEnt:entity Pot:entity Definitions:table CurIngredients:array Antlion_Venom:string Headcrab:string Baby:string Skull:string Antlion:string Melon:string
 @trigger 
 
 
@@ -10,6 +10,8 @@ if(first() || dupefinished()){
     Pot = holoCreate(1)
     holoModel(1,"models/props_halloween/halloween_medkit_large.mdl")
     holoPos(1,entity():toWorld(vec(0,0,0)))
+    HolEnt = holoCreate(2)
+    holoAlpha(2,0)
     MaxIngredients = 3
     Definitions["models/headcrabclassic.mdl":lower(),string] = "Headcrab"
     Definitions["models/props_c17/doll01.mdl":lower(),string] = "Baby"
@@ -28,6 +30,7 @@ if(first() || dupefinished()){
     #entity():setNoCollideAll()
     timer("mainloop",100)
     timer("drincc",100)
+    timer("throwables",100)
 }
 function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredients:array){
     
@@ -88,6 +91,25 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
         local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
         Elixir:setColor(vec(255,255,0))
         Elixirs[Elixir:id(),string] = "Laughing"
+        print("Elixir brewed: "+Elixirs[Elixir:id(),string])
+        entity():soundPlay(1,0,"misc/halloween/strongman_bell_01.wav")
+        Success = 1
+    }
+
+    # Fire Potion
+    if(Formula == "Skull Skull Antlion_Venom"){
+        local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
+        Elixir:setColor(vec(255,255,0))
+        Elixirs[Elixir:id(),string] = "Fire"
+        print("Elixir brewed: "+Elixirs[Elixir:id(),string])
+        entity():soundPlay(1,0,"misc/halloween/strongman_bell_01.wav")
+        Success = 1
+    }
+    # Water Potion
+    if(Formula == "Skull Skull Melon"){
+        local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
+        Elixir:setColor(vec(255,255,0))
+        Elixirs[Elixir:id(),string] = "Water"
         print("Elixir brewed: "+Elixirs[Elixir:id(),string])
         entity():soundPlay(1,0,"misc/halloween/strongman_bell_01.wav")
         Success = 1
@@ -160,33 +182,38 @@ if(clk("drincc")){
                 #print(Form)
                 
                 if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Health"){
+                    HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
                     Can:propDelete()
-                    Ply:soundPlay(2,0,"misc/halloween/merasmus_stun.wav")
+                    HolEnt:soundPlay(2,0,"misc/halloween/merasmus_stun.wav")
                     Ply:plySetHealth(Ply:health()+35)
                 }
                 
                 if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Laughing"){
+                    HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
                     Can:propDelete()
-                    Ply:soundPlay(2,0,"misc/halloween/merasmus_stun.wav")
-                    Ply:soundPlay(3,0,"items/halloween/crazy02.wav")
+                    HolEnt:soundPlay(2,0,"misc/halloween/merasmus_stun.wav")
+                    HolEnt:soundPlay(3,0,"items/halloween/crazy02.wav")
                     Ply:plyApplyForce(vec(0,0,111))
                 }
                             
                 if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Poison"){
+                    HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
                     Can:propDelete()
-                    Ply:soundPlay(2,0,"misc/halloween/spell_bat_cast.wav")
+                    HolEnt:soundPlay(2,0,"misc/halloween/spell_bat_cast.wav")
                     Ply:takeDamage(Ply:health())
                 }
 
                 if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Flying"){
+                    HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
                     Can:propDelete()
-                    Ply:soundPlay(2,0,"misc/halloween/spell_athletic.wav")
+                    HolEnt:soundPlay(2,0,"misc/halloween/spell_athletic.wav")
                     Ply:plyApplyForce(vec(0,0,10000))
                 }
                 
                 if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Invis"){
+                    HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
                     Can:propDelete()
-                    Ply:soundPlay(2,0,"misc/halloween/spell_stealth.wav")
+                    HolEnt:soundPlay(2,0,"misc/halloween/spell_stealth.wav")
                     Ply:setMaterial("models/effects/vol_light002")
                     foreach(V,Ch:entity = Ply:children()){
                         Ch:setMaterial("models/effects/vol_light002")
@@ -194,8 +221,9 @@ if(clk("drincc")){
                 }
 
                 if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Vis"){
+                    HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
                     Can:propDelete()
-                    Ply:soundPlay(2,0,"misc/halloween/spell_stealth.wav")
+                    HolEnt:soundPlay(2,0,"misc/halloween/spell_stealth.wav")
                     Ply:setMaterial("")
                     foreach(V,Ch:entity = Ply:children()){
                         Ch:setMaterial("")
@@ -203,14 +231,16 @@ if(clk("drincc")){
                 }
                 
                 if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Gravdefy"){
+                    HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
                     Can:propDelete()
-                    Ply:soundPlay(2,0,"misc/halloween/spell_bat_cast.wav")
+                    HolEnt:soundPlay(2,0,"misc/halloween/spell_bat_cast.wav")
                     Ply:plySetGravity(100)
                 }
                 
                 if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Grav"){
+                    HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
                     Can:propDelete()
-                    Ply:soundPlay(2,0,"misc/halloween/spell_bat_impact.wav")
+                    HolEnt:soundPlay(2,0,"misc/halloween/spell_bat_impact.wav")
                     Ply:plySetGravity(600)
                 }
             }
@@ -218,6 +248,41 @@ if(clk("drincc")){
         timer("drincc",10)
     }else{
         timer("drincc",250)
+    }
+
+}
+if(clk("throwables")){
+    if(perf(1)){
+        findByModel("models/props_halloween/hwn_flask_vial.mdl")
+        Cans = findToArray()
+        foreach(V,Can:entity = Cans){
+            foreach(V,Ply:entity = players()){
+                Form = Elixirs[Can:id(),string]
+                #print(Form)
+                
+                if(Ply:pos():distance(Can:pos()) < 77 && !Can:isPlayerHolding()){    
+                    
+                    if(Form == "Fire"){
+                        HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
+                        Can:propDelete()
+                        HolEnt:soundPlay(2,0,"misc/halloween/spell_fireball_cast.wav")
+                        Ply:plyIgnite()
+                    }
+                    
+                    if(Form == "Water"){
+                        HolEnt:setPos(Ply:toWorld(vec(0,0,10)))       
+                        Can:propDelete()
+                        HolEnt:soundPlay(2,0,"misc/halloween/spell_overheal.wav")
+                        Ply:plyExtinguish()
+                    }
+                                        
+                }
+            
+            }
+        }
+        timer("throwables",10)
+    }else{
+        timer("throwables",150)
     }
 
 }
