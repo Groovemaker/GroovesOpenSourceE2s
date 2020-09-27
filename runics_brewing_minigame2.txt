@@ -220,20 +220,20 @@ if(clk("drincc")){
                 #print(Form)
                 
                 if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Homing"){
-                    HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
+                    holoPos(holoIndex(HolEnt),Ply:toWorld(vec(0,0,10)))
                     Can:propDelete()
                     HolEnt:soundPlay(2,0,"misc/halloween/spell_bat_cast.wav")
                     Ply:teleport(owner():toWorld(vec(0,80,0)))
                 }
                 if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Health"){
-                    HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
+                    holoPos(holoIndex(HolEnt),Ply:toWorld(vec(0,0,10)))
                     Can:propDelete()
                     HolEnt:soundPlay(2,0,"misc/halloween/merasmus_stun.wav")
                     Ply:plySetHealth(Ply:health()+35)
                 }
                 
                 if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Laughing"){
-                    HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
+                    holoPos(holoIndex(HolEnt),Ply:toWorld(vec(0,0,10)))
                     Can:propDelete()
                     HolEnt:soundPlay(2,0,"misc/halloween/merasmus_stun.wav")
                     HolEnt:soundPlay(3,0,"items/halloween/crazy02.wav")
@@ -241,7 +241,7 @@ if(clk("drincc")){
                 }
                             
                 if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Poison"){
-                    HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
+                    holoPos(holoIndex(HolEnt),Ply:toWorld(vec(0,0,10)))
                     Can:propDelete()
                     HolEnt:soundPlay(2,0,"misc/halloween/spell_bat_cast.wav")
                     Ply:plySetHealth(-Ply:health())
@@ -249,14 +249,14 @@ if(clk("drincc")){
                 }
 
                 if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Flying"){
-                    HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
+                    holoPos(holoIndex(HolEnt),Ply:toWorld(vec(0,0,10)))
                     Can:propDelete()
                     HolEnt:soundPlay(2,0,"misc/halloween/spell_athletic.wav")
                     Ply:plyApplyForce(vec(0,0,10000))
                 }
                 
                 if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Invis"){
-                    HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
+                    holoPos(holoIndex(HolEnt),Ply:toWorld(vec(0,0,10)))
                     Can:propDelete()
                     HolEnt:soundPlay(2,0,"misc/halloween/spell_stealth.wav")
                     Ply:setMaterial("models/effects/vol_light002")
@@ -266,7 +266,7 @@ if(clk("drincc")){
                 }
 
                 if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Vis"){
-                    HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
+                    holoPos(holoIndex(HolEnt),Ply:toWorld(vec(0,0,10)))
                     Can:propDelete()
                     HolEnt:soundPlay(2,0,"misc/halloween/spell_stealth.wav")
                     Ply:setMaterial("")
@@ -276,14 +276,14 @@ if(clk("drincc")){
                 }
                 
                 if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Gravdefy"){
-                    HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
+                    holoPos(holoIndex(HolEnt),Ply:toWorld(vec(0,0,10)))
                     Can:propDelete()
                     HolEnt:soundPlay(2,0,"misc/halloween/spell_bat_cast.wav")
                     Ply:plySetGravity(100)
                 }
                 
                 if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Grav"){
-                    HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
+                    holoPos(holoIndex(HolEnt),Ply:toWorld(vec(0,0,10)))
                     Can:propDelete()
                     HolEnt:soundPlay(2,0,"misc/halloween/spell_bat_impact.wav")
                     Ply:plySetGravity(600)
@@ -308,14 +308,14 @@ if(clk("throwables")){
                 if(Ply:pos():distance(Can:pos()) < 77 && !Can:isPlayerHolding()){    
                     
                     if(Form == "Fire"){
-                        HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
+                        holoPos(holoIndex(HolEnt),Ply:toWorld(vec(0,0,10)))
                         Can:propDelete()
                         HolEnt:soundPlay(2,0,"misc/halloween/spell_fireball_cast.wav")
                         HolEnt:soundPlay(4,0,"physics/glass/glass_sheet_break1.wav")
                         Ply:plyIgnite()
                     }
                     if(Form == "Meteor"){
-                        HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
+                        holoPos(holoIndex(HolEnt),Ply:toWorld(vec(0,0,10)))
                         Can:propDelete()
                         HolEnt:soundPlay(2,0,"play misc/halloween/spell_meteor_impact.wav")
                         HolEnt:soundPlay(4,0,"physics/glass/glass_sheet_break1.wav")
@@ -330,14 +330,14 @@ if(clk("throwables")){
                         Exploder:propBreak()
                     }                    
                     if(Form == "Water"){
-                        HolEnt:setPos(Ply:toWorld(vec(0,0,10)))       
+                        holoPos(holoIndex(HolEnt),Ply:toWorld(vec(0,0,10)))       
                         Can:propDelete()
                         HolEnt:soundPlay(2,0,"misc/halloween/spell_overheal.wav")
                         HolEnt:soundPlay(4,0,"physics/glass/glass_sheet_break1.wav")
                         Ply:plyExtinguish()
                     }
                     if(Form == "Res" && !Ply:isAlive()){
-                        HolEnt:setPos(Ply:toWorld(vec(0,0,10)))       
+                        holoPos(holoIndex(HolEnt),Ply:toWorld(vec(0,0,10)))       
                         Can:propDelete()
                         HolEnt:soundPlay(2,0,"misc/halloween/spell_overheal.wav")
                         OldPos = Ply:pos()
