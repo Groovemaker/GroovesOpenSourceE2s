@@ -50,7 +50,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
     }
    
     # Poison Potion
-    if(Formula == "Headcrab Antlion Skull"){
+    if(Formula == "Melon Antlion_Venom Skull" && IColors[1,vector] == vec(0,0,0) && IColors[3,vector] == vec(0,0,0)){
         local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
         Elixir:setColor(vec(0,255,0))
         Elixirs[Elixir:id(),string] = "Poison"
