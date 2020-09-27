@@ -45,7 +45,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
         local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
         Elixirs[Elixir:id(),string] = "Health"
         print("Elixir brewed: "+Elixirs[Elixir:id(),string])
-        entity():soundPlay(1,0,"misc/halloween/strongman_bell_01.wav")
+        entity():soundPlay(1,0,"misc/halloween/gotohell.wav")
         Success = 1
     }
    
@@ -55,7 +55,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
         Elixir:setColor(vec(0,255,0))
         Elixirs[Elixir:id(),string] = "Poison"
         print("Elixir brewed: "+Elixirs[Elixir:id(),string])
-        entity():soundPlay(1,0,"misc/halloween/strongman_bell_01.wav")
+        entity():soundPlay(1,0,"misc/halloween/gotohell.wav")
         Success = 1
     } 
     
@@ -65,7 +65,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
         Elixir:setColor(vec(155,0,255))
         Elixirs[Elixir:id(),string] = "Flying"
         print("Elixir brewed: "+Elixirs[Elixir:id(),string])
-        entity():soundPlay(1,0,"misc/halloween/strongman_bell_01.wav")
+        entity():soundPlay(1,0,"misc/halloween/gotohell.wav")
         Success = 1
     }
     
@@ -75,7 +75,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
         Elixir:setColor(vec(155,0,255))
         Elixirs[Elixir:id(),string] = "Invis"
         print("Elixir brewed: "+Elixirs[Elixir:id(),string])
-        entity():soundPlay(1,0,"misc/halloween/strongman_bell_01.wav")
+        entity():soundPlay(1,0,"misc/halloween/gotohell.wav")
         Success = 1
     }
     
@@ -85,7 +85,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
         Elixir:setColor(vec(155,0,255))
         Elixirs[Elixir:id(),string] = "Vis"
         print("Elixir brewed: "+Elixirs[Elixir:id(),string])
-        entity():soundPlay(1,0,"misc/halloween/strongman_bell_01.wav")
+        entity():soundPlay(1,0,"misc/halloween/gotohell.wav")
         Success = 1
     }
     
@@ -95,7 +95,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
         Elixir:setColor(vec(255,255,0))
         Elixirs[Elixir:id(),string] = "Laughing"
         print("Elixir brewed: "+Elixirs[Elixir:id(),string])
-        entity():soundPlay(1,0,"misc/halloween/strongman_bell_01.wav")
+        entity():soundPlay(1,0,"misc/halloween/gotohell.wav")
         Success = 1
     }
 
@@ -105,7 +105,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
         Elixir:setColor(vec(255,255,0))
         Elixirs[Elixir:id(),string] = "Fire"
         print("Elixir brewed: "+Elixirs[Elixir:id(),string])
-        entity():soundPlay(1,0,"misc/halloween/strongman_bell_01.wav")
+        entity():soundPlay(1,0,"misc/halloween/gotohell.wav")
         Success = 1
     }
     
@@ -115,7 +115,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
         Elixir:setColor(vec(100,255,0))
         Elixirs[Elixir:id(),string] = "Meteor"
         print("Elixir brewed: "+Elixirs[Elixir:id(),string])
-        entity():soundPlay(1,0,"misc/halloween/strongman_bell_01.wav")
+        entity():soundPlay(1,0,"misc/halloween/gotohell.wav")
         Success = 1
     }
     
@@ -125,7 +125,17 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
         Elixir:setColor(vec(0,155,255))
         Elixirs[Elixir:id(),string] = "Water"
         print("Elixir brewed: "+Elixirs[Elixir:id(),string])
-        entity():soundPlay(1,0,"misc/halloween/strongman_bell_01.wav")
+        entity():soundPlay(1,0,"misc/halloween/gotohell.wav")
+        Success = 1
+    }
+
+    # Resurrection Potion
+    if(Formula == "Melon Melon Melon"){
+        local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
+        Elixir:setColor(vec(0,255,0))
+        Elixirs[Elixir:id(),string] = "Res"
+        print("Elixir brewed: "+Elixirs[Elixir:id(),string])
+        entity():soundPlay(1,0,"misc/halloween/gotohell.wav")
         Success = 1
     }
     
@@ -135,7 +145,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
         Elixir:setColor(vec(11,255,255))
         Elixirs[Elixir:id(),string] = "Gravdefy"
         print("Elixir brewed: "+Elixirs[Elixir:id(),string])
-        entity():soundPlay(1,0,"misc/halloween/strongman_bell_01.wav")
+        entity():soundPlay(1,0,"misc/halloween/gotohell.wav")
         Success = 1
     }
     
@@ -145,7 +155,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
         Elixir:setColor(vec(255,0,0))
         Elixirs[Elixir:id(),string] = "Grav"
         print("Elixir brewed: "+Elixirs[Elixir:id(),string])
-        entity():soundPlay(1,0,"misc/halloween/strongman_bell_01.wav")
+        entity():soundPlay(1,0,"misc/halloween/gotohell.wav")
         Success = 1
     }
     if(Success == 0){
@@ -302,7 +312,15 @@ if(clk("throwables")){
                         HolEnt:soundPlay(2,0,"misc/halloween/spell_overheal.wav")
                         Ply:plyExtinguish()
                     }
-                                        
+                    if(Form == "Res"){
+                        HolEnt:setPos(Ply:toWorld(vec(0,0,10)))       
+                        Can:propDelete()
+                        HolEnt:soundPlay(2,0,"misc/halloween/spell_overheal.wav")
+                        OldPos = Ply:pos()
+                        Ply:plySpawn()
+                        Ply:teleport(OldPos)
+                        print("Ressurected: "+Ply:name())
+                    }                                        
                 }
             
             }
