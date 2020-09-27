@@ -41,7 +41,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
     Formula = Ingredients:concat(" ")
     Success = 0
     # Healing Potion
-    if(Formula == "Skull Skull Skull" && IFire[3,number] == 0){
+    if(Formula == "Skull Skull Skull" && IColors[1,vector] == vec(255,255,255) && IColors[2,vector] == vec(255,255,255) && IColors[3,vector] == vec(255,255,255) && IFire[3,number] == 0){
         local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
         Elixirs[Elixir:id(),string] = "Health"
         print("Elixir brewed: "+Elixirs[Elixir:id(),string])
@@ -50,7 +50,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
     }
    
     # Poison Potion
-    if(Formula == "Melon Antlion_Venom Skull" && IColors[1,vector] == vec(0,0,0) && IColors[3,vector] == vec(0,0,0)){
+    if(Formula == "Melon Antlion_Venom Skull" && IColors[1,vector] == vec(0,0,0) && IColors[2,vector] == vec(255,255,255) && IColors[3,vector] == vec(0,0,0)){
         local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
         Elixir:setColor(vec(0,255,0))
         Elixirs[Elixir:id(),string] = "Poison"
@@ -60,7 +60,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
     } 
     
     # Flying Potion
-    if(Formula == "Baby Skull Headcrab"){
+    if(Formula == "Baby Skull Headcrab"  && IColors[1,vector] == vec(255,255,255) && IColors[2,vector] == vec(255,255,255) && IColors[3,vector] == vec(255,255,255) && IFire[3,number] == 0){
         local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
         Elixir:setColor(vec(155,0,255))
         Elixirs[Elixir:id(),string] = "Flying"
@@ -70,7 +70,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
     }
     
     # Invis Potion
-    if(Formula == "Skull Skull Antlion" && IColors[3,vector] == vec(0,0,0)){
+    if(Formula == "Skull Skull Antlion" && IColors[1,vector] == vec(255,255,255) && IColors[2,vector] == vec(255,255,255) && IColors[3,vector] == vec(0,0,0)){
         local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
         Elixir:setColor(vec(155,0,255))
         Elixirs[Elixir:id(),string] = "Invis"
@@ -79,7 +79,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
         Success = 1
     }
     # Vispotion
-    if(Formula == "Skull Skull Antlion" && IColors[3,vector] == vec(255,255,255)){
+    if(Formula == "Skull Skull Antlion" && IColors[1,vector] == vec(255,255,255) && IColors[2,vector] == vec(255,255,255) && IColors[3,vector] == vec(255,255,255)){
         local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
         Elixir:setColor(vec(155,0,255))
         Elixirs[Elixir:id(),string] = "Vis"
@@ -89,7 +89,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
     }
     
     # Laughing Potion
-    if(Formula == "Skull Antlion_Venom Melon" && IColors[3,vector] == vec(0,0,0)){
+    if(Formula == "Skull Antlion_Venom Melon" && IColors[1,vector] == vec(255,255,255) && IColors[2,vector] == vec(255,255,255) && IColors[3,vector] == vec(0,0,0)){
         local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
         Elixir:setColor(vec(255,255,0))
         Elixirs[Elixir:id(),string] = "Laughing"
@@ -97,9 +97,19 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
         entity():soundPlay(1,0,"misc/halloween/gotohell.wav")
         Success = 1
     }
-
+    
+    # Homing Potion
+    if(Formula == "Skull Antlion_Venom Melon" && IColors[1,vector] == vec(0,0,0) && IColors[2,vector] == vec(255,255,255) && IColors[3,vector] == vec(0,0,0)){
+        local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
+        Elixir:setColor(vec(111,0,255))
+        Elixirs[Elixir:id(),string] = "Homing"
+        print("Elixir brewed: "+Elixirs[Elixir:id(),string])
+        entity():soundPlay(1,0,"misc/halloween/gotohell.wav")
+        Success = 1
+    }
+    
     # Fire Potion
-    if(Formula == "Skull Skull Skull" && IFire[3,number] == 1){
+    if(Formula == "Skull Skull Skull" && IColors[1,vector] == vec(255,255,255) && IColors[2,vector] == vec(255,255,255) && IColors[3,vector] == vec(255,255,255) && IFire[3,number] == 1){
         local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
         Elixir:setColor(vec(255,255,0))
         Elixirs[Elixir:id(),string] = "Fire"
@@ -109,7 +119,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
     }
     
     # Meteor Potion
-    if(Formula == "Antlion_Venom Antlion_Venom Antlion_Venom"){
+    if(Formula == "Antlion_Venom Antlion_Venom Antlion_Venom" && IColors[1,vector] == vec(255,255,255) && IColors[2,vector] == vec(255,255,255) && IColors[3,vector] == vec(255,255,255) && IFire[3,number] == 0){
         local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
         Elixir:setColor(vec(100,255,0))
         Elixirs[Elixir:id(),string] = "Meteor"
@@ -119,7 +129,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
     }
     
     # Water Potion
-    if(Formula == "Skull Skull Melon"){
+    if(Formula == "Skull Skull Melon" && IColors[1,vector] == vec(255,255,255) && IColors[2,vector] == vec(255,255,255) && IColors[3,vector] == vec(255,255,255) && IFire[3,number] == 0){
         local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
         Elixir:setColor(vec(0,155,255))
         Elixirs[Elixir:id(),string] = "Water"
@@ -139,7 +149,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
     }
     
     # Gravity Defying Potion
-    if(Formula == "Antlion_Venom Baby Baby"){
+    if(Formula == "Antlion_Venom Baby Baby" && IColors[1,vector] == vec(255,255,255) && IColors[2,vector] == vec(255,255,255) && IColors[3,vector] == vec(255,255,255) && IFire[3,number] == 0){
         local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
         Elixir:setColor(vec(11,255,255))
         Elixirs[Elixir:id(),string] = "Gravdefy"
@@ -149,7 +159,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
     }
     
     # Gravity Antidote
-    if(Formula == "Antlion_Venom Baby Skull"){
+    if(Formula == "Antlion_Venom Baby Skull" && IColors[1,vector] == vec(255,255,255) && IColors[2,vector] == vec(255,255,255) && IColors[3,vector] == vec(255,255,255) && IFire[3,number] == 0){
         local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
         Elixir:setColor(vec(255,0,0))
         Elixirs[Elixir:id(),string] = "Grav"
@@ -209,6 +219,12 @@ if(clk("drincc")){
                 Form = Elixirs[Can:id(),string]
                 #print(Form)
                 
+                if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Homing"){
+                    HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
+                    Can:propDelete()
+                    HolEnt:soundPlay(2,0,"misc/halloween/spell_bat_cast.wav")
+                    Ply:teleport(owner():toWorld(vec(0,80,0)))
+                }
                 if(Ply:aimEntity() == Can && Ply:keyUse() && Form == "Health"){
                     HolEnt:setPos(Ply:toWorld(vec(0,0,10)))
                     Can:propDelete()
