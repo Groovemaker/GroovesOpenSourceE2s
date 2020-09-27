@@ -129,7 +129,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
     }
 
     # Resurrection Potion
-    if(Formula == "Melon Melon Melon"){
+    if(Formula == "Melon Antlion_Venom Antlion_Venom"&& IColors[2,vector] == vec(0,255,0) && IColors[3,vector] == vec(0,255,255)){
         local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
         Elixir:setColor(vec(0,255,0))
         Elixirs[Elixir:id(),string] = "Res"
