@@ -89,7 +89,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
     }
     
     # Laughing Potion
-    if(Formula == "Skull Antlion_Venom Melon"){
+    if(Formula == "Skull Antlion_Venom Melon" && IColors[3,vector] == vec(0,0,0)){
         local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
         Elixir:setColor(vec(255,255,0))
         Elixirs[Elixir:id(),string] = "Laughing"
