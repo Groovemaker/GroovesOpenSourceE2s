@@ -108,7 +108,7 @@ function spawnPotion(SpawnVec:vector, SpawnAng:angle, SodaModel:string,Ingredien
     # Water Potion
     if(Formula == "Skull Skull Melon"){
         local Elixir = propSpawn(SodaModel,SpawnVec,SpawnAng,0)
-        Elixir:setColor(vec(255,255,0))
+        Elixir:setColor(vec(0,155,255))
         Elixirs[Elixir:id(),string] = "Water"
         print("Elixir brewed: "+Elixirs[Elixir:id(),string])
         entity():soundPlay(1,0,"misc/halloween/strongman_bell_01.wav")
