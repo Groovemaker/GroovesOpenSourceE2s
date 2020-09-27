@@ -312,7 +312,7 @@ if(clk("throwables")){
                         HolEnt:soundPlay(2,0,"misc/halloween/spell_overheal.wav")
                         Ply:plyExtinguish()
                     }
-                    if(Form == "Res"){
+                    if(Form == "Res" && !Ply:isAlive()){
                         HolEnt:setPos(Ply:toWorld(vec(0,0,10)))       
                         Can:propDelete()
                         HolEnt:soundPlay(2,0,"misc/halloween/spell_overheal.wav")
