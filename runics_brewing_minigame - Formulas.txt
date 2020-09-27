@@ -1,59 +1,63 @@
+@name Runics Brewing Formulas
+@model models/props_manor/bookcase_132_01.mdl
+
+
 # Healing Potion
 ## Skull Skull Skull
 
-------------------------
+#------------------------
    
 # Poison Potion
 ## Headcrab Antlion Skull
 
-------------------------
+#------------------------
     
 # Flying Potion
 ## Baby Skull Headcrab
 
-------------------------
+#------------------------
     
 # Invis Potion
 ## Skull Skull [Antlion (Shadowy)]
 
-------------------------
+#------------------------
 
 # Meteor Potion
 ## Antlion_Venom Antlion_Venom Antlion_Venom
 
-------------------------
+#------------------------
 
 # Resurrection Potion
-## Melon [Antlion Blood Green as Slime] [Cyanium Bottle]
+## [Blackthorn Melon] [Antlion Blood Green as Slime] [Cyanium Bottle]
 
-------------------------
+#------------------------
         
 # Vispotion
 ## Skull Skull [Antlion (Raw)]
 
-------------------------
+#------------------------
     
 # Laughing Potion
 ## Skull Antlion_Venom [Blackthorn Melon]
 
-------------------------
+#------------------------
 
 # Fire Potion
 ## Skull Skull [Skull (Ablaze)]
 
-------------------------
+#------------------------
 
 # Water Potion
 ## Skull Skull Melon
 
-------------------------
+#------------------------
 
 # Gravity Defying Potion
 ## Antlion_Venom Baby Baby
 
-------------------------
+#------------------------
     
 # Gravity Antidote
 ## Antlion_Venom Baby Skull
 
-------------------------
+#------------------------
