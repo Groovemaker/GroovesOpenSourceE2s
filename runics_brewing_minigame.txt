@@ -4,6 +4,9 @@
 @persist Elixirs:table HolEnt:entity Pot:entity Definitions:table CurIngredients:array Antlion_Venom:string Headcrab:string Baby:string Skull:string Antlion:string Melon:string
 @trigger 
 
+### MADE BY RUNIC/GROOVE!
+
+### Special thanks to radlic for helping with bugfixing
 
 Debug = 1
 if(first() || dupefinished()){
