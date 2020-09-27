@@ -159,7 +159,7 @@ if(clk("mainloop")){
                     print("Added Ingredient: "+Definitions[C:model(),string])
                 }
             }
-        }elseif(CurIngredients:count() == 3){
+        }elseif(CurIngredients:count() >= 3){
             #print("Finished!")
             spawnPotion(entity():toWorld(vec(55,0,10)),entity():angles(),"models/props_halloween/hwn_flask_vial.mdl",CurIngredients)
             CurIngredients:clear()
