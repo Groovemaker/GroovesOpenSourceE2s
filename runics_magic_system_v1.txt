@@ -16,7 +16,7 @@ if(first() || dupefinished()){
     Doable = 1
     function spellimpact(Sp:string){
         if(Sp == "expelliarmus"){
-            findInSphere(holoEntity(338):pos(),55)
+            findInSphere(Shootpos,65)
             Stuffs = findToArray()
             foreach(V,Prp:entity = Stuffs){
                 if(Prp:isPlayer()){
@@ -29,13 +29,26 @@ if(first() || dupefinished()){
             holoDelete(338)
         }
         if(Sp == "incendio"){
-            findInSphere(holoEntity(338):pos(),55)
+            findInSphere(Shootpos,85)
             Stuffs = findToArray()
             foreach(V,Prp:entity = Stuffs){
                 if(Prp:isPlayer() || Prp:type():find("prop")){
                     print(Prp)
                     if(canTouch(Prp)){
                         Prp:ignite()
+                    }
+                }
+            }
+            holoDelete(338)
+        }   
+        if(Sp == "reductio"){
+            findInSphere(Shootpos,65)
+            Stuffs = findToArray()
+            foreach(V,Prp:entity = Stuffs){
+                if(Prp:type():find("prop")){
+                    print(Prp)
+                    if(canTouch(Prp)){
+                        Prp:propBreak()
                     }
                 }
             }
@@ -80,21 +93,20 @@ if(chatClk(owner())){
         SpellTrailColor = vec(255,200,55)
         SpellTrailMat = "trails/laser"
     }
+    if(Spellword == "reductio"){
+        print("changed spell to: "+Spellword)
+        CurSpell = Spellword
+        SpellColor = vec(255,156,0)
+        SpellTrailColor = vec(200,111,255)
+        SpellTrailMat = "trails/laser"
+    }
 }
 
 if(owner():weapon():type() == "none"){
     if(owner():keyAttack1() && Doable == 1){
         
         Shootpos = owner():eyeTrace():pos()
-        if(CurSpell == "expelliarmus"){
-            holoEntity(1):soundPlay(1,0,"misc/halloween/spell_stealth.wav")
-        }
-        if(CurSpell == "incendio"){
-            holoEntity(1):soundPlay(1,0,"misc/halloween/spell_fireball_cast.wav")
-        }
-        if(CurSpell == "bombarda"){
-            holoEntity(1):soundPlay(1,0,"misc/halloween/spell_meteor_cast.wav")
-        }
+
         holoCreate(338)
         holoAlpha(338,0)
         #holoEntity(338):setTrails(188,155,0.15,"trails/laser",vec(255,233,0), 255)  
@@ -105,6 +117,20 @@ if(owner():weapon():type() == "none"){
         holoScale(338,vec(1,0.5,0.5))
         holoColor(338,SpellColor)
         holoEntity(338):setTrails(55,55,1,SpellTrailMat,SpellTrailColor, 255)   
+        if(CurSpell == "expelliarmus"){
+            holoEntity(1):soundPlay(1,0,"misc/halloween/spell_stealth.wav")
+        }
+        if(CurSpell == "incendio"){
+            holoEntity(1):soundPlay(1,0,"misc/halloween/spell_fireball_cast.wav")
+            holoEntity(338):ignite()
+        }
+        if(CurSpell == "bombarda"){
+            holoEntity(1):soundPlay(1,0,"misc/halloween/spell_meteor_cast.wav")
+            holoEntity(338):ignite()
+        }
+        if(CurSpell == "reductio"){
+            holoEntity(1):soundPlay(1,0,"misc/halloween/spell_teleport.wav")
+        }
         Fired = 1
 
         Doable = 0
