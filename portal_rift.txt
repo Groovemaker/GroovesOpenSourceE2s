@@ -264,7 +264,9 @@ if(DioRando == 5 && Beams == 1){
     RandVec = entity():toWorld(vec(randint(-MaxRange12,MaxRange12),randint(-MaxRange12,MaxRange12),10))
     local NPC = npcSpawn(Class,RandVec)
     foreach(V,CName:string = Aliens){
-        NPC:npcRelationship(CName,"hate",999)
+        print(CName)
+        NPC:npcRelationship(CName,"neutral",999)
+        NPC:npcRelationship(CName,"hate",0)
     }
     NPC:npcRelationship("Player","hate",999)
     beamPoint(3,holoEntity(99))
