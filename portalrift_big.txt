@@ -1,0 +1,327 @@
+@name Black Mesa Portal Rift Generator
+@inputs ToggleRotor ToggleDarkMatter Rift
+@outputs 
+@persist Power PortM ASpeed Aliens:array RiftS Beams Counter PCounter2 PSpeed2 MaxPitch2 Speed ACounter MaxA MaxSpeed MaxPitch PCounter PSpeed
+@trigger
+@model models/props_combine/combine_mine01.mdl
+
+######################################*
+#           Portal Rift              #*
+######################################*
+#                                    #*
+#   Author: Groove/Runic             #*
+#   Usage:  Mini Resonance-Cascade   #*
+#   Have Fun!                        #*
+#                                    #*
+######################################*
+
+
+interval(100)
+if(first() || dupefinished()){
+    holoCreate(1)
+    holoPos(1,entity():toWorld(vec(0,0,240)))
+    holoModel(1,"icosphere")
+    holoMaterial(1,"models/shiny")
+    holoAlpha(1,0)
+    holoColor(1,vec(0))
+    holoScale(1,vec(2))
+    Aliens:pushString("npc_headcrab")
+    Aliens:pushString("npc_vortigaunt")
+    Aliens:pushString("npc_antlion")
+    PortM = 2
+    Power = 0
+    OverInterval = 2000
+    Iter = 0
+    Temp = 0
+    Overheating = 0
+    TempSpeed = 100
+    MaxTemp = 5000
+    MinTemp = 3000
+    Counter = 0
+    PCounter = 0
+    PCounter2 = 0
+    ACounter = 0
+    Speed = 2
+    PSpeed = 5
+    PSpeed2 = 10
+    ASpeed = 0.05
+    MaxSpeed = 77
+    MaxPitch = 233
+    MaxPitch2 = 155
+    MaxA = 2
+    Pieces = 5
+    PiecesRotor = 3
+    RingModel = "models/props_combine/combine_interface001.mdl"
+    RotorModel = "models/props_combine/CombineThumper001a.mdl"
+    Mat = ""
+    RotorMat = ""
+    Multiplier = 5
+    holoCreate(88)
+    holoModel(88,"hq_sphere")
+    holoScale(88,vec(2,2,2))
+    holoPos(88,entity():toWorld(vec(0,0,105)*Multiplier))
+    holoDisableShading(88,1)
+    holoColor(88,vec(255,255,255))
+    holoMaterial(88,"models/props_c17/fisheyelens")
+    holoShadow(88,0)
+    holoAlpha(88,255)
+    holoCreate(89)
+    holoModel(89,"hq_sphere")
+    holoScale(89,vec(2,2,2))
+    holoPos(89,entity():toWorld(vec(0,0,105)*Multiplier))
+    holoDisableShading(89,1)
+    holoColor(89,vec(0,0,0))
+    holoMaterial(89,"models/shiny")
+    holoShadow(89,0)
+    holoAlpha(89,255)
+    holoParent(89,88)
+    
+    spriteSpawn(1,"sprites/light_glow02_add")
+    spriteSetRendermode(1,5)
+    spriteSetColor(1,vec(55,255,55))
+    spriteSetPos(1,holoEntity(88):pos())
+    spriteSetScale(1,0)
+    
+    holoScale(88,vec(0))
+    spriteSetFramerate(1,15)
+    
+    holoCreate(99)
+    holoPos(99,entity():toWorld(vec(0,0,700)*PortM))
+    holoModel(99,"models/effects/portalrift.mdl")
+    holoScale(99,vec(0)*PortM)
+    holoAlpha(99,255)
+    holoEntity(99):setRenderMode(5)
+    
+  
+    
+    for(I=44,44+Pieces){
+        holoCreate(I)
+        holoPos(I,entity():toWorld(vec(0,0,0)))        
+        holoModel(I,RingModel)
+        holoMaterial(I,Mat)
+        holoAng(I,entity():toWorld(ang(90,I*60,0)))
+        holoColor(I,vec(255))
+        holoPos(I,entity():toWorld(vec(0,0,-5)*Multiplier))
+        holoScale(I,vec(1)*Multiplier)
+    }
+    for(I=44+Pieces+1,44+Pieces+PiecesRotor){
+        print(I*11)
+        holoCreate(I)
+        holoPos(I,entity():toWorld(vec(0,0,0)))        
+        holoModel(I,RotorModel)
+        holoMaterial(I,Mat)
+        holoAng(I,entity():toWorld(ang(90,I*120,0)))
+        holoColor(I,vec(255))
+        holoPos(I,entity():toWorld(vec(0,0,2)*Multiplier))
+        holoScale(I,vec(0.15,0.15,0.2)*Multiplier)
+        holoParent(I,1)
+        holoCreate(I*11)
+        holoPos(I*11,holoEntity(I):toWorld(vec(0,0,100)*Multiplier))
+        holoParent(66,1)
+        holoAlpha(I*11,0)
+        holoScale(I*11,vec(5))
+    }
+
+
+}
+if(changed(ToggleRotor) == 1){
+    Power = ToggleRotor
+  
+}
+else{
+    Power = ToggleRotor
+}
+if(changed(ToggleDarkMatter) == 1){
+    DM = ToggleDarkMatter
+  
+}
+else{
+    DM = ToggleDarkMatter
+}
+if(changed(Rift) == 1){
+    RiftS = Rift
+  
+}
+else{
+    RiftS = Rift
+}
+Speed = 1
+TempSpeed = 100
+PSpeed = 5
+ASpeed = 0.5
+MaxSpeed = 44
+MaxPitch = 233
+MaxA = 22
+MaxTemp = 5000
+
+if(Power == 1){
+    if(PCounter < MaxPitch){
+        PCounter+=PSpeed
+    }
+    if(Counter < MaxSpeed){
+        Counter+=Speed
+    }
+
+}
+
+else{
+
+    if(PCounter2 <= 0){
+        PCounter2 = 0
+    }
+    PCounter2-=PSpeed2
+    if(PCounter2 <= 0){
+        PCounter2 = 0
+    }
+    Counter-=Speed    
+    if(Counter <= 0){
+        Counter = 0
+    }
+    PCounter-=PSpeed
+    if(PCounter <= 0){
+        PCounter = 0
+    }
+
+}
+if(DM == 1 && Power == 1){
+    spriteEnable(1,1)
+    if(ACounter < MaxA ){
+        ACounter+=ASpeed
+    }
+    if(PCounter2 < MaxPitch2){
+        PCounter2+=PSpeed2
+    }
+}
+else{
+    ACounter-=ASpeed
+    if(ACounter <= 0){
+        ACounter = 0
+        spriteSetScale(1,0)
+        spriteEnable(1,0)
+    }
+    PCounter2-=PSpeed2
+    if(PCounter2 <= 0){
+        PCounter2 = 0
+    }
+}
+if(changed(Power) && Power == 1){
+    holoEntity(1):soundPlay(1,0,"ambient/levels/citadel/citadel_drone_loop1.wav")
+    holoEntity(1):soundPlay(2,0,"ambient/levels/citadel/zapper_ambient_loop1.wav")
+    MinTemp = 3000
+
+}elseif(changed(Power) && Power == 0){
+    MinTemp = 0
+}
+
+if(RiftS == 1 && Power == 1 && DM == 1  && ACounter == MaxA){
+
+    Beams = 1
+}elseif(RiftS == 0 || Power == 0 || DM == 0){
+
+    beamSize(1,0)
+    holoScale(99,vec(0))
+    Beams = 0
+    
+}
+if(changed(Beams) && Beams == 1){
+    beamPoint(1,holoEntity(89))
+    beamPoint(2,holoEntity(99))
+
+    beamPoint(4,holoEntity(550))
+    beamPoint(5,holoEntity(99))
+    
+    beamPoint(7,holoEntity(561))
+    beamPoint(8,holoEntity(99))
+    
+    beamPoint(10,holoEntity(572))
+    beamPoint(11,holoEntity(99))
+
+
+    beamSize(155)
+    beamAlpha(255)
+    beamMaterial("trails/physbeam")
+    beamColor(vec(11,255,11))
+    holoScale(99,vec(1))
+    spriteSetScale(1,7)
+    entity():soundPlay(5,0,"ambient/levels/labs/electric_explosion3.wav")
+    
+    holoScale(99,vec(0.3)*PortM)
+    # Portal Sprites
+    spriteSpawn(11,"sprites/light_glow02_add")
+    spriteSetRendermode(11,5)
+    spriteSetColor(11,vec(55,255,55))
+    spriteSetPos(11,holoEntity(99):pos())
+    spriteSetScale(11,55*PortM)
+    spriteSpawn(12,"sprites/magic")
+    spriteSetColor(12,vec(55,255,55))
+    spriteSetPos(12,holoEntity(99):pos())
+    spriteSetScale(12,3*PortM)
+    spriteSetAlpha(12,200)
+    spriteSpawn(13,"sprites/animglow02")
+    spriteSetColor(13,vec(55,255,111))
+    spriteSetPos(13,holoEntity(99):pos())
+    spriteSetScale(13,3*PortM)  
+}elseif(changed(Beams) && Beams != 1){
+    beamClear(1)
+    entity():soundPlay(5,0,"ambient/levels/labs/electric_explosion4.wav")
+
+}
+
+soundPitch(1,PCounter)
+soundPitch(2,PCounter2)
+holoAng(1,holoEntity(1):toWorld(ang(0,Counter,0)))
+holoScale(88,vec(-ACounter*2))
+if(Beams != 1){
+    spriteSetScale(1,ACounter*0.6)
+}
+
+DioRando = randint(1,44)
+
+if(DioRando == 5 && Beams == 1){
+    Class = Aliens[randint(1,Aliens:count()),string]
+    MaxRange12 = 600
+    RandVec = entity():toWorld(vec(randint(-MaxRange12,MaxRange12),randint(-MaxRange12,MaxRange12),10))
+    local NPC = npcSpawn(Class,RandVec)
+    foreach(V,CName:string = Aliens){
+        print(CName)
+        NPC:npcRelationship(CName,"neutral",999)
+        NPC:npcRelationship(CName,"hate",0)
+    }
+    NPC:npcRelationship("Player","hate",999)
+    beamPoint(13,holoEntity(99))
+    beamPoint(14,RandVec)
+    beamSize(13,55)
+    beamAlpha(13,255)
+    beamMaterial(13,"trails/physbeam")
+    beamColor(13,vec(11,255,11))
+    holoScale(13,vec(1))
+    spriteSpawn(21,"sprites/light_glow02_add")
+    spriteSetRendermode(21,5)
+    spriteSetColor(21,vec(55,255,55))
+    spriteSetPos(21,RandVec)
+    spriteSetScale(21,1*PortM)
+    spriteSpawn(22,"sprites/magic")
+    spriteSetColor(22,vec(55,255,55))
+    spriteSetPos(22,RandVec)
+    spriteSetScale(22,0.5*PortM)
+    spriteSetAlpha(22,200)
+    spriteSpawn(23,"sprites/animglow02")
+    spriteSetColor(23,vec(55,255,111))
+    spriteSetPos(23,RandVec)
+    spriteSetScale(23,0.5*PortM)
+    spriteEnable(21,1)
+    spriteEnable(22,1)
+    spriteEnable(23,1)
+    entity():soundPlay(5,0,"ambient/energy/weld2.wav")
+    timer("grooveremove",500)
+}
+if(clk("grooveremove")){
+    beamPoint(3,holoEntity(99))
+    beamPoint(4,holoEntity(99))
+    beamSize(3,0)
+    beamAlpha(3,0)
+    spriteEnable(21,0)
+    spriteEnable(22,0)
+    spriteEnable(23,0)    
+}
+holoScale(89,vec(ACounter / 2))
