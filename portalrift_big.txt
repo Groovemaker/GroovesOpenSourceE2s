@@ -105,7 +105,7 @@ if(first() || dupefinished()){
         holoScale(I,vec(1)*Multiplier)
     }
     for(I=44+Pieces+1,44+Pieces+PiecesRotor){
-        print(I*11)
+        print(I)
         holoCreate(I)
         holoPos(I,entity():toWorld(vec(0,0,0)))        
         holoModel(I,RotorModel)
@@ -115,13 +115,7 @@ if(first() || dupefinished()){
         holoPos(I,entity():toWorld(vec(0,0,2)*Multiplier))
         holoScale(I,vec(0.15,0.15,0.2)*Multiplier)
         holoParent(I,1)
-        holoCreate(I*11)
-        holoPos(I*11,holoEntity(I):toWorld(vec(0,0,100)*Multiplier))
-        holoParent(66,1)
-        holoAlpha(I*11,0)
-        holoScale(I*11,vec(5))
     }
-
 
 }
 if(changed(ToggleRotor) == 1){
@@ -227,15 +221,8 @@ if(changed(Beams) && Beams == 1){
     beamPoint(1,holoEntity(89))
     beamPoint(2,holoEntity(99))
 
-    beamPoint(4,holoEntity(550))
-    beamPoint(5,holoEntity(99))
-    
-    beamPoint(7,holoEntity(561))
-    beamPoint(8,holoEntity(99))
-    
-    beamPoint(10,holoEntity(572))
-    beamPoint(11,holoEntity(99))
-
+    beamPoint(4,holoEntity(1):toWorld(vec(0,0,-150)))
+    beamPoint(5,holoEntity(88))
 
     beamSize(155)
     beamAlpha(255)
@@ -262,7 +249,7 @@ if(changed(Beams) && Beams == 1){
     spriteSetPos(13,holoEntity(99):pos())
     spriteSetScale(13,3*PortM)  
 }elseif(changed(Beams) && Beams != 1){
-    beamClear(1)
+    beamClear()
     entity():soundPlay(5,0,"ambient/levels/labs/electric_explosion4.wav")
 
 }
@@ -277,7 +264,7 @@ if(Beams != 1){
 
 DioRando = randint(1,44)
 
-if(DioRando == 5 && Beams == 1){
+if(DioRando == 1235 && Beams == 1){
     Class = Aliens[randint(1,Aliens:count()),string]
     MaxRange12 = 600
     RandVec = entity():toWorld(vec(randint(-MaxRange12,MaxRange12),randint(-MaxRange12,MaxRange12),10))
@@ -288,13 +275,13 @@ if(DioRando == 5 && Beams == 1){
         NPC:npcRelationship(CName,"hate",0)
     }
     NPC:npcRelationship("Player","hate",999)
-    beamPoint(13,holoEntity(99))
-    beamPoint(14,RandVec)
-    beamSize(13,55)
-    beamAlpha(13,255)
-    beamMaterial(13,"trails/physbeam")
-    beamColor(13,vec(11,255,11))
-    holoScale(13,vec(1))
+    beamPoint(3,holoEntity(99))
+    beamPoint(4,RandVec)
+    beamSize(3,55)
+    beamAlpha(3,255)
+    beamMaterial(3,"trails/physbeam")
+    beamColor(3,vec(11,255,11))
+    holoScale(3,vec(1))
     spriteSpawn(21,"sprites/light_glow02_add")
     spriteSetRendermode(21,5)
     spriteSetColor(21,vec(55,255,55))
