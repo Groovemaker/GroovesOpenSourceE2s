@@ -264,9 +264,9 @@ if(Beams != 1){
 
 DioRando = randint(1,44)
 
-if(DioRando == 1235 && Beams == 1){
+if(DioRando == 5 && Beams == 1){
     Class = Aliens[randint(1,Aliens:count()),string]
-    MaxRange12 = 600
+    MaxRange12 = 900
     RandVec = entity():toWorld(vec(randint(-MaxRange12,MaxRange12),randint(-MaxRange12,MaxRange12),10))
     local NPC = npcSpawn(Class,RandVec)
     foreach(V,CName:string = Aliens){
@@ -275,13 +275,13 @@ if(DioRando == 1235 && Beams == 1){
         NPC:npcRelationship(CName,"hate",0)
     }
     NPC:npcRelationship("Player","hate",999)
-    beamPoint(3,holoEntity(99))
-    beamPoint(4,RandVec)
-    beamSize(3,55)
-    beamAlpha(3,255)
-    beamMaterial(3,"trails/physbeam")
-    beamColor(3,vec(11,255,11))
-    holoScale(3,vec(1))
+    beamPoint(5,holoEntity(99))
+    beamPoint(6,RandVec)
+    beamSize(5,55)
+    beamAlpha(5,255)
+    beamMaterial(5,"trails/physbeam")
+    beamColor(5,vec(11,255,11))
+    holoScale(5,vec(1))
     spriteSpawn(21,"sprites/light_glow02_add")
     spriteSetRendermode(21,5)
     spriteSetColor(21,vec(55,255,55))
@@ -303,10 +303,10 @@ if(DioRando == 1235 && Beams == 1){
     timer("grooveremove",500)
 }
 if(clk("grooveremove")){
-    beamPoint(3,holoEntity(99))
-    beamPoint(4,holoEntity(99))
-    beamSize(3,0)
-    beamAlpha(3,0)
+    beamPoint(5,holoEntity(99))
+    beamPoint(6,holoEntity(99))
+    beamSize(5,0)
+    beamAlpha(5,0)
     spriteEnable(21,0)
     spriteEnable(22,0)
     spriteEnable(23,0)    
