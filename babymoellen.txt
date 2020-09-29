@@ -1,0 +1,51 @@
+@name Ah yes, BABY
+@inputs 
+@outputs 
+@persist Target:entity RandInt OldRandInt SND:string SP
+@trigger 
+@model models/props_c17/doll01.mdl
+
+
+interval(100)
+
+Target = findPlayerByName("run")
+entity():setAlpha(0)
+entity():propNotSolid(1)
+entity():setPos(Target:pos())
+
+
+
+
+
+if(first()){
+holoCreate(1)
+holoAlpha(1,0)
+holoPos(1,Target:toWorld(vec(0,0,0)))
+holoParent(1,Target)
+
+holoCreate(2)
+holoPos(2,Target:toWorld(vec(0,40,40)))
+
+holoCreate(3)
+holoPos(3,Target:toWorld(vec(0,-40,40)))
+holoParent(2,1)
+holoParent(3,1)
+for(I=1,3){
+    holoScale(I,vec(2))
+    holoModel(I,"models/props_c17/doll01.mdl")
+}
+SP = 10
+timer("rasp_voice",33)
+timer("loop",10)
+SND = ""
+}
+
+holoAng(1,holoEntity(1):toWorld(ang(0,15,0)))
+
+if(clk("rasp_voice")){
+    if(streamCanStart()){
+        #print("a")
+        entity():streamStart(randint(1,11),"https://dl.dropbox.com/s/whwwy2ri8t71cuq/nerf.mp3?dl=1")
+    }
+    timer("rasp_voice",666)
+}
