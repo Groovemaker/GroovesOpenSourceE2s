@@ -27,6 +27,7 @@ if(first() || dupefinished()){
     holoScale(1,vec(2))
     Aliens:pushString("npc_headcrab")
     Aliens:pushString("npc_vortigaunt")
+    Aliens:pushString("npc_antlion")
     PortM = 2
     Power = 0
     OverInterval = 2000
