@@ -1,6 +1,6 @@
 @name Black Mesa Portal Rift Generator
 @inputs ToggleRotor ToggleDarkMatter Rift
-@outputs 
+@outputs Override
 @persist Power PortM ASpeed Aliens:array RiftS Beams Counter PCounter2 PSpeed2 MaxPitch2 Speed ACounter MaxA MaxSpeed MaxPitch PCounter PSpeed
 @trigger
 @model models/props_combine/combine_mine01.mdl
@@ -25,6 +25,17 @@ if(first() || dupefinished()){
     holoAlpha(1,0)
     holoColor(1,vec(0))
     holoScale(1,vec(2))
+    Override = 1
+    holoCreate(193)
+    holoModel(193,"models/props_c17/FurnitureBoiler001a.mdl")
+    holoScale(193,vec(5,5,2.5))
+    holoPos(193,entity():toWorld(vec(0,23,0)))
+    holoMaterial(193,"models/props_combine/combine_monitorbay_sheet")
+    holoCreate(194)
+    holoModel(194,"models/props_c17/FurnitureBoiler001a.mdl")
+    holoScale(194,vec(11,11,1))
+    holoPos(194,holoEntity(193):toWorld(vec(0,40,0)))
+    holoMaterial(194,"models/props_combine/combine_monitorbay_sheet")
     Aliens:pushString("npc_headcrab")
     Aliens:pushString("npc_vortigaunt")
     Aliens:pushString("npc_antlion")
@@ -92,8 +103,6 @@ if(first() || dupefinished()){
     holoAlpha(99,255)
     holoEntity(99):setRenderMode(5)
     
-  
-    
     for(I=44,44+Pieces){
         holoCreate(I)
         holoPos(I,entity():toWorld(vec(0,0,0)))        
@@ -102,7 +111,7 @@ if(first() || dupefinished()){
         holoAng(I,entity():toWorld(ang(90,I*60,0)))
         holoColor(I,vec(255))
         holoPos(I,entity():toWorld(vec(0,0,-5)*Multiplier))
-        holoScale(I,vec(1)*Multiplier)
+        holoScale(I,vec(0.4,1,1)*Multiplier)
     }
     for(I=44+Pieces+1,44+Pieces+PiecesRotor){
 
@@ -113,7 +122,7 @@ if(first() || dupefinished()){
         holoAng(I,entity():toWorld(ang(90,I*120,0)))
         holoColor(I,vec(255))
         holoPos(I,entity():toWorld(vec(0,0,2)*Multiplier))
-        holoScale(I,vec(0.15,0.15,0.2)*Multiplier)
+        holoScale(I,vec(0.08,0.18,0.2)*Multiplier)
         holoParent(I,1)
     }
 
@@ -248,10 +257,15 @@ if(changed(Beams) && Beams == 1){
     spriteSetColor(13,vec(55,255,111))
     spriteSetPos(13,holoEntity(99):pos())
     spriteSetScale(13,3*PortM)  
+    spriteEnable(11,1)
+    spriteEnable(12,1)
+    spriteEnable(13,1)
 }elseif(changed(Beams) && Beams != 1){
     beamClear()
     entity():soundPlay(5,0,"ambient/levels/labs/electric_explosion4.wav")
-
+    spriteEnable(11,0)
+    spriteEnable(12,0)
+    spriteEnable(13,0)
 }
 
 soundPitch(1,PCounter)
