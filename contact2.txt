@@ -1,7 +1,7 @@
-@name Combine Portal Rift Generator (CPRG)
+@name Runeic's Gambit
 @inputs
 @outputs Override
-@persist ToggleRotor ToggleDarkMatter Rift Power PortM ASpeed Motes:array Saymsg:string MotesA Pts RandHG PlyMotes:table PlyPoints:table CurNPCs:array Aliens:array RiftS Beams Counter PCounter2 PSpeed2 MaxPitch2 Speed ACounter MaxA MaxSpeed MaxPitch PCounter PSpeed
+@persist ToggleRotor ToggleDarkMatter Rift Power PortM ASpeed Motes:array CurNPCs2:table Saymsg:string MotesA Pts RandHG PlyMotes:table PlyPoints:table CurNPCs:array Aliens:array RiftS Beams Counter PCounter2 PSpeed2 MaxPitch2 Speed ACounter MaxA MaxSpeed MaxPitch PCounter PSpeed
 @trigger
 @model models/props_combine/combine_mine01.mdl
 runOnChat(1)
@@ -10,7 +10,7 @@ runOnChat(1)
 ######################################*
 #                                    #*
 #   Author: Groove/Runic             #*
-#   Usage:  Mini Resonance-Cascade   #*
+#   Usage:  Gambit Perfected         #*
 #   Have Fun!                        #*
 #                                    #*
 ######################################*
@@ -31,7 +31,7 @@ if(chatClk()){
     }
 }
 if(first() || dupefinished()){
-    Saymsg = "[Runic's Gambit] Alright alright alright, public event spawned!"
+    Saymsg = "[Runic's Gambit] Alright alright alright, public event spawned! First one to score 70 points gets drinks on me."
     timer("saymsg",900)
     holoCreate(1)
     holoPos(1,entity():toWorld(vec(0,0,240)))
@@ -297,6 +297,7 @@ if(DioRando == 5 && Beams == 1){
     RandVec = entity():toWorld(vec(randint(-MaxRange12,MaxRange12),randint(-MaxRange12,MaxRange12),10))
     NPC = npcSpawn(Class,RandVec)
     CurNPCs:pushEntity(NPC)
+    CurNPCs2[NPC:id(),entity] = NPC
     if(Class == "npc_metropolice"){
         NPC:npcGiveWeapon("smg1")
     }
@@ -334,9 +335,9 @@ if(DioRando == 5 && Beams == 1){
     entity():soundPlay(5,0,"ambient/energy/weld2.wav")
     timer("grooveremove",500)
 }
-foreach(V,NP:entity = CurNPCs){
-
-    if(!NP:isAlive() || !NP:isValid()){
+for(I=1,CurNPCs:count()){
+    NP = CurNPCs2[CurNPCs[I,entity]:id(),entity]
+    if(changed(NP:isAlive()) && !NP:isAlive() || changed(NP:isValid()) && !NP:isValid()){
         Mote = propSpawn("models/phxtended/trieq1x1x1.mdl",NP:pos(),0)
         Mote:setAlpha(0)
         RandH = randint(300,999)
@@ -362,7 +363,8 @@ foreach(V,NP:entity = CurNPCs){
         holoAng(RandH+1,holoEntity(RandH):toWorld(ang(0,0,0)))
         holoParent(RandH+1,Mote)
         Motes:pushEntity(Mote)
-        CurNPCs:removeEntity(CurNPCs:getIndex(NP))    
+        CurNPCs:removeEntity(I)
+        CurNPCs2:removeEntity(CurNPCs[I,entity]:id())  
     }
 }
 
@@ -382,10 +384,14 @@ foreach(V,Mot:entity = Motes){
     }
 }
 foreach(V,Ply:entity = players()){
+    if(PlyPoints[Ply:name()+";"+Ply:steamID(),number] == 60){
+            Saymsg = Ply:name()+" wins this match! He's a killermachine! The others: do better next time..."
+            timer("saymsg",900)        
+    }
     if(!Ply:isAlive()){
         PlyMotes[Ply:name()+";"+Ply:steamID(),number] = 0
     }
-        if(changed(Ply:pos():distance(entity():pos()) < 77)){
+        if(changed(Ply:pos():distance(entity():pos()) < 77) && PlyMotes[Ply:name()+";"+Ply:steamID(),number] != 0){
             holoCreate(959)
             holoAlpha(959,0)
             holoPos(959,entity():pos())
@@ -394,7 +400,15 @@ foreach(V,Ply:entity = players()){
             TempP = PlyPoints[Ply:name()+";"+Ply:steamID(),number]
             TempP += PlyMotes[Ply:name()+";"+Ply:steamID(),number]
             PlyPoints[Ply:name()+";"+Ply:steamID(),number] = TempP
+            MoteShow = PlyMotes[Ply:name()+";"+Ply:steamID(),number]
+            MoteOne = "Motes"
+            if(MoteShow == 1){
+                MoteOne = "Mote"
+            }
+            Saymsg = Ply:name()+", you put "+ PlyMotes[Ply:name()+";"+Ply:steamID(),number]+" "+MoteOne+" into the bank and got a total of "+PlyPoints[Ply:name()+";"+Ply:steamID(),number]+" points!"
+            timer("saymsg",900)
             PlyMotes[Ply:name()+";"+Ply:steamID(),number] = 0
+
         }
 }
 if(clk("grooveremove")){
