@@ -31,7 +31,7 @@ if(chatClk()){
     }
 }
 if(first() || dupefinished()){
-    Saymsg = "[Runic's Gambit] Alright alright alright, public event spawned! First one to score 70 points gets drinks on me."
+    Saymsg = "[Runic's Gambit] Alright alright alright, public event spawned! First one to score 50 points gets drinks on me."
     timer("saymsg",900)
     holoCreate(1)
     holoPos(1,entity():toWorld(vec(0,0,240)))
@@ -384,9 +384,10 @@ foreach(V,Mot:entity = Motes){
     }
 }
 foreach(V,Ply:entity = players()){
-    if(PlyPoints[Ply:name()+";"+Ply:steamID(),number] == 60){
+    if(changed(PlyPoints[Ply:name()+";"+Ply:steamID(),number]) && PlyPoints[Ply:name()+";"+Ply:steamID(),number] >= 50){
             Saymsg = Ply:name()+" wins this match! He's a killermachine! The others: do better next time..."
-            timer("saymsg",900)        
+            timer("saymsg",900)
+            timer("roundover",1200)    
     }
     if(!Ply:isAlive()){
         PlyMotes[Ply:name()+";"+Ply:steamID(),number] = 0
@@ -422,5 +423,8 @@ if(clk("grooveremove")){
 }
 if(clk("saymsg")){
     concmd("say "+Saymsg)
+}
+if(clk("roundover")){
+    selfDestructAll()
 }
 holoScale(89,vec(ACounter / 2))
