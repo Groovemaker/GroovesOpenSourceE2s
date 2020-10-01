@@ -1,0 +1,361 @@
+@name Runeic's Gambit
+@inputs
+@outputs Override
+@persist ToggleRotor ToggleDarkMatter Rift MoteIDs:table Power PortM ASpeed Motes:array CurNPCs2:table Saymsg:string MotesA Pts RandHG PlyMotes:table PlyPoints:table CurNPCs:array Aliens:array RiftS Beams Counter PCounter2 PSpeed2 MaxPitch2 Speed ACounter MaxA MaxSpeed MaxPitch PCounter PSpeed
+@trigger
+@model models/props_combine/combine_mine01.mdl
+runOnChat(1)
+######################################*
+#           Portal Rift              #*
+######################################*
+#                                    #*
+#   Author: Groove/Runic             #*
+#   Usage:  Gambit Perfected         #*
+#   Have Fun!                        #*
+#                                    #*
+######################################*
+
+
+interval(300)
+
+if(chatClk()){
+    Ply = lastSpoke()
+    if(lastSaid() == "!g_motes"){
+        MotesA = PlyMotes[Ply:name()+";"+Ply:steamID(),number]
+        Saymsg = Ply:name()+", you have "+ MotesA +" Motes."
+        timer("saymsg",900)
+    }
+    if(lastSaid() == "!g_points"){
+        Pts = PlyPoints[Ply:name()+";"+Ply:steamID(),number]
+        Saymsg = Ply:name()+", you have "+ Pts +" points."
+        timer("saymsg",900)
+    }
+}
+if(first() || dupefinished()){
+    Saymsg = "[Runic's Gambit] Alright alright alright, public event spawned! First one to score 50 points gets drinks on me."
+    timer("saymsg",900)
+    holoCreate(1)
+    holoPos(1,entity():toWorld(vec(0,0,240)))
+    holoModel(1,"icosphere")
+    holoMaterial(1,"models/shiny")
+    holoAlpha(1,0)
+    holoColor(1,vec(0))
+    holoScale(1,vec(2))
+    Override = 1
+    holoCreate(193)
+    holoModel(193,"models/props_c17/FurnitureBoiler001a.mdl")
+    holoScale(193,vec(5,5,2.5))
+    holoPos(193,entity():toWorld(vec(0,23,0)))
+    holoMaterial(193,"models/props_combine/combine_monitorbay_sheet")
+    holoCreate(194)
+    holoModel(194,"models/props_c17/FurnitureBoiler001a.mdl")
+    holoScale(194,vec(11,11,1))
+    holoPos(194,holoEntity(193):toWorld(vec(0,40,0)))
+    holoMaterial(194,"models/props_combine/combine_monitorbay_sheet")
+    Aliens:pushString("npc_metropolice")
+Speed = 1
+TempSpeed = 100
+PSpeed = 5
+ASpeed = 0.5
+MaxSpeed = 44
+MaxPitch = 233
+MaxA = 22
+MaxTemp = 5000
+    PortM = 2
+    Power = 0
+    OverInterval = 2000
+    Iter = 0
+    Temp = 0
+    Overheating = 0
+    TempSpeed = 100
+    MaxTemp = 5000
+    MinTemp = 3000
+    Counter = 0
+    PCounter = 0
+    PCounter2 = 0
+    ACounter = 0
+    Speed = 7
+    PSpeed = 5
+    PSpeed2 = 17
+    ASpeed = 0.05
+    MaxSpeed = 77
+    MaxPitch = 233
+    MaxPitch2 = 155
+    MaxA = 2
+    Pieces = 5
+    PiecesRotor = 3
+    RingModel = "models/props_combine/combine_interface001.mdl"
+    RotorModel = "models/props_combine/CombineThumper001a.mdl"
+    Mat = ""
+    RotorMat = ""
+    Multiplier = 5
+    holoCreate(88)
+    holoModel(88,"hq_sphere")
+    holoScale(88,vec(2,2,2))
+    holoPos(88,entity():toWorld(vec(0,0,105)*Multiplier))
+    holoDisableShading(88,1)
+    holoColor(88,vec(255,255,255))
+    holoMaterial(88,"models/props_c17/fisheyelens")
+    holoShadow(88,0)
+    holoAlpha(88,255)
+    holoCreate(89)
+    holoModel(89,"hq_sphere")
+    holoScale(89,vec(2,2,2))
+    holoPos(89,entity():toWorld(vec(0,0,105)*Multiplier))
+    holoDisableShading(89,1)
+    holoColor(89,vec(0,0,0))
+    holoMaterial(89,"models/shiny")
+    holoShadow(89,0)
+    holoAlpha(89,255)
+    holoParent(89,88)
+    
+    spriteSpawn(1,"sprites/light_glow02_add")
+    spriteSetRendermode(1,5)
+    spriteSetColor(1,vec(55,199,255))
+    spriteSetPos(1,holoEntity(88):pos())
+    spriteSetScale(1,0)
+    
+    holoScale(88,vec(0))
+    spriteSetFramerate(1,15)
+    
+    holoCreate(99)
+    holoPos(99,entity():toWorld(vec(0,0,700)*PortM))
+    holoModel(99,"models/effects/portalrift.mdl")
+    holoScale(99,vec(0)*PortM)
+    holoAlpha(99,255)
+    holoEntity(99):setRenderMode(5)
+
+
+
+}
+
+if(1){
+    Power = 1
+  
+}
+
+if(1){
+    DM = 1
+  
+}
+
+if(1){
+    RiftS = 1
+}
+
+
+
+
+if(changed(Power) && Power == 1){
+    holoEntity(1):soundPlay(1,0,"ambient/levels/citadel/citadel_drone_loop1.wav")
+    holoEntity(1):soundPlay(2,0,"ambient/levels/citadel/zapper_ambient_loop1.wav")
+    MinTemp = 3000
+
+}elseif(changed(Power) && Power == 0){
+    MinTemp = 0
+}
+
+if(RiftS == 1 && Power == 1 && DM == 1){
+
+    Beams = 1
+}elseif(RiftS == 0 || Power == 0 || DM == 0){
+
+    beamSize(1,0)
+    holoScale(99,vec(0))
+    Beams = 0
+    
+}
+if(changed(Beams) && Beams == 1){
+    beamPoint(1,holoEntity(89))
+    beamPoint(2,holoEntity(99))
+
+    beamPoint(4,holoEntity(1):toWorld(vec(0,0,-150)))
+    beamPoint(5,holoEntity(88))
+
+    beamSize(155)
+    beamAlpha(255)
+    beamMaterial("trails/physbeam")
+    beamColor(vec(55,199,255))
+    holoScale(99,vec(1))
+    spriteSetScale(1,7)
+    entity():soundPlay(5,0,"ambient/levels/labs/electric_explosion3.wav")
+    
+    holoScale(99,vec(0.3)*PortM)
+    # Portal Sprites
+    spriteSpawn(11,"sprites/light_glow02_add")
+    spriteSetRendermode(11,5)
+    spriteSetColor(11,vec(55,199,255))
+    spriteSetPos(11,holoEntity(99):pos())
+    spriteSetScale(11,55*PortM)
+    spriteSpawn(12,"sprites/magic")
+    spriteSetColor(12,vec(55,199,255))
+    spriteSetPos(12,holoEntity(99):pos())
+    spriteSetScale(12,3*PortM)
+    spriteSetAlpha(12,200)
+    spriteSpawn(13,"sprites/animglow02")
+    spriteSetColor(13,vec(100,255,255))
+    spriteSetPos(13,holoEntity(99):pos())
+    spriteSetScale(13,3*PortM)  
+    spriteEnable(11,1)
+    spriteEnable(12,1)
+    spriteEnable(13,1)
+}elseif(changed(Beams) && Beams != 1){
+    beamClear()
+    entity():soundPlay(5,0,"ambient/levels/labs/electric_explosion4.wav")
+    spriteEnable(11,0)
+    spriteEnable(12,0)
+    spriteEnable(13,0)
+}
+
+
+if(Beams != 1){
+    spriteSetScale(1,ACounter*0.6)
+}
+
+DioRando = randint(1,44)
+
+if(DioRando == 5 && Beams == 1){
+    Class = Aliens[randint(1,Aliens:count()),string]
+    MaxRange12 = 900
+    RandVec = entity():toWorld(vec(randint(-MaxRange12,MaxRange12),randint(-MaxRange12,MaxRange12),10))
+    NPC = npcSpawn(Class,RandVec)
+    CurNPCs:pushEntity(NPC)
+    CurNPCs2[NPC:id(),entity] = NPC
+    if(Class == "npc_metropolice"){
+        NPC:npcGiveWeapon("smg1")
+    }
+    NPC = entity()
+    foreach(V,CName:string = Aliens){
+
+        NPC:npcRelationship(CName,"neutral",999)
+        NPC:npcRelationship(CName,"hate",0)
+    }
+    NPC:npcRelationship("Player","hate",999)
+    beamPoint(5,holoEntity(99))
+    beamPoint(6,RandVec)
+    beamSize(5,55)
+    beamAlpha(5,255)
+    beamMaterial(5,"trails/plasma")
+    beamColor(5,vec(55,199,255))
+    holoScale(5,vec(1))
+    spriteSpawn(21,"sprites/light_glow02_add")
+    spriteSetRendermode(21,5)
+    spriteSetColor(21,vec(55,199,255))
+    spriteSetPos(21,RandVec)
+    spriteSetScale(21,1*PortM)
+    spriteSpawn(22,"sprites/magic")
+    spriteSetColor(22,vec(55,199,255))
+    spriteSetPos(22,RandVec)
+    spriteSetScale(22,0.5*PortM)
+    spriteSetAlpha(22,200)
+    spriteSpawn(23,"sprites/animglow02")
+    spriteSetColor(23,vec(100,255,255))
+    spriteSetPos(23,RandVec)
+    spriteSetScale(23,0.5*PortM)
+    spriteEnable(21,1)
+    spriteEnable(22,1)
+    spriteEnable(23,1)
+    entity():soundPlay(5,0,"ambient/energy/weld2.wav")
+    timer("grooveremove",500)
+}
+
+for(I=1,CurNPCs:count()){
+    if(perf(55)){
+        NP = CurNPCs2[CurNPCs[I,entity]:id(),entity]
+        if(changed(NP:isAlive()) && !NP:isAlive()){
+            Mote = propSpawn("models/phxtended/trieq1x1x1.mdl",NP:pos(),0)
+            Mote:setAlpha(0)
+            RandH = randint(300,999)
+            RandHG = RandH
+            holoCreate(RandH)
+            holoModel(RandH,"models/phxtended/trieq1x1x1.mdl")
+            holoMaterial(RandH,"models/debug/debugwhite")
+            holoShadow(RandH,0)
+            holoDisableShading(RandH,1)
+            holoScale(RandH,vec(0.3))
+            holoPos(RandH,Mote:pos())
+            holoAng(RandH,Mote:toWorld(ang(0,0,0)))
+            holoParent(RandH,Mote)
+            
+            holoCreate(RandH+1)
+            holoModel(RandH+1,"models/phxtended/trieq1x1x1solid.mdl")
+            holoMaterial(RandH+1,"models/debug/debugwhite")
+            holoShadow(RandH+1,0)
+            holoDisableShading(RandH+1,1)
+            holoColor(RandH+1,vec(0,0,0))
+            holoScale(RandH+1,vec(0.15))
+            holoPos(RandH+1,holoEntity(RandH):toWorld(vec(3,3,2)))
+            holoAng(RandH+1,holoEntity(RandH):toWorld(ang(0,0,0)))
+            holoParent(RandH+1,Mote)
+            Motes[Mote:id(),entity] = Mote
+            CurNPCs:removeEntity(I)
+            CurNPCs2:removeEntity(CurNPCs[I,entity]:id())  
+        }
+    }
+}
+
+foreach(V,Mot:entity = Motes){
+    foreach(V,Ply:entity = players()){
+        if(Ply:pos():distance(Mot:pos()) < 77 && PlyMotes[Ply:name()+";"+Ply:steamID(),number] < 13){
+            holoCreate(939)
+            holoAlpha(939,0)
+            holoPos(939,Mot:pos())
+            holoEntity(939):soundPlay(9,0,"items/gift_drop.wav")
+            Mot:children():propDelete()
+            Mot:propDelete()
+            TempM = PlyMotes[Ply:name()+";"+Ply:steamID(),number]
+            TempM++
+            PlyMotes[Ply:name()+";"+Ply:steamID(),number] = TempM
+            Motes:remove(Mot:id())
+        }
+    }
+}
+foreach(V,Ply:entity = players()){
+    if(perf(88)){
+        if(changed(PlyPoints[Ply:name()+";"+Ply:steamID(),number]) && PlyPoints[Ply:name()+";"+Ply:steamID(),number] >= 50){
+                concmd("say "+Ply:name()+" wins this match! They're a killermachine! The others: do better next time...")
+    
+                timer("roundover",1200)    
+        }
+        if(!Ply:isAlive()){
+            PlyMotes[Ply:name()+";"+Ply:steamID(),number] = 0
+        }
+        if(changed(Ply:pos():distance(entity():pos()) < 77) && PlyMotes[Ply:name()+";"+Ply:steamID(),number] != 0){
+            holoCreate(959)
+            holoAlpha(959,0)
+            holoPos(959,entity():pos())
+            holoEntity(959):soundPlay(11,0,"ambient/levels/labs/electric_explosion3.wav")
+            
+            TempP = PlyPoints[Ply:name()+";"+Ply:steamID(),number]
+            TempP += PlyMotes[Ply:name()+";"+Ply:steamID(),number]
+            PlyPoints[Ply:name()+";"+Ply:steamID(),number] = TempP
+            MoteShow = PlyMotes[Ply:name()+";"+Ply:steamID(),number]
+            MoteOne = "Motes"
+            if(MoteShow == 1){
+                MoteOne = "Mote"
+            }
+            Plyer = Ply
+            concmd("say "+Plyer:name()+", you put "+ PlyMotes[Plyer:name()+";"+Plyer:steamID(),number]+" "+MoteOne+" into the bank and got a total of "+PlyPoints[Ply:name()+";"+Plyer:steamID(),number]+" points!")
+            PlyMotes[Ply:name()+";"+Ply:steamID(),number] = 0
+    
+        }
+    }
+}
+
+if(clk("grooveremove")){
+    beamPoint(5,holoEntity(99))
+    beamPoint(6,holoEntity(99))
+    beamSize(5,0)
+    beamAlpha(5,0)
+    spriteEnable(21,0)
+    spriteEnable(22,0)
+    spriteEnable(23,0)    
+}
+if(clk("saymsg")){
+    concmd("say "+Saymsg)
+}
+if(clk("roundover")){
+    selfDestructAll()
+}
+holoScale(89,vec(ACounter / 2))
+
