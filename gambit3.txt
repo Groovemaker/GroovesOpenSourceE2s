@@ -1,7 +1,7 @@
 @name Runeic's Gambit
 @inputs
 @outputs Override
-@persist ToggleRotor ToggleDarkMatter Rift MoteIDs:table Power PortM ASpeed Motes:array CurNPCs2:table Saymsg:string MotesA Pts RandHG PlyMotes:table PlyPoints:table CurNPCs:array Aliens:array RiftS Beams Counter PCounter2 PSpeed2 MaxPitch2 Speed ACounter MaxA MaxSpeed MaxPitch PCounter PSpeed
+@persist ToggleRotor ToggleDarkMatter Rift MoteIDs:table Power PortM ASpeed Motes:table CurNPCs2:table Saymsg:string MotesA Pts RandHG PlyMotes:table PlyPoints:table CurNPCs:array Aliens:array RiftS Beams Counter PCounter2 PSpeed2 MaxPitch2 Speed ACounter MaxA MaxSpeed MaxPitch PCounter PSpeed
 @trigger
 @model models/props_combine/combine_mine01.mdl
 runOnChat(1)
@@ -149,21 +149,12 @@ if(1){
 if(changed(Power) && Power == 1){
     holoEntity(1):soundPlay(1,0,"ambient/levels/citadel/citadel_drone_loop1.wav")
     holoEntity(1):soundPlay(2,0,"ambient/levels/citadel/zapper_ambient_loop1.wav")
-    MinTemp = 3000
 
-}elseif(changed(Power) && Power == 0){
-    MinTemp = 0
 }
 
 if(RiftS == 1 && Power == 1 && DM == 1){
 
     Beams = 1
-}elseif(RiftS == 0 || Power == 0 || DM == 0){
-
-    beamSize(1,0)
-    holoScale(99,vec(0))
-    Beams = 0
-    
 }
 if(changed(Beams) && Beams == 1){
     beamPoint(1,holoEntity(89))
@@ -199,18 +190,10 @@ if(changed(Beams) && Beams == 1){
     spriteEnable(11,1)
     spriteEnable(12,1)
     spriteEnable(13,1)
-}elseif(changed(Beams) && Beams != 1){
-    beamClear()
-    entity():soundPlay(5,0,"ambient/levels/labs/electric_explosion4.wav")
-    spriteEnable(11,0)
-    spriteEnable(12,0)
-    spriteEnable(13,0)
 }
 
 
-if(Beams != 1){
-    spriteSetScale(1,ACounter*0.6)
-}
+
 
 DioRando = randint(1,44)
 
@@ -287,9 +270,9 @@ for(I=1,CurNPCs:count()){
             holoPos(RandH+1,holoEntity(RandH):toWorld(vec(3,3,2)))
             holoAng(RandH+1,holoEntity(RandH):toWorld(ang(0,0,0)))
             holoParent(RandH+1,Mote)
-            Motes[Mote:id(),entity] = Mote
+            Motes[toString(Mote:id()),entity] = Mote
             CurNPCs:removeEntity(I)
-            CurNPCs2:removeEntity(CurNPCs[I,entity]:id())  
+            CurNPCs2:removeEntity(CurNPCs[I,entity]:id())
         }
     }
 }
@@ -306,7 +289,8 @@ foreach(V,Mot:entity = Motes){
             TempM = PlyMotes[Ply:name()+";"+Ply:steamID(),number]
             TempM++
             PlyMotes[Ply:name()+";"+Ply:steamID(),number] = TempM
-            Motes:remove(Mot:id())
+            print(Mot:id())
+            Motes:remove(toString(Mot:id()))
         }
     }
 }
@@ -357,5 +341,4 @@ if(clk("saymsg")){
 if(clk("roundover")){
     selfDestructAll()
 }
-holoScale(89,vec(ACounter / 2))
 
