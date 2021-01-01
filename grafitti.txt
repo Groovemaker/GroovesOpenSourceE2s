@@ -1,0 +1,78 @@
+@name Runics Grafitti E2
+@inputs 
+@outputs 
+@persist HiOps LoOps CMDLINE:array BrushSize Brush Colors:table BrushCol:vector Spraying
+@trigger 
+
+runOnChat(1)
+
+if(first() || duped()){
+    HiOps = 88 # High Ops
+    LoOps = 100 # Low Ops
+    BrushSize = 1 # Default 0.5
+    Brush = 0
+    Col = "black"
+    Colors["blue",vector] = vec(0,0,255)
+    Colors["cyan",vector] = vec(155,0,255)
+    Colors["white",vector] = vec(255,255,255)
+    Colors["black",vector] = vec(0,0,0)
+    Colors["green",vector] = vec(0,255,0)
+    Colors["deep purple",vector] = vec(55,0,255)
+    Colors["yellow",vector] = vec(255,255,0)
+    Colors["orange",vector] = vec(255,100,0)
+    Colors["red",vector] = vec(255,0,0)
+    Colors["purple",vector] = vec(155,0,255)
+    timer("mainloop",1)
+}
+
+if(clk("mainloop")){
+    if(owner():weapon():type() == "none" && owner():keyAttack1()){
+        Spraying = 1
+        Brush++
+        holoCreate(Brush)
+        holoModel(Brush,"models/hunter/tubes/circle2x2.mdl")
+        holoScale(Brush,vec(BrushSize / 10,BrushSize / 10,0.06))
+        holoPos(Brush,owner():aimPos())
+        holoAng(Brush,owner():aimNormal():toAngle()+ang(90,0,0))
+        holoMaterial(Brush,"models/debug/debugwhite")
+        holoColor(Brush,BrushCol)
+    
+    }else{
+        Spraying = 0
+    }
+    if(changed(Spraying) && Spraying == 1){
+        owner():soundPlay(1,0,"ambient/gas/cannister_loop.wav")
+    }elseif(changed(Spraying) && Spraying == 0){
+        soundStop(1)
+    }
+    if(perf(6)){
+    timer("mainloop",HiOps)
+    }else{
+    timer("mainloop",LoOps)
+    }
+}
+
+if(chatClk(owner())){
+    CMDLINE = owner():lastSaid():explode(" ")
+    if(CMDLINE:string(1) == "!size"){
+        hideChat(1)
+        
+        # Brush Size Cmd
+        
+        BrushSize = CMDLINE:string(2):toNumber() / 10
+        print("Changed Brush Size to: "+BrushSize:toString())
+    }
+    if(CMDLINE:string(1) == "!clear"){holoDeleteAll()}
+    if(CMDLINE:string(1) == "!color"){
+        hideChat(1)
+        
+        # Brush Color Cmd
+        
+        if(Colors[CMDLINE:string(2),vector]){
+            BrushCol = Colors[CMDLINE:string(2):lower(),vector]
+            print("Changed Color to: "+BrushCol:toString():lower())
+        }else{
+            print("Color not found")
+        }
+    }  
+}
