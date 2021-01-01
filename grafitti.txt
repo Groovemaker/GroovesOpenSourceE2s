@@ -7,9 +7,9 @@
 runOnChat(1)
 
 if(first() || duped()){
-    HiOps = 88 # High Ops
-    LoOps = 100 # Low Ops
-    BrushSize = 1 # Default 0.5
+    HiOps = 33 # High Ops
+    LoOps = 33 # Low Ops
+    BrushSize = 3 # Default 0.5
     Brush = 0
     Col = "black"
     Colors["blue",vector] = vec(0,0,255)
@@ -29,13 +29,10 @@ if(clk("mainloop")){
     if(owner():weapon():type() == "none" && owner():keyAttack1()){
         Spraying = 1
         Brush++
-        holoCreate(Brush)
-        holoModel(Brush,"models/hunter/tubes/circle2x2.mdl")
-        holoScale(Brush,vec(BrushSize / 10,BrushSize / 10,0.06))
-        holoPos(Brush,owner():aimPos())
-        holoAng(Brush,owner():aimNormal():toAngle()+ang(90,0,0))
+        holoCreate(Brush,owner():aimPos(),vec(BrushSize / 3,BrushSize / 3,0.6),owner():aimNormal():toAngle()+ang(90,0,0),BrushCol,"models/holograms/cplane.mdl")
         holoMaterial(Brush,"models/debug/debugwhite")
-        holoColor(Brush,BrushCol)
+
+        
     
     }else{
         Spraying = 0
@@ -59,7 +56,7 @@ if(chatClk(owner())){
         
         # Brush Size Cmd
         
-        BrushSize = CMDLINE:string(2):toNumber() / 10
+        BrushSize = CMDLINE:string(2):toNumber() / 3
         print("Changed Brush Size to: "+BrushSize:toString())
     }
     if(CMDLINE:string(1) == "!clear"){holoDeleteAll()}
