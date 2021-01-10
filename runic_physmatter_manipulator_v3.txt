@@ -1,0 +1,133 @@
+@name Runic Physmatter Manipulator
+@persist PropArray:array PropPositions:array Pushing TT SoundTT Play IT Aimer:entity AimerOrbit:entity Mode Modelen
+interval(1)
+if(first() || duped()){
+    # Set up stuff
+    Aimer = entity()
+    AimerOrbit = entity()
+    Mode = 1
+    Modelen = 3
+    IT = 1
+    owner():soundPlay(1,0,"weapons/physcannon/physcannon_charge.wav")
+    
+    # Print Disclaimer
+    hint("HAVE A SAFE DAY!",3)
+    hint("ATOMIC WAR, WORLD WAR 3, MINGING, PERMABANS, HAXX0R ATTACKS ETC ETC",3)
+    hint("RUNIC CANNOT BE PUT INTO JAIL FOR:",3)
+    hint("DISCLAIMER:",3)
+    hint("PLEASE HANDLE THIS DEVICE WITH CARE!",3)
+    hint("WELCOME TO RUNICS PHYSMATTER MANIPULATOR!",3)
+    holoCreate(1)
+    holoAlpha(1,0)
+    holoPos(1,owner():toWorld(vec(0,0,40)))
+    holoParent(1,owner())
+    holoCreate(22)
+    holoAlpha(22,0)
+    holoScale(22,vec(3))
+}
+
+# Attack 1 Modes
+if(owner():weapon():type() == "weapon_physgun"){
+    Aimer = owner():aimEntity()
+    # Orbit Mode
+    if(owner():keyAttack1() && Mode == 3){
+        Aimer = owner():aimEntity()
+        foreach(X,Prop2:entity = PropArray){
+            Prop2:applyForce((AimerOrbit:pos()-Prop2:pos()) * (Prop2:mass()) * 0.4 )
+        }
+        if(perf(4)){
+        findInSphere(Aimer:pos(),355)
+            Props = findToArray()
+            for(I=1,Props:count()){
+                Prop = Props[I,entity]
+                if(Prop != Aimer && Prop:owner() == owner() && Prop:type():find("prop_physics") || Prop:type():find("prop_ragdoll") || Prop:type():find("prop_physics_multiplayer") && PropArray:count() < 20){
+                    PropArray:pushEntity(Prop) 
+                }
+            } 
+        }
+    } 
+    
+}
+
+
+# Attack 1 changed to on
+if(changed(owner():keyAttack1()) && owner():keyAttack1()){
+    AimerOrbit = owner():aimEntity()
+    holoEntity(1):soundPlay(3,0,"weapons/physcannon/physcannon_pickup.wav")
+    holoEntity(1):soundPlay(1,0,"weapons/physcannon/superphys_hold_loop.wav")
+    soundPitch(1,133)
+    
+}
+
+# Modechanger
+if(changed(owner():keyWalk()) && owner():keyWalk()){
+    
+    if(Mode < Modelen){
+        Mode++
+    }else{
+        Mode = 1
+    }
+    
+    # Build
+    if(Mode == 1){
+        Aimer = entity()
+        hint("Mode "+Mode+ ": Runic Physmatter Manipulator: Build Mode Enabled",3)
+    }
+    
+    # Offensive
+    if(Mode == 2){
+        hint("Mode "+Mode+ ": Runic Physmatter Manipulator: Offensive Mode Enabled",3)
+    }
+    
+    # Orbit
+    if(Mode == 3){
+        hint("Mode "+Mode+ ": Runic Physmatter Manipulator: Orbit Mode Enabled",3)
+    }
+    
+    owner():soundPlay(4,0,"buttons/blip1.wav")
+    
+}
+
+
+# Attack 1 changed to off
+elseif(changed(owner():keyAttack1()) && owner():keyAttack1() != 1){
+    
+    # Do Push Functions
+    Pushing = 1
+    
+    soundStop(1) 
+}
+
+# Push Functions
+
+## Offensive
+elseif(Pushing == 1 && Mode == 2){
+    print(Aimer)
+    holoEntity(1):soundPlay(1,0,"weapons/physcannon/superphys_launch3.wav")
+    soundPitch(2,randint(100,144))
+    Aimer:applyForce((owner():eye()+owner():attachmentPos("head")) * (Aimer:mass()) * 54311 )
+    Aimer:propNotSolid(0)
+    holoPos(22,Aimer:pos())
+    holoParent(22,Aimer)
+    holoEntity(22):setTrails(122,11,3,"trails/laser",owner():getWeaponColor(),255)
+    soundStop(2)
+    Pushing = 0
+    timer("removetrail",1000)
+}
+
+## Orbit
+elseif(Pushing == 1 && Mode == 3){
+    PropArray:clear()
+    PropArray = array()
+    holoEntity(1):soundPlay(1,0,"weapons/physcannon/physcannon_drop.wav")
+    soundPitch(2,randint(100,144))
+    Pushing = 0
+}
+
+# Cleanup trails
+if(clk("removetrail")){
+    holoEntity(22):deparent()
+    holoEntity(22):removeTrails()
+    holoPos(22,entity():pos())  
+}
+
