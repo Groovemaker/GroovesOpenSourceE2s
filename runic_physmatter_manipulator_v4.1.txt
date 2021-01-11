@@ -88,6 +88,7 @@ if(owner():weapon():type() == "weapon_physgun"){
         
         # Build
         if(Mode == 1){
+            AImerPunt = entity()
             Aimer = entity()
             hint("Mode "+Mode+ ": Runic Physmatter Manipulator: Build Mode Enabled",3)
         }
