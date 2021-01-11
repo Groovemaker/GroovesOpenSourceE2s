@@ -3,6 +3,7 @@
 interval(1)
 runOnChat(1)
 if(first() || duped()){
+    
     # Set up stuff
     HoldSnd = "weapons/physcannon/energy_sing_loop4.wav"
     Aimer = world()
@@ -16,6 +17,7 @@ if(first() || duped()){
     owner():soundPlay(1,0,"items/suitchargeok1.wav")
     soundPitch(1,77)
     timer("Idle",500)
+    
     # Print Disclaimer
     hint("PRESS ALT TO CHANGE MODES.",7)
     hint("HAVE A SAFE DAY!",3)
@@ -41,11 +43,9 @@ if(first() || duped()){
     holoAlpha(22,0)
     holoScale(22,vec(3))
 }
-print(GrabbedProp:model())
 if(owner():weapon():type() == "weapon_physgun"){
-    # Attack 1 Modes
     
-        
+    # Attack 1 Modes
         if(owner():keyAttack1()){
 
             AimerPunt = owner():aimEntity()
@@ -60,7 +60,8 @@ if(owner():weapon():type() == "weapon_physgun"){
                 Pitch = sin((curtime()*1)* 131)*5+80
             }
             soundVolume(6,3)
-            soundPitch(6,Pitch)            
+            soundPitch(6,Pitch)  
+                      
             # Stack  Mode
             if(Mode == 5){
                 for(Y=1,PropStackArray:count()){
@@ -195,6 +196,7 @@ if(owner():weapon():type() == "weapon_physgun"){
     elseif(changed(owner():keyAttack1()) && owner():keyAttack1() != 1){
         GrabbedPropLast = GrabbedProp
         GrabbedProp = world()
+        
         # Do Push Functions
         Pushing = 1
         soundStop(6) 
@@ -219,11 +221,14 @@ elseif(Pushing == 1 && Mode == 2){
     timer("removetrail",1000)
 }
 
-## Orbit
+
+## Build
 elseif(Pushing == 1 && Mode == 1){
     holoEntity(1):soundPlay(1,0,"weapons/physcannon/physcannon_drop.wav")
     Pushing = 0
 }
+
+## Stack
 elseif(Pushing == 1 && Mode == 5){
     foreach(X,Prop2:entity = PropStackArray){
         Prop2:propFreeze(AimerStack:isFrozen())
