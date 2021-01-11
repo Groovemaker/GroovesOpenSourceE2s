@@ -259,7 +259,6 @@ if(owner():weapon():type() == "weapon_physgun"){
                 Prop2:setPos(GrabbedPropLast:pos()-GrabbedPropLast:forward()*StackOffset*Y)
             }
             Prop2:setAng(GrabbedPropLast:toWorld(ang(0,0,0)))
-            Prop2:propFreeze(1)
             Prop2:propFreeze(GrabbedPropLast:isFrozen())
             Prop2:constraintBreak("nocollide")
         }
