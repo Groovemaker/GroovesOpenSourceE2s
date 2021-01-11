@@ -8,6 +8,7 @@ if(first() || duped()){
     ####################################################
     Hi = 50
     Lo = 100
+    RandVal = 3500
     # Set up stuff
     HoldSnd = "ambience/mechwhine.wav"
     HoldSnd2 = "weapons/physcannon/energy_sing_loop4.wav"
@@ -59,7 +60,6 @@ if(first() || duped()){
 
 }
 if(clk("main")){
-    if(perf(PerfBoundary*2.55)){
         if(owner():weapon():type() == "weapon_physgun"){
             Aimer = owner():aimEntity()
             # Attack 1 Modes
@@ -232,50 +232,50 @@ if(clk("main")){
                 Pushing = 0
             } 
         }
-        # Cleanup trails
-        if(clk("removetrail")){
-            holoEntity(22):deparent()
-            holoEntity(22):removeTrails()
-            holoPos(22,entity():pos())  
-        }
-        
-        # Chat Cmds for Stacker etc
-        if(chatClk(owner())){
-            Expl = owner():lastSaid():explode(" ")
-            if(Expl:string(1) == "!dir"){
-                hideChat(1)
-                StackDir = Expl:string(2)
+            # Cleanup trails
+            if(clk("removetrail")){
+                holoEntity(22):deparent()
+                holoEntity(22):removeTrails()
+                holoPos(22,entity():pos())  
             }
-            if(Expl:string(1) == "!o"){
-                hideChat(1)
-                StackOffset = Expl:string(2):toNumber()
-            }
+            
+            # Chat Cmds for Stacker etc
+            if(chatClk(owner())){
+                Expl = owner():lastSaid():explode(" ")
+                if(Expl:string(1) == "!dir"){
+                    hideChat(1)
+                    StackDir = Expl:string(2)
+                }
+                if(Expl:string(1) == "!o"){
+                    hideChat(1)
+                    StackOffset = Expl:string(2):toNumber()
+                }
+                if(perf(4.5)){
+                }
+            
+            holoPos(10,owner():weapon():attachmentPos("muzzle"))
+            holoParent(10,owner():weapon())
+            holoParentAttachment(10,owner():weapon(),"muzzle")
+        }else{
         }
-        
-        if(perf(4)){
-            RandVal = 3500*randint(0.1,2)
+    
+        if(perf(PerfBoundary)){
+            timer("main",Hi)
+        }else{
+            timer("main",Lo)
         }
-        
-        holoPos(10,owner():weapon():attachmentPos("muzzle"))
-        holoParent(10,owner():weapon())
-        holoParentAttachment(10,owner():weapon(),"muzzle")
-    }else{
-    }
-    if(perf(PerfBoundary)){
-        timer("main",Hi)
-    }else{
-        timer("main",Lo)
-    }
 }
 
+# The Lightning Sparks are coupled to the Ops, push it to the limit! :)
 if(clk("Idle")){
     if(owner():weapon():type() == "weapon_physgun"){
         holoEntity(1):soundPlay(8,0,"weapons/physcannon/superphys_small_zap"+randint(1,3)+".wav")
         soundPitch(2,randint(100,144))
         Effect2 = effect() 
         Effect2:setMagnitude(3) 
-        Effect2:setEntity(holoEntity(10))
+        Effect2:setEntity(owner():weapon())
         Effect2:play("TeslaHitBoxes")
+        RandVal = (4500*randint(0.1,2))/(ops() / 50) *1
     }
     timer("Idle",RandVal)
 }
