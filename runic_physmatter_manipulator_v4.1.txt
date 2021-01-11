@@ -1,10 +1,11 @@
 @name Runic Physmatter Manipulator
-@persist PropArray:array PropPositions:array Pushing TT SoundTT Play IT Aimer:entity AimerOrbit:entity Mode Modelen
+@persist PropArray:array PropPositions:array Pushing TT SoundTT Play IT Aimer:entity AimerPunt:entity AimerOrbit:entity Mode Modelen
 interval(1)
 if(first() || duped()){
     # Set up stuff
     Aimer = entity()
     AimerOrbit = entity()
+    AimerPunt = entity()
     Mode = 1
     Modelen = 4
     IT = 1
@@ -30,6 +31,7 @@ if(owner():weapon():type() == "weapon_physgun"){
     
         
         if(owner():keyAttack1()){
+            AimerPunt = owner():aimEntity()
             Aimer = owner():aimEntity()
             # Orbit Mode
             if(Mode == 3){
@@ -121,13 +123,13 @@ if(owner():weapon():type() == "weapon_physgun"){
 
 ## Offensive
 elseif(Pushing == 1 && Mode == 2){
-    print(Aimer)
+
     holoEntity(1):soundPlay(1,0,"weapons/physcannon/superphys_launch3.wav")
     soundPitch(2,randint(100,144))
-    Aimer:applyForce((owner():eye()+owner():attachmentPos("head")) * (Aimer:mass()) * 54311 )
-    Aimer:propNotSolid(0)
-    holoPos(22,Aimer:pos())
-    holoParent(22,Aimer)
+    AimerPunt:applyForce((owner():eye()+owner():attachmentPos("head")) * (AimerPunt:mass()) * 54311 )
+    AimerPunt:propNotSolid(0)
+    holoPos(22,AimerPunt:pos())
+    holoParent(22,AimerPunt)
     holoEntity(22):setTrails(122,11,3,"trails/laser",owner():getWeaponColor(),255)
     soundStop(2)
     Pushing = 0
