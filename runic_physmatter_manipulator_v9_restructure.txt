@@ -59,203 +59,213 @@ if(first() || duped()){
 
 }
 if(clk("main")){
-if(perf(PerfBoundary*2.55)){
-if(owner():weapon():type() == "weapon_physgun"){
-    Aimer = owner():aimEntity()
-    # Attack 1 Modes
-        if(owner():keyAttack1()){
-            if(GrabbedProp:isValidPhysics()){
-                Effect = effect() 
-                Effect:setMagnitude(35) 
-                Effect:setEntity(GrabbedProp)
-                Effect:play("TeslaHitBoxes")
-            }
-            if(Aimer:type():find("worldspawn") || !Aimer:isValidPhysics()){
-            }else{
-                GrabbedProp = Aimer
-            }
-            if(GrabbedProp != world()){
-                Pitch = sin((curtime()*1)* 131)*5+105+(GrabbedProp:vel():length()/22)
-            }else{
-                Pitch = sin((curtime()*1)* 131)*5+95
-            }
-            soundVolume(6,3)
-            soundPitch(6,Pitch)  
-            soundPitch(5,Pitch)  
-        } 
-        
-    
-    
-    # Attack 1 changed to on
-    if(changed(owner():keyAttack1()) && owner():keyAttack1()){
-        if(Mode == 5){
-            GrabbedProp = owner():aimEntity()
-            findInSphere(GrabbedProp:pos(),1500)
-            Props = findToArray()
-                for(I=1,Props:count()){
-                    Prop = Props[I,entity]
-                    if(Prop != GrabbedProp && Prop:owner() == owner() && Prop:type():find("prop_physics") || Prop:type():find("prop_ragdoll") || Prop:type():find("prop_physics_multiplayer") && PropArray:count() < 20){
-                        PropStackArray:pushEntity(Prop) 
+    if(perf(PerfBoundary*2.55)){
+        if(owner():weapon():type() == "weapon_physgun"){
+            Aimer = owner():aimEntity()
+            # Attack 1 Modes
+                if(owner():keyAttack1()){
+                    if(GrabbedProp:isValidPhysics()){
+                        Effect = effect() 
+                        Effect:setMagnitude(35) 
+                        Effect:setEntity(GrabbedProp)
+                        Effect:play("TeslaHitBoxes")
                     }
+                    if(Aimer:type():find("worldspawn") || !Aimer:isValidPhysics()){
+                    }else{
+                        GrabbedProp = Aimer
+                    }
+                    if(GrabbedProp != world()){
+                        Pitch = sin((curtime()*1)* 131)*5+105+(GrabbedProp:vel():length()/22)
+                    }else{
+                        Pitch = sin((curtime()*1)* 131)*5+95
+                    }
+                    soundVolume(6,3)
+                    soundPitch(6,Pitch)  
+                    soundPitch(5,Pitch)  
                 } 
-        }elseif(Mode == 3){
-        }
-        
-        holoEntity(1):soundPlay(3,0,"weapons/physcannon/physcannon_pickup.wav")
-        holoEntity(1):soundPlay(6,0,HoldSnd)
-        holoEntity(1):soundPlay(5,0,HoldSnd2)
-        
-    }
-    
-    # Modechanger
-    if(changed(owner():keyWalk()) && owner():keyWalk()){
-        
-        if(Mode < Modelen){
-            Mode++
-        }else{
-            Mode = 1
-        }
-        
-        # Build
-        if(Mode == 1){
-            AimerPunt = world()
-            Aimer = world()
-            hint("Mode "+Mode+ ": Runic Physmatter Manipulator: Build Mode Enabled",3)
-        }
-        
-        # Offensive
-        if(Mode == 2){
-            hint("Mode "+Mode+ ": Runic Physmatter Manipulator: Offensive Mode Enabled",3)
-        }
-        
-        # Orbit
-        if(Mode == 3){
-            hint("Mode "+Mode+ ": Runic Physmatter Manipulator: Orbit Mode Enabled",3)
-        }
-        
-        # Gravity
-        if(Mode == 4){
-            hint("Mode "+Mode+ ": Runic Physmatter Manipulator: Gravity Mode Enabled",3)
-        }    
-        
-        # Stack
-        if(Mode == 5){
-            hint("Mode "+Mode+ ": Runic Physmatter Manipulator: Stack Mode Enabled",3)
-        }  
-        owner():soundPlay(4,0,"buttons/lightswitch2.wav")
-        soundPitch(4,88)
-        owner():soundPlay(7,0,"hl1/fvox/fuzz.wav")
-        soundPitch(4,88)
-        
-        
-    }
-    
-    
-    # Attack 1 changed to off
-    elseif(changed(owner():keyAttack1()) && owner():keyAttack1() != 1){
-        GrabbedPropLast = GrabbedProp
-        GrabbedProp = world()
-        
-        # Do Push Functions
-        Pushing = 1
-        soundStop(6)
-        soundStop(5)
-    }
-
-    # Push Functions
-    
-    ## Offensive
-    elseif(Pushing == 1 && Mode == 2){
-    
-        holoEntity(1):soundPlay(1,0,"weapons/physcannon/superphys_launch3.wav")
-        soundPitch(2,randint(100,144))
-        GrabbedPropLast:propFreeze(0)
-        GrabbedPropLast:applyForce((owner():eye()+owner():attachmentPos("head")) * (GrabbedPropLast:mass()) * 54311 )
-        GrabbedPropLast:propNotSolid(0)
-        holoPos(22,GrabbedPropLast:pos())
-        holoParent(22,GrabbedPropLast)
-        holoEntity(22):setTrails(33,2,3,"trails/laser",owner():getWeaponColor(),255)
-        soundStop(2)
-        Pushing = 0
-        GrabbedPropLast = world()
-        timer("removetrail",1000)
-    }
-    
-    
-    ## Build
-    elseif(Pushing == 1 && Mode == 1){
-        holoEntity(1):soundPlay(1,0,"weapons/physcannon/physcannon_drop.wav")
-        Pushing = 0
-    }
-    
-    ## Stack
-    elseif(Pushing == 1 && Mode == 5){
-        foreach(Y,Prop2:entity = PropStackArray){
-
-            if(StackDir == "right"){
-                Prop2:setPos(GrabbedPropLast:pos()+GrabbedPropLast:right()*StackOffset*Y)
-            }elseif(StackDir == "left"){
-                Prop2:setPos(GrabbedPropLast:pos()-GrabbedPropLast:right()*StackOffset*Y)
-            }elseif(StackDir == "up"){
-                Prop2:setPos(GrabbedPropLast:pos()+GrabbedPropLast:up()*StackOffset*Y)
-            }elseif(StackDir == "down"){
-                Prop2:setPos(GrabbedPropLast:pos()-GrabbedPropLast:up()*StackOffset*Y)
-            }elseif(StackDir == "front"){
-                Prop2:setPos(GrabbedPropLast:pos()+GrabbedPropLast:forward()*StackOffset*Y)
-            }elseif(StackDir == "back"){
-                Prop2:setPos(GrabbedPropLast:pos()-GrabbedPropLast:forward()*StackOffset*Y)
+                
+            
+            
+            # Attack 1 changed to on
+            if(changed(owner():keyAttack1()) && owner():keyAttack1()){
+                if(Mode == 5){
+                    GrabbedProp = owner():aimEntity()
+                    findInSphere(GrabbedProp:pos(),1500)
+                    Props = findToArray()
+                        for(I=1,Props:count()){
+                            Prop = Props[I,entity]
+                            if(Prop != GrabbedProp && Prop:owner() == owner() && Prop:type():find("prop_physics") || Prop:type():find("prop_ragdoll") || Prop:type():find("prop_physics_multiplayer") && PropArray:count() < 20){
+                                PropStackArray:pushEntity(Prop) 
+                            }
+                        } 
+                }elseif(Mode == 3){
+                }
+                
+                holoEntity(1):soundPlay(3,0,"weapons/physcannon/physcannon_pickup.wav")
+                holoEntity(1):soundPlay(6,0,HoldSnd)
+                holoEntity(1):soundPlay(5,0,HoldSnd2)
+                
             }
-            Prop2:setAng(GrabbedPropLast:toWorld(ang(0,0,0)))
-            Prop2:propFreeze(GrabbedPropLast:isFrozen())
-            Prop2:constraintBreak("nocollide")
+            
+            # Modechanger
+            if(changed(owner():keyWalk()) && owner():keyWalk()){
+                
+                if(Mode < Modelen){
+                    Mode++
+                }else{
+                    Mode = 1
+                }
+                
+                # Build
+                if(Mode == 1){
+                    AimerPunt = world()
+                    Aimer = world()
+                    hint("Mode "+Mode+ ": Runic Physmatter Manipulator: Build Mode Enabled",3)
+                }
+                
+                # Offensive
+                if(Mode == 2){
+                    hint("Mode "+Mode+ ": Runic Physmatter Manipulator: Offensive Mode Enabled",3)
+                }
+                
+                # Orbit
+                if(Mode == 3){
+                    hint("Mode "+Mode+ ": Runic Physmatter Manipulator: Orbit Mode Enabled",3)
+                }
+                
+                # Gravity
+                if(Mode == 4){
+                    hint("Mode "+Mode+ ": Runic Physmatter Manipulator: Gravity Mode Enabled",3)
+                }    
+                
+                # Stack
+                if(Mode == 5){
+                    hint("Mode "+Mode+ ": Runic Physmatter Manipulator: Stack Mode Enabled",3)
+                }  
+                
+                owner():soundPlay(4,0,"buttons/lightswitch2.wav")
+                soundPitch(4,88)
+                owner():soundPlay(7,0,"hl1/fvox/fuzz.wav")
+                soundPitch(4,88)
+                
+                
+            }
+            
+            
+            # Attack 1 changed to off
+            elseif(changed(owner():keyAttack1()) && owner():keyAttack1() != 1){
+                
+                GrabbedPropLast = GrabbedProp
+                GrabbedProp = world()
+                
+                # Do Push Functions
+                Pushing = 1
+                soundStop(6)
+                soundStop(5)
+                
+            }
+        
+            # Push Functions
+            
+            ## Offensive
+            elseif(Pushing == 1 && Mode == 2){
+            
+                holoEntity(1):soundPlay(1,0,"weapons/physcannon/superphys_launch3.wav")
+                soundPitch(2,randint(100,144))
+                GrabbedPropLast:propFreeze(0)
+                GrabbedPropLast:applyForce((owner():eye()+owner():attachmentPos("head")) * (GrabbedPropLast:mass()) * 54311 )
+                GrabbedPropLast:propNotSolid(0)
+                holoPos(22,GrabbedPropLast:pos())
+                holoParent(22,GrabbedPropLast)
+                holoEntity(22):setTrails(33,2,3,"trails/laser",owner():getWeaponColor(),255)
+                soundStop(2)
+                Pushing = 0
+                GrabbedPropLast = world()
+                timer("removetrail",1000)
+                
+            }
+            
+            
+            ## Build
+            elseif(Pushing == 1 && Mode == 1){
+                
+                holoEntity(1):soundPlay(1,0,"weapons/physcannon/physcannon_drop.wav")
+                Pushing = 0
+                
+            }
+            
+            ## Stack
+            elseif(Pushing == 1 && Mode == 5){
+                
+                foreach(Y,Prop2:entity = PropStackArray){
+        
+                    if(StackDir == "right"){
+                        Prop2:setPos(GrabbedPropLast:pos()+GrabbedPropLast:right()*StackOffset*Y)
+                    }elseif(StackDir == "left"){
+                        Prop2:setPos(GrabbedPropLast:pos()-GrabbedPropLast:right()*StackOffset*Y)
+                    }elseif(StackDir == "up"){
+                        Prop2:setPos(GrabbedPropLast:pos()+GrabbedPropLast:up()*StackOffset*Y)
+                    }elseif(StackDir == "down"){
+                        Prop2:setPos(GrabbedPropLast:pos()-GrabbedPropLast:up()*StackOffset*Y)
+                    }elseif(StackDir == "front"){
+                        Prop2:setPos(GrabbedPropLast:pos()+GrabbedPropLast:forward()*StackOffset*Y)
+                    }elseif(StackDir == "back"){
+                        Prop2:setPos(GrabbedPropLast:pos()-GrabbedPropLast:forward()*StackOffset*Y)
+                    }
+                    Prop2:setAng(GrabbedPropLast:toWorld(ang(0,0,0)))
+                    Prop2:propFreeze(GrabbedPropLast:isFrozen())
+                    Prop2:constraintBreak("nocollide")
+                    
+                }
+        
+                PropStackArray:clear()
+                PropStackArray = array()
+                holoEntity(1):soundPlay(1,0,"weapons/physcannon/physcannon_drop.wav")
+                Pushing = 0
+                GrabbedPropLast = world()
+            }
+            elseif(Pushing == 1 && Mode == 3 || Pushing == 1 && Mode == 4){
+                PropArray:clear()
+                PropArray = array()
+                holoEntity(1):soundPlay(1,0,"weapons/physcannon/physcannon_drop.wav")
+                soundPitch(2,randint(100,144))
+                Pushing = 0
+            } 
         }
-
-        PropStackArray:clear()
-        PropStackArray = array()
-        holoEntity(1):soundPlay(1,0,"weapons/physcannon/physcannon_drop.wav")
-        Pushing = 0
-        GrabbedPropLast = world()
+        # Cleanup trails
+        if(clk("removetrail")){
+            holoEntity(22):deparent()
+            holoEntity(22):removeTrails()
+            holoPos(22,entity():pos())  
+        }
+        
+        # Chat Cmds for Stacker etc
+        if(chatClk(owner())){
+            Expl = owner():lastSaid():explode(" ")
+            if(Expl:string(1) == "!dir"){
+                hideChat(1)
+                StackDir = Expl:string(2)
+            }
+            if(Expl:string(1) == "!o"){
+                hideChat(1)
+                StackOffset = Expl:string(2):toNumber()
+            }
+        }
+        
+        if(perf(4)){
+            RandVal = 3500*randint(0.1,2)
+        }
+        
+        holoPos(10,owner():weapon():attachmentPos("muzzle"))
+        holoParent(10,owner():weapon())
+        holoParentAttachment(10,owner():weapon(),"muzzle")
+    }else{
     }
-    elseif(Pushing == 1 && Mode == 3 || Pushing == 1 && Mode == 4){
-        PropArray:clear()
-        PropArray = array()
-        holoEntity(1):soundPlay(1,0,"weapons/physcannon/physcannon_drop.wav")
-        soundPitch(2,randint(100,144))
-        Pushing = 0
-    } 
-}
-# Cleanup trails
-if(clk("removetrail")){
-    holoEntity(22):deparent()
-    holoEntity(22):removeTrails()
-    holoPos(22,entity():pos())  
-}
-
-if(chatClk(owner())){
-    Expl = owner():lastSaid():explode(" ")
-    if(Expl:string(1) == "!dir"){
-        hideChat(1)
-        StackDir = Expl:string(2)
+    if(perf(PerfBoundary)){
+        timer("main",Hi)
+    }else{
+        timer("main",Lo)
     }
-    if(Expl:string(1) == "!o"){
-        hideChat(1)
-        StackOffset = Expl:string(2):toNumber()
-    }
-}
-if(perf(4)){
-    RandVal = 3500*randint(0.1,2)
-}
-
-holoPos(10,owner():weapon():attachmentPos("muzzle"))
-holoParent(10,owner():weapon())
-holoParentAttachment(10,owner():weapon(),"muzzle")
-}else{
-}
-if(perf(PerfBoundary)){
-    timer("main",Hi)
-}else{
-    timer("main",Lo)
-}
 }
 
 if(clk("Idle")){
