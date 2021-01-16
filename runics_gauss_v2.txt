@@ -84,7 +84,7 @@ if(clk("RuneWeapon_Primary")){
         Bullet:setPos(owner():shootPos())
         Bullet:setMass(444)
         Bullet:propFreeze(0)
-        Bullet:applyForce(((owner():aimPos()-Bullet:pos())*(Bullet:mass()*444)))
+        Bullet:applyForce(((owner():aimPos()-owner():shootPos())*(Bullet:mass()*444)))
         timer("shoottrails",30)
         timer("removetrails",100)
         
@@ -122,7 +122,7 @@ if(clk("RuneWeapon_Secondary")){
         Bullet:setPos(owner():shootPos())
         Bullet:setMass(444)
         Bullet:propFreeze(0)
-        Bullet:applyForce(((owner():aimPos()-Bullet:pos())*(Bullet:mass()*444)))
+        Bullet:applyForce(((owner():aimPos()-owner():shootPos())*(Bullet:mass()*444)))
         timer("shoottrails",30)
         timer("removetrails",100)
         soundStop(2)
