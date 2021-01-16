@@ -41,7 +41,7 @@ if(first() || duped()){
     SecondarySound = "weapons/gauss/chargeloop.wav"
     
     # Attack Intervals
-    PrimaryDelay = 350
+    PrimaryDelay = 250
     SecondaryDelay = 1
     
     # How Fast does the Idle timer get called?
@@ -62,7 +62,7 @@ if(clk("RuneWeapon_Think")){
     }
     if(changed(owner():weapon():type()) && owner():weapon():type() == Weapon){
         #print(owner():weapon():attachments())
-        holoPos(3,owner():attachmentPos("anim_attachment_rh"))
+        
     }
     timer("RuneWeapon_Think",ThinkDelay)
 }
@@ -107,6 +107,7 @@ if(clk("RuneWeapon_Secondary")){
         }
     }
     if(changed(owner():keyAttack2()) && owner():keyAttack2() == 0 && owner():weapon():type() == Weapon){
+        holoPos(3,owner():attachmentPos("anim_attachment_rh"))
         propDeleteAll()
         holoEntity(1):soundPlay(1,0,PrimarySound)
         soundPitch(1,randint(95,110))
