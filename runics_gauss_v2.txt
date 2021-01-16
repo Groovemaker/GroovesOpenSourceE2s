@@ -1,7 +1,7 @@
 @name RuneWeapons: Runics Gauss
 @inputs 
 @outputs 
-@persist Weapon:string PrimaryDelay SecondaryDelay PrimarySound:string SecondarySound:string ThinkDelay Bullet:entity SecPitch GaussMulti GaussSize
+@persist Weapon:string PrimaryDelay SecondaryDelay PrimarySound:string SecondarySound:string Spread ThinkDelay Bullet:entity SecPitch GaussMulti GaussSize
 
 # Gauss
 # By Runic
@@ -32,6 +32,9 @@ if(first() || duped()){
     
     # Weapon to Replace
     Weapon = "weapon_physcannon"
+    
+    # Spread
+    Spread = 5
     
     # Sound Setup
     PrimarySound = "weapons/gauss/fire1.wav"
@@ -74,9 +77,10 @@ if(clk("RuneWeapon_Primary")){
         soundPitch(SndRand,randint(95,110))
         holoEntity(3):setTrails(22,22,120,"trails/laser",vec(255,199,0), 255)
         propDeleteAll()
-        Bullet = propSpawn("models/hunter/blocks/cube025x025x025.mdl",ang(0,0,0),1)
-        Bullet:setAlpha(0)
-        Bullet:setPos(owner():pos()+vec(-50,0,50))
+        Bullet = propSpawn("models/hunter/blocks/cube075x075x075.mdl",ang(0,0,0),1)
+        noCollide(Bullet,owner())
+        Bullet:setAlpha(1)
+        Bullet:setPos(owner():attachmentPos("anim_attachment_rh"))
         Bullet:setMass(444)
         Bullet:propFreeze(0)
         Bullet:applyForce((owner():aimPos() - Bullet:pos())*Bullet:mass()*33)
@@ -110,9 +114,10 @@ if(clk("RuneWeapon_Secondary")){
         elseif(GaussSize > 40){Num = 4}
         elseif(GaussSize > 50){Num = 5}
         elseif(GaussSize > 60){Num = 6}
-        Bullet = propSpawn("models/hunter/blocks/cube025x025x025.mdl",ang(0,0,0),1)
-        Bullet:setAlpha(0)
-        Bullet:setPos(owner():pos()+vec(-50,0,50))
+        Bullet = propSpawn("models/hunter/blocks/cube075x075x075.mdl",ang(0,0,0),1)
+        noCollide(Bullet,owner())
+        Bullet:setAlpha(1)
+        Bullet:setPos(owner():attachmentPos("anim_attachment_rh"))
         Bullet:setMass(111*Num)
         Bullet:propFreeze(0)
         Bullet:applyForce((owner():aimPos() - Bullet:pos())*Bullet:mass()*33)
@@ -127,7 +132,7 @@ if(clk("RuneWeapon_Secondary")){
 
 # Additional Stuff
 if(clk("shoottrails")){
-    holoPos(3,owner():aimPos())
+    holoPos(3,owner():aimPos()+randvec(-Spread,Spread))
 }
 if(clk("removetrails")){
     
