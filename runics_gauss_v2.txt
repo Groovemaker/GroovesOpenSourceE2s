@@ -119,7 +119,6 @@ if(clk("RuneWeapon_Secondary")){
         elseif(GaussSize > 40 && GaussSize < 50){Num = 4}
         elseif(GaussSize > 50 && GaussSize < 60){Num = 5}
         elseif(GaussSize > 60){Num = 6}
-        print(GaussSize)
         propDeleteAll()
         AimPos = owner():aimPos()
         if(Num != 6){
