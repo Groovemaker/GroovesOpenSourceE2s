@@ -58,7 +58,7 @@ if(clk("RuneWeapon_Think")){
     }
     if(changed(owner():weapon():type()) && owner():weapon():type() == Weapon){
         #print(owner():weapon():attachments())
-        holoPos(3,owner():attachmentPos("anim_attachment_rh")+vec(10,-17,0))
+        holoPos(3,owner():attachmentPos("anim_attachment_rh"))
     }
     timer("RuneWeapon_Think",ThinkDelay)
 }
@@ -126,5 +126,5 @@ if(clk("shoottrails")){
 if(clk("removetrails")){
     
     holoEntity(3):removeTrails()
-    holoPos(3,owner():attachmentPos("anim_attachment_rh")+vec(10,-17,0))
+    holoPos(3,owner():attachmentPos("anim_attachment_rh"))
 }
