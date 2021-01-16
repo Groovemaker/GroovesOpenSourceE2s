@@ -6,17 +6,25 @@
 # Gauss
 # By Runic
 
-runOnTick(1)
 
 if(first() || duped()){
     GaussSize = 22
     SecPitch = 100
     GaussMulti = 0.1
+    
     holoCreate(1)
     holoAlpha(1,0)
     holoPos(1,owner():toWorld(vec(0,0,60)))
     holoParent(1,owner())
-    
+    holoCreate(4)
+    holoAlpha(4,0)
+    holoPos(4,owner():toWorld(vec(0,0,60)))
+    holoParent(4,owner())
+    holoCreate(5)
+    holoAlpha(5,0)
+    holoPos(5,owner():toWorld(vec(0,0,60)))
+    holoParent(5,owner())
+        
     holoCreate(3)
     holoAlpha(3,0)
     
@@ -30,7 +38,7 @@ if(first() || duped()){
     SecondarySound = "weapons/gauss/chargeloop.wav"
     
     # Attack Intervals
-    PrimaryDelay = 300
+    PrimaryDelay = 350
     SecondaryDelay = 1
     
     # How Fast does the Idle timer get called?
@@ -60,8 +68,10 @@ if(clk("RuneWeapon_Primary")){
 
     if(owner():keyAttack1() && owner():weapon():type() == Weapon){
         # Primary Attack Code goes Here
-        holoEntity(1):soundPlay(1,0,PrimarySound)
-        soundPitch(1,randint(95,110))
+        HoloRand = randint(1,4)
+        SndRand = randint(3,9)
+        holoEntity(HoloRand):soundPlay(SndRand,1,PrimarySound)
+        soundPitch(SndRand,randint(95,110))
         holoEntity(3):setTrails(22,22,120,"trails/laser",vec(255,199,0), 255)
         Bullet = propSpawn("models/props_junk/gascan001a.mdl",ang(0,0,0),1)
         Bullet:setPos(owner():aimPos())
@@ -87,7 +97,6 @@ if(clk("RuneWeapon_Secondary")){
             soundPitch(2,SecPitch)
         }
     }
-    print(GaussSize)
     if(changed(owner():keyAttack2()) && owner():keyAttack2() == 0 && owner():weapon():type() == Weapon){
         holoEntity(1):soundPlay(1,0,PrimarySound)
         soundPitch(1,randint(95,110))
