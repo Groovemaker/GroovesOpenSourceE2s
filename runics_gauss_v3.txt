@@ -1,0 +1,159 @@
+@name RuneWeapons: Runics Gauss
+@persist Weapon:string PrimaryDelay SecondaryDelay PrimarySound:string SecondarySound:string Spread AimPos:vector ThinkDelay JumpMulti Bullet:entity SecPitch GaussMulti GaussSize
+
+# Gauss
+# By Runic
+
+
+if(first() || duped()){
+    GaussSize = 22
+    SecPitch = 100
+    GaussMulti = 0.1
+    JumpMulti = 4
+    holoCreate(1)
+    holoAlpha(1,0)
+    holoPos(1,owner():toWorld(vec(0,0,60)))
+    holoParent(1,owner())
+    holoCreate(4)
+    holoAlpha(4,0)
+    holoPos(4,owner():toWorld(vec(0,0,60)))
+    holoParent(4,owner())
+    holoCreate(5)
+    holoAlpha(5,0)
+    holoPos(5,owner():toWorld(vec(0,0,60)))
+    holoParent(5,owner())
+        
+    holoCreate(3)
+    holoAlpha(3,0)
+    
+    # Here is the Weapon Tweaking
+    
+    # Weapon to Replace
+    Weapon = "weapon_physcannon"
+    
+    # Spread
+    Spread = 5
+    
+    # Sound Setup
+    PrimarySound = "weapons/gauss/fire1.wav"
+    SecondarySound = "weapons/gauss/chargeloop.wav"
+    
+    # Attack Intervals
+    PrimaryDelay = 250
+    SecondaryDelay = 1
+    
+    # How Fast does the Idle timer get called?
+    ThinkDelay = 100
+    
+    # Set up Timers
+    timer("RuneWeapon_Primary",1)
+    timer("RuneWeapon_Secondary",1)
+    timer("RuneWeapon_Think",1)  
+}
+
+# Think
+if(clk("RuneWeapon_Think")){
+    # Idle Code Goes here
+
+    if(owner():weapon():type() == Weapon){
+        
+    }
+    if(changed(owner():weapon():type()) && owner():weapon():type() == Weapon){
+        #print(owner():weapon():attachments())
+        
+    }
+    timer("RuneWeapon_Think",ThinkDelay)
+}
+
+# Primary Attack
+if(clk("RuneWeapon_Primary")){
+    if(changed(owner():keyAttack1())){
+        AimPos = owner():aimPos()
+    }
+    if(owner():keyAttack1() && owner():weapon():type() == Weapon){
+        
+        # Primary Attack Code goes Here
+        HoloRand = randint(1,4)
+        SndRand = randint(3,9)
+        holoEntity(HoloRand):soundPlay(SndRand,1,PrimarySound)
+        soundPitch(SndRand,randint(95,110))
+        holoEntity(3):setTrails(22,22,120,"trails/laser",vec(255,199,0), 255)
+        propDeleteAll()
+        AimPos = owner():aimPos()
+        Bullet = propSpawn("models/hunter/blocks/cube1x1x1.mdl",ang(0,0,0),1)
+        noCollide(Bullet,owner())
+        Bullet:setAlpha(11)
+        Bullet:setPos(owner():shootPos())
+        Bullet:setMass(444)
+        Bullet:propFreeze(0)
+        Bullet:applyForce(((owner():aimPos()-owner():shootPos())*(Bullet:mass()*444)))
+        timer("shoottrails",30)
+        timer("removetrails",100)
+        
+    }
+    timer("RuneWeapon_Primary",PrimaryDelay)
+}
+
+# Secondary Attack
+if(clk("RuneWeapon_Secondary")){
+    if(changed(owner():keyAttack2()) && owner():keyAttack2() == 1 && owner():weapon():type() == Weapon){
+        # Secondary Attack Code goes Here
+        holoEntity(1):soundPlay(2,0,SecondarySound)
+
+    }
+    if(owner():keyAttack2() && owner():weapon():type() == Weapon){
+        if(SecPitch < 180){
+            GaussSize = GaussSize + 0.5
+            SecPitch = SecPitch + 0.5
+            soundPitch(2,SecPitch)
+        }
+    }
+    if(changed(owner():keyAttack2()) && owner():keyAttack2() == 0 && owner():weapon():type() == Weapon){
+        holoPos(3,owner():attachmentPos("anim_attachment_rh"))
+        propDeleteAll()
+        
+        holoEntity(1):soundPlay(1,0,PrimarySound)
+        soundPitch(1,randint(95,110))
+        holoEntity(3):setTrails(GaussSize,GaussSize,120,"trails/laser",vec(255,199,0), 255)
+        if(GaussSize > 30 && GaussSize < 40){Num = 2}
+        elseif(GaussSize > 40 && GaussSize < 50){Num = 4}
+        elseif(GaussSize > 50 && GaussSize < 60){Num = 5}
+        elseif(GaussSize > 60){Num = 6}
+        propDeleteAll()
+        AimPos = owner():aimPos()
+        if(Num < 4){
+            Bullet = propSpawn("models/hunter/blocks/cube1x1x1.mdl",ang(0,0,0),1)
+            noCollide(Bullet,owner())
+            Bullet:setAlpha(11)
+            Bullet:setPos(owner():shootPos())
+            Bullet:setMass(444)
+            Bullet:propFreeze(0)
+            Bullet:applyForce(((owner():aimPos()-owner():shootPos())*(Bullet:mass()*444)))
+
+        }else{
+            Bullet = propSpawn("models/props_junk/gascan001a.mdl",ang(0,0,0),1)
+            noCollide(Bullet,owner())
+            Bullet:setAlpha(0)
+            Bullet:setPos(owner():aimPos())
+            Bullet:setMass(444)
+            Bullet:propBreak()
+            owner():plyApplyForce(-((owner():aimPos()-owner():pos()+vec(0,0,-230))*JumpMulti))
+        }
+        timer("shoottrails",30)
+        timer("removetrails",100)
+        soundStop(2)
+        SecPitch = 100
+        GaussSize = 22 
+    }
+    timer("RuneWeapon_Secondary",SecondaryDelay)
+}
+
+# Additional Stuff
+if(clk("shoottrails")){
+    holoPos(3,AimPos+randvec(-Spread,Spread))
+}
+if(clk("removetrails")){
+    
+    holoEntity(3):removeTrails()
+    holoPos(3,owner():attachmentPos("anim_attachment_rh"))
+}
