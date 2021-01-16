@@ -1,7 +1,5 @@
 @name RuneWeapons: Runics Gauss
-@inputs 
-@outputs 
-@persist Weapon:string PrimaryDelay SecondaryDelay PrimarySound:string SecondarySound:string Spread ThinkDelay Bullet:entity SecPitch GaussMulti GaussSize
+@persist Weapon:string PrimaryDelay SecondaryDelay PrimarySound:string SecondarySound:string Spread AimPos:vector ThinkDelay Bullet:entity SecPitch GaussMulti GaussSize
 
 # Gauss
 # By Runic
@@ -69,8 +67,11 @@ if(clk("RuneWeapon_Think")){
 
 # Primary Attack
 if(clk("RuneWeapon_Primary")){
-
+    if(changed(owner():keyAttack1())){
+        AimPos = owner():aimPos()
+    }
     if(owner():keyAttack1() && owner():weapon():type() == Weapon){
+        
         # Primary Attack Code goes Here
         HoloRand = randint(1,4)
         SndRand = randint(3,9)
@@ -78,6 +79,7 @@ if(clk("RuneWeapon_Primary")){
         soundPitch(SndRand,randint(95,110))
         holoEntity(3):setTrails(22,22,120,"trails/laser",vec(255,199,0), 255)
         propDeleteAll()
+        AimPos = owner():aimPos()
         Bullet = propSpawn("models/hunter/blocks/cube1x1x1.mdl",ang(0,0,0),1)
         noCollide(Bullet,owner())
         Bullet:setAlpha(11)
@@ -109,6 +111,7 @@ if(clk("RuneWeapon_Secondary")){
     if(changed(owner():keyAttack2()) && owner():keyAttack2() == 0 && owner():weapon():type() == Weapon){
         holoPos(3,owner():attachmentPos("anim_attachment_rh"))
         propDeleteAll()
+        
         holoEntity(1):soundPlay(1,0,PrimarySound)
         soundPitch(1,randint(95,110))
         holoEntity(3):setTrails(GaussSize,GaussSize,120,"trails/laser",vec(255,199,0), 255)
@@ -118,6 +121,7 @@ if(clk("RuneWeapon_Secondary")){
         elseif(GaussSize > 60){Num = 6}
         print(GaussSize)
         propDeleteAll()
+        AimPos = owner():aimPos()
         if(Num != 6){
             Bullet = propSpawn("models/hunter/blocks/cube1x1x1.mdl",ang(0,0,0),1)
             noCollide(Bullet,owner())
@@ -145,7 +149,7 @@ if(clk("RuneWeapon_Secondary")){
 
 # Additional Stuff
 if(clk("shoottrails")){
-    holoPos(3,owner():aimPos()+randvec(-Spread,Spread))
+    holoPos(3,AimPos+randvec(-Spread,Spread))
 }
 if(clk("removetrails")){
     
