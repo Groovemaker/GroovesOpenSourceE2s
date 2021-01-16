@@ -112,18 +112,28 @@ if(clk("RuneWeapon_Secondary")){
         holoEntity(1):soundPlay(1,0,PrimarySound)
         soundPitch(1,randint(95,110))
         holoEntity(3):setTrails(GaussSize,GaussSize,120,"trails/laser",vec(255,199,0), 255)
-        if(GaussSize > 30){Num = 2}
-        elseif(GaussSize > 40){Num = 4}
-        elseif(GaussSize > 50){Num = 5}
+        if(GaussSize > 30 && GaussSize < 40){Num = 2}
+        elseif(GaussSize > 40 && GaussSize < 50){Num = 4}
+        elseif(GaussSize > 50 && GaussSize < 60){Num = 5}
         elseif(GaussSize > 60){Num = 6}
+        print(GaussSize)
         propDeleteAll()
-        Bullet = propSpawn("models/hunter/blocks/cube1x1x1.mdl",ang(0,0,0),1)
-        noCollide(Bullet,owner())
-        Bullet:setAlpha(11)
-        Bullet:setPos(owner():shootPos())
-        Bullet:setMass(444)
-        Bullet:propFreeze(0)
-        Bullet:applyForce(((owner():aimPos()-owner():shootPos())*(Bullet:mass()*444)))
+        if(Num != 6){
+            Bullet = propSpawn("models/hunter/blocks/cube1x1x1.mdl",ang(0,0,0),1)
+            noCollide(Bullet,owner())
+            Bullet:setAlpha(11)
+            Bullet:setPos(owner():shootPos())
+            Bullet:setMass(444)
+            Bullet:propFreeze(0)
+            Bullet:applyForce(((owner():aimPos()-owner():shootPos())*(Bullet:mass()*444)))
+        }else{
+            Bullet = propSpawn("models/props_junk/gascan001a.mdl",ang(0,0,0),1)
+            noCollide(Bullet,owner())
+            Bullet:setAlpha(0)
+            Bullet:setPos(owner():aimPos())
+            Bullet:setMass(444)
+            Bullet:propBreak()
+        }
         timer("shoottrails",30)
         timer("removetrails",100)
         soundStop(2)
