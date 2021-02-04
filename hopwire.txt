@@ -57,8 +57,8 @@ if(clk("hopwire")){
         HopEnd2 = propSpawn("models/hunter/misc/sphere025x025.mdl",R2:pos(),1)
         HopEnd1:setAlpha(1)
         HopEnd2:setAlpha(1)
-        rope(1,ENT_Hopwire,vec(0,0,0),HopEnd1,vec(0,0,0),-1,1,"cable/cable2",1)
-        rope(2,ENT_Hopwire,vec(0,0,0),HopEnd2,vec(0,0,0),-1,1,"cable/cable2",1)
+        rope(1,ENT_Hopwire,vec(0,0,0),HopEnd1,vec(0,0,0),0,1,"cable/cable2",1)
+        rope(2,ENT_Hopwire,vec(0,0,0),HopEnd2,vec(0,0,0),0,1,"cable/cable2",1)
         ENT_Hopwire:soundPlay(1,0,"weapons/crossbow/hit1.wav")
         soundPitch(1,133)
     }
