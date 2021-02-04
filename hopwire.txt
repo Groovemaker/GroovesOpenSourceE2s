@@ -1,0 +1,66 @@
+@name Runics Hopwire
+@inputs 
+@outputs 
+@persist ENT_Hopwire:entity Attach1:entity Attach2:entity HopEnd1:entity HopEnd2:entity Hopped
+@trigger 
+
+if(first() || duped()){
+    timer("1",1)
+}
+
+if(clk("1")){
+
+    if(owner():weapon():type() == "none"){
+        if(changed(owner():keyAttack1()) && owner():keyAttack1()){
+            Hopped = 0
+            ENT_Hopwire:propDelete()
+            ENT_Hopwire = propSpawn("models/hunter/misc/sphere025x025.mdl",owner():toWorld(vec(1,0,50)),1)
+            Attach1 = holoCreate(100)
+            Attach2 = holoCreate(200)
+            holoPos(holoIndex(Attach1),ENT_Hopwire:toWorld(vec(0,14,0)))
+            holoParent(holoIndex(Attach1),ENT_Hopwire)
+            holoPos(holoIndex(Attach2),ENT_Hopwire:toWorld(vec(0,-14,0)))
+            holoParent(holoIndex(Attach2),ENT_Hopwire)
+            holoAlpha(holoIndex(Attach1),0)
+            holoAlpha(holoIndex(Attach2),0)
+            noCollide(ENT_Hopwire, owner())
+            ENT_Hopwire:propFreeze(0)
+            M = ENT_Hopwire:mass()
+            ENT_Hopwire:setAng(owner():eyeAngles())
+            ENT_Hopwire:applyForce(((owner():eye()+owner():attachmentPos("head")) *M)*523.7)
+
+            timer("hopwire",777)
+        }
+    }
+    if(Hopped == 1){
+        foreach(K,Ply:entity = players()){
+            if(Ply:pos():distance(ENT_Hopwire:pos()) < 200){
+                Ballbuster3 = propSpawn("models/props_c17/oildrum001_explosive.mdl",ang(0,0,0),1)
+                Ballbuster3:setPos(ENT_Hopwire:pos())
+                Ballbuster3:propBreak()
+                ENT_Hopwire:propDelete()
+                HopEnd1:propDelete()
+                HopEnd2:propDelete()
+                #propDeleteAll()
+            }
+        }
+    }
+    timer("1",100)
+}
+if(clk("hopwire")){
+    HopEnd1:propDelete()
+    HopEnd2:propDelete()
+    R1 = rangerOffset(1111,Attach1:toWorld(vec(0,0,0)),randvec()*333)
+    R2 = rangerOffset(1111,Attach2:toWorld(vec(0,0,0)),randvec()*333)
+    if(R1:hit() && R2:hit()){
+        HopEnd1 = propSpawn("models/hunter/misc/sphere025x025.mdl",R1:pos(),1)
+        HopEnd2 = propSpawn("models/hunter/misc/sphere025x025.mdl",R2:pos(),1)
+        HopEnd1:setAlpha(1)
+        HopEnd2:setAlpha(1)
+        rope(1,ENT_Hopwire,vec(0,0,0),HopEnd1,vec(0,0,0),-1,1,"cable/cable2",1)
+        rope(2,ENT_Hopwire,vec(0,0,0),HopEnd2,vec(0,0,0),-1,1,"cable/cable2",1)
+        ENT_Hopwire:soundPlay(1,0,"weapons/crossbow/hit1.wav")
+        soundPitch(1,133)
+    }
+    Hopped = 1
+}
