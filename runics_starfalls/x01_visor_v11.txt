@@ -1,0 +1,240 @@
+--@name X01 Visor
+--@author Runic
+--@client
+DudeMats = {}
+DudeCols = {}
+
+HudNames = render.createFont("Arial",25,500,true,false)
+Hud1 = render.createFont("Arial",25,500,true,false)
+Hud3 = render.createFont("Arial",11,300,true,false)
+Hud1B = render.createFont("Arial",33,1000,true,false)
+Hud2 = render.createFont("csd",44,500,true,false,false,false,true)
+local PaintingMat = material.create("UnlitGeneric")
+PaintingMat:setTextureURL("$basetexture", "https://i.imgur.com/qfz7k5a.png")
+Play = player()
+local HVis = material.create("UnlitGeneric")
+HVis:setTexture("$ignorez","1")
+
+VisorOn = 0
+VisorCool = 1
+WaypointOn = 0
+hook.add("PlayerChat","Cmds",function(ply,text)
+    if text == "wp" then
+        WPUpdated = 1
+        timer.simple(2,function()
+            WPUpdated = 0
+        end)
+        WaypointOn = 1
+        WpVec = ply:getEyeTrace().HitPos
+        player():emitSound("hl1/fvox/doop.wav",122,222,2)
+        
+    elseif text == "wpclear" then
+        WPUpdated = 1
+        timer.simple(2,function()
+            WPUpdated = 0
+        end)
+        WaypointOn = 0
+        WpVec = chip()
+    end
+    if string.split(text," ")[1] == "ob" then
+        ObUpdated = 1
+        timer.simple(2,function()
+            ObUpdated = 0
+        end)     
+        ObOn = 1
+        Exp = string.split(text," ")
+        table.remove(Exp,1)
+
+        Obt = table.concat(Exp," ")
+        player():emitSound("hl1/fvox/doop.wav",122,222,2)
+        
+    elseif text == "obc" then
+        ObUpdated = 1
+        timer.simple(2,function()
+            ObUpdated = 0
+        end)
+        ObOn = 0
+        Obt = ""
+    end
+end)
+for X=1,player():getBoneCount() do
+    //print(X..": "..player():getBoneName(X))
+end
+function paint()
+    if player():isFlashlightOn() then
+        VisorOn = 1
+    else
+        VisorOn = 0
+    end
+    if VisorOn == 1 then
+        render.setColor(Color(255,155,0,100))
+        render.drawTexturedRect(0,0,1920,1921)
+        render.setMaterial(material.load("effects/flicker_128"))
+        render.setColor(Color(255,255,11,100))
+        render.drawTexturedRect(0,0,1920,1921) 
+                 
+    else
+        
+    end
+    render.setMaterial(PaintingMat)
+    render.setColor(Color(255,255,255))
+    render.drawTexturedRect(0,0,1920,1921)
+    for I=1, table.count(find.allPlayers()) do
+        local Dude = find.allPlayers()[I]
+        if VisorOn == 1 then
+            DudeMats[I] = Dude:getMaterial()
+            DudeCols[I] = Dude:getColor()
+            Dude:setMaterial("engine/shadowbuild")
+        else
+            if DudeMats[I] && DudeCols[I] then
+                Dude:setMaterial(DudeMats[I])
+                Dude:setColor(DudeCols[I])
+            end
+        end
+        if Dude != player() then
+            local NewPos = Dude:getPos()+Vector(0,0,60)
+            local NewPos2 = Dude:getPos()+Vector(0,0,60)
+            local PlyPos = NewPos:toScreen()
+            local PlyRectPos = NewPos2:toScreen()
+            if VisorOn == 1 then
+                render.setColor(Color(0,0,0))
+                render.setFont(HudNames)
+                render.drawText(PlyPos.x,PlyPos.y,Dude:getName(),1)
+                render.drawCircle(PlyRectPos.x,PlyRectPos.y,11)
+                for R=1,3 do
+                render.drawCircle(PlyRectPos.x,PlyRectPos.y,4-R)
+                end
+            end
+        end
+    end
+    AimPos = Play:getEyeTrace().HitPos
+    AimScreen = AimPos:toScreen()
+    if VisorOn == 1 then
+        ObjectsInRange = find.inSphere(player():getPos(),555)
+        if table.count(ObjectsInRange) < 81 then
+            for R=1,table.count(ObjectsInRange) do
+                
+                Ob = ObjectsInRange[R]
+                if Ob:isValid() && Ob != Play && string.find(Ob:getClass(),"prop") or string.find(Ob:getClass(),"npc") then
+                    AimEPos = Ob:getPos()+Vector(0,0,11)
+                    AimEScreen = AimEPos:toScreen()
+                    render.setFont(Hud1)
+                    
+                    render.setColor(Color(0,0,0))
+                    render.drawText(AimEScreen.x,AimEScreen.y,"Object: "..Ob:getClass(),1)
+                    render.drawText(AimEScreen.x,AimEScreen.y-22,"Distance: "..math.round(player():getPos():getDistance(Ob:getPos())),1)
+                end
+            end
+        end
+    end
+    
+    for C=1,20 do
+    render.setColor(Color(255,199-C*25,11,255-C*25))
+    render.drawCircle(AimScreen.x,AimScreen.y,21-C)
+    end  
+    for C=1,3 do
+    render.setColor(Color(255,11,11))
+    render.drawCircle(AimScreen.x,AimScreen.y,4-C)
+    end        
+    if Play:getEyeTrace().Entity:isValid() && Play:getEyeTrace().Entity != OldEyeTrace && Play:getEyeTrace().Entity:isPlayer() then
+        player():emitSound("buttons/combine_button_locked.wav",75,222,0.4)
+    end
+    if Play:getEyeTrace().Entity:isValid() &&  Play:getEyeTrace().Entity != OldEyeTrace && !Play:getEyeTrace().Entity:isPlayer() && Play:getEyeTrace().Entity:getClass() != "worldspawn" then
+        //player():emitSound("buttons/combine_button_locked.wav",75,222,0.4)
+    end
+   
+    OldEyeTrace = Play:getEyeTrace().Entity
+
+    if Play:getEyeTrace().Entity:isValid() && Play:getEyeTrace().Entity:isPlayer() then
+        render.setFont(Hud1)
+        render.setColor(Color(255,200,11))
+
+        render.drawText(950,66,"Player: "..Play:getEyeTrace().Entity:getName(),1)
+        render.drawText(950,99,"Health: "..Play:getEyeTrace().Entity:getHealth(),1)
+    elseif Play:getEyeTrace().Entity:isValid() && !Play:getEyeTrace().Entity:isPlayer() && Play:getEyeTrace().Entity:getClass() != "worldspawn" then
+    end
+    if WPUpdated == 1 then
+        if VisorOn == 1 then
+            render.setColor(Color(0,0,0))
+        else
+            render.setColor(Color(255,200,11))
+        end      
+        render.drawText(950,300,"Waypoint Updated!",1)
+    end
+    if ObUpdated == 1 then
+        if VisorOn == 1 then
+            render.setColor(Color(0,0,0))
+        else
+            render.setColor(Color(255,200,11))
+        end      
+        render.drawText(950,300,"Objectives Updated!",1)
+    end
+    /*
+    render.setFont(Hud2)
+    render.setColor(Color(255,200,11))
+    render.drawText(150,944,"H "..Play:getHealth(),1)
+    render.setColor(Color(0,100,200))
+    render.drawText(150,988,"H "..Play:getArmor(),1)
+    */
+    if VisorOn == 1 then
+        render.setColor(Color(0,0,0))
+    else
+        render.setColor(Color(255,200,11))
+    end
+    render.drawRectOutline(630, 936, 650, 33, 1.5)
+    local hw = 635
+    local hwidth = hw * math.clamp( Play:getHealth(), 0, 1 );
+    if VisorOn == 1 then
+        render.setColor(Color(0,0,0,255))
+    else
+        render.setColor(Color(255,200,11,100))
+    end
+    render.drawRect(637, 946, hwidth, 15, 1.5)
+    if VisorOn == 1 then
+        render.setFont(Hud1B)
+        render.setColor(Color(255,200,100))
+        //render.drawText(825,866,"Visor Mode Active")
+    else
+    
+    end
+    
+    if VisorOn == 1 then
+        render.setColor(Color(0,0,0,255))
+    else
+        render.setColor(Color(255,200,11,255))
+    end
+    if WaypointOn == 1 && WpVec != nil then
+                local WNewPos = WpVec+Vector(0,0,110)
+                local WNewPos2 = WpVec+Vector(0,0,60)
+                local WPPos = WNewPos:toScreen()
+                local WPRectPos = WNewPos2:toScreen()
+                render.setFont(HudNames)
+                render.drawText(WPPos.x,WPPos.y,"Waypoint",1)
+                render.drawCircle(WPRectPos.x,WPRectPos.y,11)
+                for R=1,3 do
+                render.drawCircle(WPRectPos.x,WPRectPos.y,4-R)
+                end
+        if VisorOn == 1 then
+            render.setColor(Color(0,0,0,255))
+        else
+            render.setColor(Color(255,200,11,177))
+        end
+        render.drawText(350,439,"Waypoint Distance\n"..math.round(player():getPos():getDistance(WpVec)),1)
+    end
+    if ObOn == 1 && Obt != nil then
+        render.setFont(HudNames)
+        if VisorOn == 1 then
+            render.setColor(Color(0,0,0,255))
+        else
+            render.setColor(Color(255,200,11,177))
+        end
+        render.drawText(1550,439,"Current Objective\n"..tostring(Obt),1)
+    end    
+end
+
+hook.add("drawhud","",function()
+    paint()
+end)
+
+
+
