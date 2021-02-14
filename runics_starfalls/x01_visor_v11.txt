@@ -21,6 +21,7 @@ HVis:setTexture("$ignorez","1")
 VisorOn = 0
 VisorCool = 1
 WaypointOn = 0
+HelmetOn = 1
 hook.add("PlayerChat","Cmds",function(ply,text)
     if text == "wp" then
         WPUpdated = 1
@@ -58,6 +59,12 @@ hook.add("PlayerChat","Cmds",function(ply,text)
         end)
         ObOn = 0
         Obt = ""
+    elseif text == "th" && ply == player() then
+        if HelmetOn == 0 then
+            HelmetOn = 1
+        else
+            HelmetOn = 0
+        end
     end
 end)
 for X=1,player():getBoneCount() do
@@ -240,7 +247,9 @@ function paint()
 end
 
 hook.add("drawhud","",function()
-    paint()
+    if HelmetOn == 1 then
+        paint()
+    end
 end)
 
 
