@@ -1,5 +1,5 @@
 --@name X01 Visor
---@author
+--@author Runic
 --@client
 DudeMats = {}
 DudeCols = {}
