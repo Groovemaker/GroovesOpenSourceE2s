@@ -62,8 +62,10 @@ hook.add("PlayerChat","Cmds",function(ply,text)
     elseif text == "th" && ply == player() then
         if HelmetOn == 0 then
             HelmetOn = 1
+            player():emitSound("npc/combine_soldier/gear6.wav",77,130,2)
         else
             HelmetOn = 0
+            player():emitSound("npc/combine_soldier/gear4.wav",77,100,2)  
         end
     end
 end)
