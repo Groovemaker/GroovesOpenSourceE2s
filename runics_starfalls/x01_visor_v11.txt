@@ -1,5 +1,5 @@
 --@name X01 Visor
---@author Runic
+--@author
 --@client
 DudeMats = {}
 DudeCols = {}
@@ -11,7 +11,10 @@ Hud1B = render.createFont("Arial",33,1000,true,false)
 Hud2 = render.createFont("csd",44,500,true,false,false,false,true)
 local PaintingMat = material.create("UnlitGeneric")
 PaintingMat:setTextureURL("$basetexture", "https://i.imgur.com/qfz7k5a.png")
+local Ret = material.create("UnlitGeneric")
+Ret:setTextureURL("$basetexture", "https://i.imgur.com/WpVHsUU.png")
 Play = player()
+
 local HVis = material.create("UnlitGeneric")
 HVis:setTexture("$ignorez","1")
 
@@ -128,14 +131,18 @@ function paint()
         end
     end
     
-    for C=1,20 do
-    render.setColor(Color(255,199-C*25,11,255-C*25))
-    render.drawCircle(AimScreen.x,AimScreen.y,21-C)
-    end  
-    for C=1,3 do
-    render.setColor(Color(255,11,11))
-    render.drawCircle(AimScreen.x,AimScreen.y,4-C)
-    end        
+    // Aiming Reticle
+
+    
+    render.setMaterial(Ret)
+    if VisorOn == 0 then
+        render.setColor(Color(255,255,255,155))
+    else
+        render.setColor(Color(0,0,0))
+    end
+    Offs = 38
+    render.drawTexturedRect((1920/2)-(Offs+1.5),(1080/2)-Offs,155,155)
+           
     if Play:getEyeTrace().Entity:isValid() && Play:getEyeTrace().Entity != OldEyeTrace && Play:getEyeTrace().Entity:isPlayer() then
         player():emitSound("buttons/combine_button_locked.wav",75,222,0.4)
     end
