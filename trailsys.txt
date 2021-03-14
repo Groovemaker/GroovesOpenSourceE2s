@@ -61,7 +61,7 @@ if(chatClk()){
         #print(holoEntity(I))
     }   
     if(Ex[1,string] == "?trail"){
-        concmd("say [Runics TrailSys] Usage: !trail RED GREEN BLUE RED2 GREEN2 BLUE2 MATERIAL WIDTH , or just type !trail for a random trail")
+        concmd("say [Runics TrailSys] Usage: !trail RED GREEN BLUE RED2 GREEN2 BLUE2 MATERIAL WIDTH , or just type !trail for a random trail. Type !rmtrail to remove it.")
         #print(holoEntity(I))
     }   
 }
