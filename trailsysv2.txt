@@ -5,21 +5,21 @@
 @trigger 
 runOnChat(1)
 if(first() || duped()){
-    #Usage: #trail purple blue trails/laser 43
+    #Usage: #trail purple blue 43 1 trails/laser
     I=1
     Colors["red",vector] = vec(255,0,0)
     Colors["green",vector] = vec(0,255,0)
     Colors["blue",vector] = vec(0,0,255)
-    Colors["light blue",vector] = vec(0,155,255)
+    Colors["light-blue",vector] = vec(0,155,255)
     Colors["cyan",vector] = vec(0,255,255)
     Colors["pink",vector] = vec(255,0,255)
     Colors["purple",vector] = vec(155,0,255)
-    Colors["light purple",vector] = vec(155,55,255)
+    Colors["light-purple",vector] = vec(155,55,255)
     Colors["yellow",vector] = vec(255,255,0)
     Colors["orange",vector] = vec(255,100,0)
     Colors["white",vector] = vec(255,255,255)
     Colors["black",vector] = vec(0,0,0)
-    Colors["light green",vector] vec(100,255,100)
+    Colors["light-green",vector] vec(100,255,100)
 }
 if(chatClk()){
     Ex = lastSaid():explode(" ")
@@ -29,22 +29,35 @@ if(chatClk()){
     Tex = ""
     Width1 = 0
     Width2 = 0
+    Len2 = 0
+    Len1 = 0
     if(Ex[1,string] == "#trail"){
-        if(Ex[8,string] != ""){
-            Tex = Ex[8,string]
+        if(Ex[6,string] != ""){
+            Tex = Ex[6,string]
         }else{
             Tex = "trails/laser"
         }
-        if(Ex[9,string]:toNumber() > 0){
-            Width1 = Ex[9,string]:toNumber()
+        if(Ex[4,string]:toNumber() > 0){
+            Width1 = Ex[4,string]:toNumber()
+            Width2 = Width1 - 29
         }else{
             Width1 = 43
             Width2 = Width1 - 29
         }
+        if(Ex[5,string]:toNumber() > 0){
+            Len2 = Ex[5,string]:toNumber()
+            Len1 = Len2 - 0.6
+        }else{
+            Len2 = 0.9
+            Len1 = Len2 - 0.6
+        }
         if(Ex[2,string] != "" && Ex[3,string] != ""){
             Color1 = Colors[Ex[2,string]:lower(),vector]
             Color2 = Colors[Ex[3,string]:lower(),vector]
-        }else{
+        }elseif(Ex[2,string] != "" && Ex[3,string] == ""){
+            Color1 = Colors[Ex[2,string]:lower(),vector]
+            Color2 = Color1
+        }elseif(Ex[2,string] == "" && Ex[3,string] == ""){
             Color1 = vec(randint(0,255),randint(0,255),randint(0,255))
             Color2 = vec(randint(0,255),randint(0,255),randint(0,255))
         }
@@ -56,14 +69,14 @@ if(chatClk()){
         holoCreate(I)
         holoPos(I,lastSpoke():toWorld(vec(0,0,39)))
         holoAlpha(I,0)
-        holoEntity(I):setTrails(Width1,Width2,0.3,Tex,Color1,255)
+        holoEntity(I):setTrails(Width1,Width2,Len1,Tex,Color1,255)
         holoParent(I,lastSpoke())
         Trails[lastSpoke():steamID(),entity] = holoEntity(I)
         I++
         holoCreate(I)
         holoPos(I,lastSpoke():toWorld(vec(0,0,39)))
         holoAlpha(I,0)
-        holoEntity(I):setTrails(Width1,Width2,0.9,Tex,Color2,254)
+        holoEntity(I):setTrails(Width1,Width2,Len2,Tex,Color2,254)
         holoParent(I,lastSpoke())
         Trails2[lastSpoke():steamID(),entity] = holoEntity(I)
         #print(holoEntity(I))
@@ -80,6 +93,6 @@ if(chatClk()){
     }   
 }
 if(clk("help")){
-    concmd("say [Runics TrailSys] Usage: #trail COLOR1 COLOR2 MATERIAL WIDTH , or just type #trail for a random trail. Type #rmtrail to remove it.")
+    concmd("say [Runics TrailSys] Usage: #trail COLOR1 COLOR2 MATERIAL WIDTH LENGTH , or just type #trail for a random trail. #rmtrail removes")
 }
 
