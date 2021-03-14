@@ -1,0 +1,68 @@
+@name Free Trails
+@inputs 
+@outputs 
+@persist I Ex:array Trails:table Trails2:table
+@trigger 
+runOnChat(1)
+if(first() || duped()){
+    #Usage: !trail 0 255 255 155 0 255 trails/laser 43
+    I=1
+}
+if(chatClk()){
+    Ex = lastSaid():explode(" ")
+    SpokeID = lastSpoke():steamID()
+    Color1 = vec()
+    Color2 = vec()
+    Tex = ""
+    Width1 = 0
+    Width2 = 0
+    if(Ex[1,string] == "!trail"){
+        if(Ex[8,string] != ""){
+            Tex = Ex[8,string]
+        }else{
+            Tex = "trails/laser"
+        }
+        if(Ex[9,string]:toNumber() > 0){
+            Width1 = Ex[9,string]:toNumber()
+        }else{
+            Width1 = 43
+            Width2 = Width1 - 29
+        }
+        if(Ex[2,string] != "" && Ex[7,string] != ""){
+            Color1 = vec(Ex[2,string]:toNumber(),Ex[3,string]:toNumber(),Ex[4,string]:toNumber())
+            Color2 = vec(Ex[5,string]:toNumber(),Ex[6,string]:toNumber(),Ex[7,string]:toNumber())
+        }else{
+            Color1 = vec(randint(0,255),randint(0,255),randint(0,255))
+            Color2 = vec(randint(0,255),randint(0,255),randint(0,255))
+        }
+        if(Trails[lastSpoke():steamID(),entity]:isValid()){
+            holoDelete(holoIndex(Trails[lastSpoke():steamID(),entity]))
+            holoDelete(holoIndex(Trails2[lastSpoke():steamID(),entity]))
+        }
+        I++
+        holoCreate(I)
+        holoPos(I,lastSpoke():toWorld(vec(0,0,39)))
+        holoAlpha(I,0)
+        holoEntity(I):setTrails(Width1,Width2,0.3,Tex,Color1,255)
+        holoParent(I,lastSpoke())
+        Trails[lastSpoke():steamID(),entity] = holoEntity(I)
+        I++
+        holoCreate(I)
+        holoPos(I,lastSpoke():toWorld(vec(0,0,39)))
+        holoAlpha(I,0)
+        holoEntity(I):setTrails(Width1,Width2,0.9,Tex,Color2,254)
+        holoParent(I,lastSpoke())
+        Trails2[lastSpoke():steamID(),entity] = holoEntity(I)
+        #print(holoEntity(I))
+    }
+    if(Ex[1,string] == "!rmtrail"){
+        holoDelete(holoIndex(Trails[lastSpoke():steamID(),entity]))
+        holoDelete(holoIndex(Trails2[lastSpoke():steamID(),entity]))
+        #print(holoEntity(I))
+    }   
+    if(Ex[1,string] == "?trail"){
+        concmd("say [Runics TrailSys] Usage: !trail RED GREEN BLUE RED2 GREEN2 BLUE2 MATERIAL WIDTH , or just type !trail for a random trail")
+        #print(holoEntity(I))
+    }   
+}
+
