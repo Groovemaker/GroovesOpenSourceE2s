@@ -1,0 +1,112 @@
+@name Vault Door System by Runic
+@inputs Door:entity Btn Alarm:entity
+@outputs R G B
+@persist Open Doable OpenVec:vector Right:vector CloseVec:vector OpenAngTimes OpenAngIter OpenVec2:vector AngSpeed OpenAng CloseAng:angle SpeedBack
+@trigger 
+if(first() || duped()){
+    SpeedBack = 1
+    AngSpeed = 1
+    Doable = 1
+    Open = 0
+    OpenVec = Door:toWorld(vec(0,0,-60))
+    OpenVec2 = Door:toWorld(vec(0,100,0))
+    CloseVec = Door:pos()
+    Right = Door:right()
+    OpenAngTimes = 100
+    OpenAngIter = 0
+    CloseAng = ang(0,0,0)
+    R = 155
+    G = 200
+    B = 255
+}
+if(dupefinished()){
+    reset()
+}
+interval(1)
+if(changed(Btn) && Btn == 1 && Doable == 1){
+    if(Open != 1){
+        timer("Open1",1)
+        Door:soundPlay(1,0,"doors/doormove2.wav")
+        Alarm:soundPlay("alarm",0,"ambient/alarms/combine_bank_alarm_loop4.wav")
+        Door:soundPlay("looper",0,"doors/doormove1.wav")
+        R = 255
+        G = 55
+        B = 55
+    }else{
+        timer("Close1",1)
+        Alarm:soundPlay("alarm",0,"ambient/alarms/combine_bank_alarm_loop4.wav")
+        Door:soundPlay(2,0,"ambient/machines/wall_move1.wav")
+        R = 255
+        G = 55
+        B = 55
+    }
+    Doable = 0
+}
+if(clk("Open1")){
+
+    if(Door:pos():distance(OpenVec) > 2){
+        Door:setPos(Door:toWorld(vec(0,0,-SpeedBack)))
+        #print(Door:pos():distance(OpenVec))
+        timer("Open1",10)
+    }else{
+        print("Stage 1 done")
+        timer("Open2",1)
+        Door:soundPlay(2,0,"ambient/machines/wall_move1.wav")
+    }   
+}
+
+if(clk("Open2")){
+    if(OpenAngIter < OpenAngTimes){
+        Door:setPos(Door:pos()+Right*2)
+        OpenAngIter+=1
+        Door:setAng(Door:toWorld(ang(0,AngSpeed,0)))
+        timer("Open2",10)
+    }
+        #print(Door:pos():distance(OpenVec))
+    else{
+        print("Vault Door Opened")
+        soundStop("looper")
+        Doable = 1
+        Open = 1
+        OpenAngIter = 0
+    }   
+}
+
+
+
+if(clk("Close1")){
+    if(OpenAngIter < OpenAngTimes){
+        Door:setPos(Door:pos()+Right*-2)
+        OpenAngIter+=1
+        Door:setAng(Door:toWorld(ang(0,-AngSpeed,0)))
+        timer("Close1",1)
+    }
+        #print(Door:pos():distance(OpenVec))
+
+    else{
+        print("Stage 1 done")
+        timer("Close2",10)
+        Door:soundPlay("looper",0,"doors/doormove1.wav")
+
+    }
+}
+if(clk("Close2")){
+
+    if(Door:pos():distance(CloseVec) > 2){
+        Door:setPos(Door:toWorld(vec(0,0,SpeedBack)))
+        #print(Door:pos():distance(OpenVec))
+        timer("Close2",1)
+    }else{
+        print("Vault Door Closed")
+        timer("Close3",1)
+        Door:soundPlay(1,0,"hl1/ambience/steamburst1.wav")
+        soundStop("alarm")
+        soundStop("looper")
+        R = 155
+        G = 200
+        B = 255
+        Doable = 1
+        Open = 0
+        OpenAngIter = 0
+    } 
+}
