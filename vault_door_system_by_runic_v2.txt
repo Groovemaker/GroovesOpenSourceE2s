@@ -108,5 +108,6 @@ if(clk("Close2")){
         Doable = 1
         Open = 0
         OpenAngIter = 0
+        Door:setPos(CloseVec)
     } 
 }
