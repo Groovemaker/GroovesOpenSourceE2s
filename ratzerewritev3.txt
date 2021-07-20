@@ -1,0 +1,154 @@
+@name das ist eine ratze ich weiss ehrlich gesagt nicht wie die hier her gekommen ist hilfe hilfe
+#- Entity input directives
+@inputs
+#- Spawning code directives
+@persist [HT CT]:table [SpawnStatus CoreStatus]:string [HN CN I SpawnCounter]
+@persist [ScaleFactor] Indices
+@persist [DefaultColor DefaultScale]:vector P:array NotFirstE2
+#- Hologram index directives
+@persist Ply:entity Speed Chasing TargPos:vector Z PackLeaders:array OldPack:table PackLeader:entity HasPackLeader Rats:array Spawn RatsSpawned Count
+function spawnrat(Base:entity,Indices2){
+
+
+    ScaleFactor = 2
+    Indices = 1
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(3.251, 0.585, 0.5715), ang(0, 0, 90), vec(0.05, 0.05, 0.05), "models/pac/default.mdl", "models/debug/debugwhite", vec4(233, 255, 0, 255), 1)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(0, 0, 0), ang(0, 0, 90), vec(0.55, 0.2, 0.25), "models/pac/default.mdl", "models/shadertest/envball_6", vec4(34, 34, 34, 255), 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(4.9741, -0.0084, 0.0605), ang(0, 0, 90), vec(0.035, 0.035, 0.035), "models/pac/default.mdl", "models/shadertest/envball_6", vec4(34, 34, 34, 255), 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(2.9878, -0.0033, 0.0605), ang(0, 0, 90), vec(0.2475, 0.1125, 0.1125), "models/pac/default.mdl", "models/shadertest/envball_6", vec4(34, 34, 34, 255), 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(4.5195, -0.098, 0.014), ang(0, 0, -18.6241), vec(0.01, 0.0575, 0.01), "models/hunter/blocks/cube025x075x025.mdl", "models/debug/debugwhite", vec4(59, 59, 59, 255), 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(4.5195, 0.0984, 0.0137), ang(0, 0, 13.8097), vec(0.01, 0.0575, 0.01), "models/hunter/blocks/cube025x075x025.mdl", "models/debug/debugwhite", vec4(59, 59, 59, 255), 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(2.8296, -1.056, 1.2695), ang(0, 0, 90), vec(0.04, 0.1, 0.1), "models/pac/default.mdl", "models/shadertest/envball_6", vec4(34, 34, 34, 255), 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(4.5195, -0.098, 0.014), ang(0, 0, -172.876), vec(0.01, 0.0575, 0.01), "models/hunter/blocks/cube025x075x025.mdl", "models/debug/debugwhite", vec4(59, 59, 59, 255), 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(3.251, -0.585, 0.5715), ang(0, 0, 90), vec(0.05, 0.05, 0.05), "models/pac/default.mdl", "models/debug/debugwhite", vec4(233, 255, 0, 255), 1)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(2.708, -0.0067, 0.0605), ang(0, 0, 90), vec(0.275, 0.125, 0.125), "models/pac/default.mdl", "models/shadertest/envball_6", vec4(34, 34, 34, 255), 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(4.5195, -0.098, 0.014), ang(0, 0, -159.7766), vec(0.01, 0.0575, 0.01), "models/hunter/blocks/cube025x075x025.mdl", "models/debug/debugwhite", vec4(59, 59, 59, 255), 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(2.8296, 1.0556, 1.2695), ang(0, 0, 90), vec(0.04, 0.1, 0.1), "models/pac/default.mdl", "models/shadertest/envball_6", vec4(34, 34, 34, 255), 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(4.5195, -0.098, 0.014), ang(0, 0, -188.71), vec(0.01, 0.0575, 0.01), "models/hunter/blocks/cube025x075x025.mdl", "models/debug/debugwhite", vec4(59, 59, 59, 255), 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(4.5195, -0.098, 0.014), ang(0, 0, -3.5168), vec(0.01, 0.0575, 0.01), "models/hunter/blocks/cube025x075x025.mdl", "models/debug/debugwhite", vec4(59, 59, 59, 255), 0)
+
+    function table:holo(Indices2L) {
+        local Index = This[1, number] * Indices * 100 * Indices2L
+        if (This[2,entity]:isValid()) { Entity = This[2,entity] } else { Entity = holoEntity(This[2,number]) }
+        if (This[3,entity]:isValid()) { Parent = This[3,entity] } else { Parent = holoEntity(This[3,number]) }
+        local Rescale = (This[7, vector] / (This[4, number] ? 12 : 1)) * ScaleFactor
+        holoCreate(Index, Entity:toWorld(This[5, vector] * ScaleFactor), Rescale, Entity:toWorld(This[6, angle]), DefaultColor, This[8, string] ?: "cube")
+        holoParent(Index, Parent)
+        holoDisableShading(Index,This[11,number])
+        holoMaterial(Index, This[9, string])
+        holoColor(Index, This[10, vector4])
+    }
+
+    while (perf() & holoCanCreate() &  SpawnCounter < HN) {
+        SpawnCounter++
+        HT[SpawnCounter, table]:holo(Indices2)
+        if (SpawnCounter >= HN) {
+            break
+        }
+    }
+}
+
+if(first() || dupefinished()){
+    RatsSpawned = 0
+    #holoCreate(99)
+    #holoAlpha(99,0)
+    Count = 11
+    Max = 11
+    entity():propNotSolid(1)
+    entity():setAlpha(0)
+    findByClass("gmod_wire_expression2")
+    E2s = findToArray()
+    foreach(L,F:entity = E2s){
+        if(F:getName():lower() == entity():getName()){
+            NotFirstE2 = 1
+        }
+    }
+    if(NotFirstE2 == 0){
+        entity():streamStart(1,"https://dl.dropboxusercontent.com/s/7ixvixrlrntzrhi/eradicationbell.mp3?dl=1",1)
+    }
+    timer("main",1)
+    timer("sound",1)
+    Z = entity():pos():z()
+}
+
+if(clk("main")){
+    if(RatsSpawned != 1){
+        if(Spawn < Count){
+            Lul = propSpawn("models/beer/wiremod/gate_e2.mdl",ang(0,0,0),1)
+            Lul:setAlpha(0)
+            spawnrat(Lul,Spawn)
+            Rats:pushEntity(Lul)
+        }else{
+            RatsSpawned = 1
+        }
+        Spawn++
+
+        timer("main",333)
+    }else{
+        foreach(X,Ratse:entity = Rats){
+            Ratse:propFreeze(0)
+            Ratse:setMass(222)
+            findIncludeClass("player")
+            findClipToClass("player")
+            findInSphere(Ratse:pos(),1111)
+            P = findToArray()
+            if(Chasing == 1){
+                Speed = randint(7,11)*3
+                TargPos = Ply:toWorld(vec(0,0,Ply:height()/2))
+                Y = Ratse:bearing(TargPos)
+                TargAng = -ang(0,Y,0)
+                Len = 5
+                rangerFilter(Ratse)
+                rangerPersist(1)
+                Ranger = rangerOffset(Len,Ratse:pos(),vec(0,0,-1))
+                
+                if(Ranger:hit()){
+                    Ratse:setAng(Ratse:angles():setRoll(0):setPitch(0))
+                    Ratse:applyForce( ( vec(0,0,Len*0.9 - Ranger:distance()) +Ratse:forward()*(1)*222*randint(1,1.3)  - Ratse:vel():setZ(0)/2 )*Ratse:mass() )
+                    #Base:applyForce( ( vec(0,0,TaPos:z()+(Len)) - vec(0,0,Base:pos():z()) )*Base:mass() )
+                    Ratse:applyAngForce( TargAng * (Ratse:mass()) * 3)
+                    Ratse:applyAngForce(-(Ratse:angVel()) * (Ratse:mass()) * 0.05)
+                }
+                Pogger = Ratse:toWorld(vec(Speed,0,0))
+                #Ratse:setPos(Ratse:pos())
+            }
+            if(P:count() > 0){     
+                foreach(K,V:entity = P){
+                }
+            }
+        }
+        timer("main",155)
+    }
+
+}
+if(clk("sound")){
+    foreach(C,Ratse:entity = Rats){
+        if(P:count() > 0){
+            Ply = P[randint(1,P:count()),entity]  
+            Chasing = 1 
+    
+            if(Ratse:pos():distance(TargPos) < 90){
+                #Rand = 99
+                #holoPos(Rand,Ply:toWorld(vec(0,0,Ply:height()/2)))
+                #holoParent(Rand,Ply)
+                timer("del",222)
+            }
+            if(randint(1,5) < 3){
+                Ratse:soundPlay(2,0,"ambient/atmosphere/hole_hit5.wav")
+                soundPitch(2,randint(85,100))
+            }else{
+                Ratse:soundPlay(1,0,"ambient/creatures/rats"+randint(1,4)+".wav")
+            }
+            soundVolume(1,0.5)
+        }else{
+            Ply = Ratse
+            Chasing = 0
+        }
+    }
+    timer("sound",1555)
+}
+if(clk("del")){
+    #holoUnparent(99)
+    #holoEntity(99):extinguish()
+    #holoPos(99,vec(0,0,0))
+}
