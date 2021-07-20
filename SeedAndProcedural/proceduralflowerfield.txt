@@ -1,0 +1,136 @@
+@name Runics Procedural FlowerGame
+@outputs Seeder:string
+@persist [HT CT]:table [HN CN I SpawnCounter] T [ScaleFactor] BaseStronk Randomness G Random FlowerCount LeafStronk Indices Payload:array SeedArray:array [DefaultColor DefaultScale]:vector Seed:string Stronk1 Stronk2 Stronk3 Stronk4
+
+
+
+
+if(first() || dupefinished()){
+    ###########################################################################################################
+    
+    ########### These are for Generation. Advanced users only, ported from js "srand" module. ##############
+    
+    ###########################################################################################################
+    
+    function number srand(Sd:string,Max,Min){
+        Serd = 0xFF
+        Str = Sd
+        StrC = Str:explode("")
+        for(I=1, StrC:count()){
+            Serd = bXor(0xFF,toUnicodeByte(StrC[I,string]))
+            #print(I+" "+Serd)
+        }
+        SE = (Serd * 9301 + 4923397) % 256
+        return Min + (Serd / 256) * (Max - Min)
+    }
+    ###########################################################################################################
+    
+    ############ Spawn Function, Scroll further down for first()! #############################################
+    
+    ###########################################################################################################
+    function flower(Seed:string){
+        #holoDelete(199)
+        LeafColor = vec4(srand(Seed:sub(1,3),1,777) * Stronk1,srand(Seed:sub(3,6),1,777) * Stronk1,srand(Seed:sub(7,8),1,777) * 1,255)*3
+        StemColor = vec4(srand(Seed:sub(1,4),1,255) * Stronk2,srand(Seed:sub(4,8),1,255) * Stronk2,srand(Seed:sub(6,12),1,255) * 1,255)*3
+        BaseColor = vec4(srand(Seed:sub(1,2),1,255),srand(Seed:sub(1,4),1,255),srand(Seed:sub(3,8),1,142),255)*3
+        NumberPetals = srand(Seed:reverse():sub(1,7),2,35) * LeafStronk *3
+        Scale = srand(Seed:reverse():sub(1,2),2,11) * Stronk3 *3
+        Maximum = srand(Seed:reverse():sub(3,6),2,5) * Stronk4 *3
+        Pos = entity():toWorld(randvec(-Maximum,Maximum):setZ(0))
+        #print("Flower Data: Scale "+Scale+"; Range: "+Maximum)
+        I++
+        # Stem
+        holoCreate(I)
+        holoModel(I,"cylinder")
+        holoPos(I,Pos+(vec(0,0,0)))
+        holoColor(I,StemColor)
+        holoScale(I,vec(0.2,0.2,2)*Scale)
+        I++
+        # Base
+        holoCreate(I)
+        holoModel(I,"hq_cylinder")
+        holoPos(I,Pos+(vec(0,0,12)*Scale))
+        holoColor(I,BaseColor)
+        holoScale(I,vec(0.5,0.5,0.13)*Scale)
+        I++
+        # Base 2
+        holoCreate(I)
+        holoModel(I,"hq_sphere")
+        holoPos(I,Pos+(vec(0,0,12)*Scale))
+        holoColor(I,BaseColor*0.8)
+        holoAlpha(I,255)
+        holoScale(I,vec(0.25,0.25,0.22)*Scale)   
+        
+        # Petals
+        holoPos(199,holoEntity(I):pos())
+        for(X=1,NumberPetals){
+            I++
+            holoAng(199,holoEntity(199):toWorld(ang(0,(NumberPetals*2)*Scale*1.2,0)))
+            holoCreate(I)
+            holoModel(I,"hq_sphere")
+            holoPos(I,holoEntity(199):toWorld(vec(3*Scale,0,0)))
+            holoAng(I,holoEntity(199):toWorld(ang(0,0,0)))
+            holoColor(I,BaseColor*0.8)
+            holoAlpha(I,255)
+            holoScale(I,vec(0.6,0.25,0.15)*Scale)
+        }
+    }
+    
+    ###########################################################################################################
+    ###########################################################################################################
+    ###########################################################################################################
+    
+    holoCreate(199)
+    T = 777
+    Randomness = 7
+    
+    Payload = "ABC!\"$%&/(OPQRS3456TFGHIJVWXYDEU890Z127KLMN)=?@":explode("")
+    
+    
+    ### Change Seed Here! It is to have at least 12 characters length. ###
+    ##########################
+    
+    Stronk1 = 1
+    Stronk2 = 1
+    Stronk3 = 0.13
+
+    LeafStronk = 0.6
+    BaseStronk = 1
+
+    FlowerCount = 31
+    Stronk4 = FlowerCount
+    hint("Seeding Flowers...",1)
+    timer("gen",1)
+    timer("randomizer",1)
+    
+}
+if(clk("randomizer")){
+
+}
+if(clk("gen")){
+    if(holoCanCreate() && perf()){
+        G++
+        if(G < FlowerCount){
+            SeedArray:clear()
+            for(I=1,12){
+                for(I=1,Randomness){
+                    Random = randint(1,Payload:count())
+                    Random = randint(1,Payload:count())
+                    Random = randint(1,Payload:count())
+                    Random = randint(1,Payload:count())
+                    Random = randint(1,Payload:count())
+                    Random = randint(1,Payload:count())
+                    Random = randint(1,Payload:count())
+                    Random = randint(1,Payload:count())
+                }
+                SeedArray:pushString(Payload[Random,string])
+            }
+            Seeder = SeedArray:concat("")
+            flower(Seeder)
+        }else{
+            holoDelete(199)
+            stoptimer("gen")
+        }
+    }
+    timer("gen",T)
+}
