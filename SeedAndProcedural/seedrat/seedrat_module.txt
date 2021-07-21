@@ -1,0 +1,61 @@
+@persist [HT CT]:table [HN CN I SpawnCounter] [ScaleFactor] Indices [DefaultColor DefaultScale]:vector
+
+#include "seedcolor"
+
+###########################################################################################################
+############      Save this as "seedrat_module" in e2 editor    ###########################################
+############ Spawn Function, Scroll further down for first()! #############################################
+###########################################################################################################
+function spawnrat(Seed:string,Base:entity,Indices2){
+    Stronk1 = 0.5
+    Stronk2 = 1
+    BodyColor = vec4(seedcolor(Seed:sub(1,6),1,1255) * Stronk1,seedcolor(Seed:sub(4,8),1,1255) * Stronk1,seedcolor(Seed:sub(1,4),1,1255) * Stronk1,255)*1
+    EyeColor = vec4(seedcolor(Seed:sub(1,4),1,255) * Stronk2,seedcolor(Seed:sub(4,8),1,255) * Stronk2,seedcolor(Seed:sub(1,5),1,255) * Stronk1,255)*4
+    ScaleFactor = 2
+    Indices = 1
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(3.251, 0.585, 0.5715), ang(0, 0, 90), vec(0.05, 0.05, 0.05), "models/pac/default.mdl", "models/debug/debugwhite", EyeColor, 1)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(0, 0, 0), ang(0, 0, 90), vec(0.55, 0.2, 0.25), "models/pac/default.mdl", "models/shadertest/envball_6", BodyColor, 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(4.9741, -0.0084, 0.0605), ang(0, 0, 90), vec(0.035, 0.035, 0.035), "models/pac/default.mdl", "models/shadertest/envball_6", BodyColor, 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(2.9878, -0.0033, 0.0605), ang(0, 0, 90), vec(0.2475, 0.1125, 0.1125), "models/pac/default.mdl", "models/shadertest/envball_6", BodyColor, 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(4.5195, -0.098, 0.014), ang(0, 0, -18.6241), vec(0.01, 0.0575, 0.01), "models/hunter/blocks/cube025x075x025.mdl", "models/debug/debugwhite", vec4(59, 59, 59, 255), 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(4.5195, 0.0984, 0.0137), ang(0, 0, 13.8097), vec(0.01, 0.0575, 0.01), "models/hunter/blocks/cube025x075x025.mdl", "models/debug/debugwhite", vec4(59, 59, 59, 255), 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(2.8296, -1.056, 1.2695), ang(0, 0, 90), vec(0.04, 0.1, 0.1), "models/pac/default.mdl", "models/shadertest/envball_6", BodyColor, 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(4.5195, -0.098, 0.014), ang(0, 0, -172.876), vec(0.01, 0.0575, 0.01), "models/hunter/blocks/cube025x075x025.mdl", "models/debug/debugwhite", vec4(59, 59, 59, 255), 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(3.251, -0.585, 0.5715), ang(0, 0, 90), vec(0.05, 0.05, 0.05), "models/pac/default.mdl", "models/debug/debugwhite", EyeColor, 1)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(2.708, -0.0067, 0.0605), ang(0, 0, 90), vec(0.275, 0.125, 0.125), "models/pac/default.mdl", "models/shadertest/envball_6", BodyColor, 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(4.5195, -0.098, 0.014), ang(0, 0, -159.7766), vec(0.01, 0.0575, 0.01), "models/hunter/blocks/cube025x075x025.mdl", "models/debug/debugwhite", vec4(59, 59, 59, 255), 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(2.8296, 1.0556, 1.2695), ang(0, 0, 90), vec(0.04, 0.1, 0.1), "models/pac/default.mdl", "models/shadertest/envball_6", BodyColor, 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(4.5195, -0.098, 0.014), ang(0, 0, -188.71), vec(0.01, 0.0575, 0.01), "models/hunter/blocks/cube025x075x025.mdl", "models/debug/debugwhite", vec4(59, 59, 59, 255), 0)
+    I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(4.5195, -0.098, 0.014), ang(0, 0, -3.5168), vec(0.01, 0.0575, 0.01), "models/hunter/blocks/cube025x075x025.mdl", "models/debug/debugwhite", vec4(59, 59, 59, 255), 0)
+
+    function table:holo(Indices2L) {
+        local Index = This[1, number] * Indices * 100 * Indices2L
+        if (This[2,entity]:isValid()) { Entity = This[2,entity] } else { Entity = holoEntity(This[2,number]) }
+        if (This[3,entity]:isValid()) { Parent = This[3,entity] } else { Parent = holoEntity(This[3,number]) }
+
+        local Rescale = (This[7, vector] / (This[4, number] ? 12 : 1)) * ScaleFactor
+        holoCreate(Index, Entity:toWorld(This[5, vector] * ScaleFactor), Rescale, Entity:toWorld(This[6, angle]), DefaultColor, This[8, string] ?: "cube")
+        holoParent(Index, Parent)
+        holoDisableShading(Index,This[11,number])
+        holoMaterial(Index, This[9, string])
+        holoColor(Index, This[10, vector4])
+        if(1){
+            holoPos(Index,holoEntity(Index):pos()+(vec(0,0,2)))
+        }else{
+        }
+    }
+
+    while (perf() & holoCanCreate() &  SpawnCounter < HN) {
+        SpawnCounter++
+        HT[SpawnCounter, table]:holo(Indices2)
+        if (SpawnCounter >= HN) {
+            break
+        }
+    }
+}
+
+###########################################################################################################
+###########################################################################################################
+###########################################################################################################
+
+

@@ -1,0 +1,30 @@
+@name Runics Seeded Generation Rat Demo
+
+@persist Seed:string Stronk1 Stronk2 SeedArray:array
+
+
+
+
+if(first() || dupefinished()){
+
+    #include "seedrat_module"
+
+    ### Change Seed Here! It has to have at least 8 places. ###
+    
+    #Seed = "9VTI!5K7" - Blueish one
+    
+    Seed = "9VTI!5K7"
+    
+    
+    print(Seed)
+
+    if(Seed:explode(""):count() != 8){
+        error("Seed has to be 8 places long.")
+    }
+    Lul = propSpawn("models/beer/wiremod/gate_e2.mdl",ang(0,0,0),1)
+    Lul:setAlpha(0)
+    spawnrat(Seed,Lul,1)
+    Lul:propFreeze(0)
+
+    
+}

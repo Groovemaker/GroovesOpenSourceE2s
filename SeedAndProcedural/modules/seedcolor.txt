@@ -1,0 +1,18 @@
+
+###########################################################################################################
+############      Save this as "seedcolor" in e2 editor    ################################################
+########### These are for Generation. Advanced users only, ported from js "seedcolor" module. #############
+###########################################################################################################
+
+function number seedcolor(Sd:string,Max,Min){
+    Serd = 0xFF
+    Str = Sd
+
+    StrC = Str:explode("")
+    for(I=1, StrC:count()){
+        Serd = bXor(0xFF,toUnicodeByte(StrC[I,string]))
+        #print(I+" "+Serd)
+    }
+    SE = (Serd * 9301 + 4923397) % 233
+    return Min + (Serd / 233) * (Max - Min)
+}
