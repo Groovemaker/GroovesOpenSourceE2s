@@ -30,7 +30,7 @@ function number srand(Sd:string){
         Serd = bXor(0xFF,toUnicodeByte(StrC[I,string]))
         #print(I+" "+Serd)
     }
-    SE = (Serd * 777 % 9888) / 1111
+    SE = (Serd * 3333 % 5555) / 400
     return SE
 }
 
@@ -167,6 +167,7 @@ Ranger = rangerOffset(111,Rat:toWorld(vec(11,0,11)),vec(0,0,-1))
 rangerFilter(Rat)
 TRG = owner():toWorld(vec(0,11,0))
 Speed = round(srand(CurSeed))*0.2
+print(Speed)
 D = TRG:distance(Rat:pos())*0.09
 Rat:setAng((TRG-Rat:pos()):toAngle():setPitch(0))
 
