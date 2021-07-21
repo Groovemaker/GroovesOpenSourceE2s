@@ -1,0 +1,16 @@
+@persist D
+
+
+###########################################################################################################
+############      Save this as "seedrat_petmovement" in e2 editor    ######################################
+############    Spawn Function, Scroll further down for first()!     ######################################
+###########################################################################################################
+
+rangerFilter(Rat)
+Ranger = rangerOffset(111,Rat:toWorld(vec(11,0,11)),vec(0,0,-1))
+rangerFilter(Rat)
+TRG = owner():toWorld(vec(0,25,0))
+D = TRG:distance(Rat:pos()) * 0.09
+Rat:setAng((TRG-Rat:pos()):toAngle())
+
+Rat:setPos(Rat:toWorld(vec(D,0,0)):setZ(Ranger:pos():z()+Ranger:distance()*0.3))

@@ -1,0 +1,48 @@
+@name Runics_Seedrat_v4.0
+@persist Seed:string Stronk1 Stronk2 SeedArray:array Rat:entity
+
+
+
+
+if(first() || dupefinished()){
+    entity():streamStart(1,"https://dl.dropboxusercontent.com/s/7ixvixrlrntzrhi/eradicationbell.mp3?dl=1",1)
+    #include "seedrat_module"
+
+    
+    ### Change Seed Here! It has to have at least 8 places. ###
+    
+    # 9VTI!5K7 - Blueish one
+    # AFl$GHFA - Orange one with green eyes
+    # 51GF)PRD - Pretty much normal brown rat with yellow eyes
+    
+    Seed = "51GF)PRD"
+    
+    
+    print(Seed)
+
+    if(Seed:explode(""):count() != 8){
+        error("Seed has to be 8 places long.")
+    }
+    
+    Rat = propSpawn("models/beer/wiremod/gate_e2.mdl",ang(0,0,0),1)
+    #Rat:setPos(entity():pos())
+    Rat:setAlpha(0)
+    Rat:propNotSolid(1)
+    spawnrat(Seed,Rat,1)
+    timer("sound",1)
+
+    
+}
+
+interval(100)
+#include "seedrat_petmovement"
+if(clk("sound")){
+    if(randint(1,5) < 3){
+        Rat:soundPlay(2,0,"ambient/atmosphere/hole_hit5.wav")
+        soundPitch(2,randint(85,100))
+    }else{
+        Rat:soundPlay(1,0,"ambient/creatures/rats"+randint(1,4)+".wav")
+    }
+    soundVolume(1,0.5)
+    timer("sound",1555)
+}
