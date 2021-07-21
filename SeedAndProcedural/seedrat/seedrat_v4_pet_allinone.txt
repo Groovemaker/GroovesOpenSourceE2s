@@ -122,7 +122,7 @@ if(first() || dupefinished()){
         spawnrat(SSeed,Rat,1)
         timer("sound",1)
     }
-    printColor(vec(222,200,255),"[SeedRat] Type \"!seed <your seed here>\" in chat to change seed. Each seed MUST have 8 places. Symbols and Alphanumerics work.")
+    printColor(vec(222,200,255),"[SeedRat] Type \"!seed <your seed here>\" in chat to change seed. Each seed MUST have 8 places. Symbols and Alphanumerics work.\nType \"!randseed\" to randomize it.")
     init("51GF)PRD")
 }
 runOnChat(1)
