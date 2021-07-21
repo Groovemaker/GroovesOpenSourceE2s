@@ -5,7 +5,7 @@
 # Documentation:
 
 # Type "!seed <your seed here>" in chat to change seed. Each seed MUST have 8 places. Symbols and Alphanumerics work.
-# Type "!randseed" to randomize it.
+# Type "!rand" to randomize it.
 
 # Example Seeds
 
@@ -30,7 +30,7 @@ function number srand(Sd:string){
         Serd = bXor(0xFF,toUnicodeByte(StrC[I,string]))
         #print(I+" "+Serd)
     }
-    SE = (Serd * 3333 % 5555) / 400
+    SE = (Serd * 7777 % 11111) / 355
     return SE
 }
 
@@ -59,7 +59,6 @@ function string randomseed(){
 function number seedcolor(Sd:string,Max,Min){
     Serd = 0xFF
     Str = Sd
-
     StrC = Str:explode("")
     for(I=1, StrC:count()){
         Serd = bXor(0xFF,toUnicodeByte(StrC[I,string]))
@@ -75,7 +74,7 @@ function spawnrat(Seed:string,Base:entity,Indices2){
     CurSeed = Seed
     BodyColor = vec4(seedcolor(Seed:sub(1,6),1,1255) * Stronk1,seedcolor(Seed:sub(4,8),1,1255) * Stronk1,seedcolor(Seed:sub(1,4),1,1255) * Stronk1,255)*1
     EyeColor = vec4(seedcolor(Seed:sub(1,4),1,255) * Stronk2,seedcolor(Seed:sub(4,8),1,255) * Stronk2,seedcolor(Seed:sub(1,5),1,255) * Stronk1,255)*4
-    ScaleFactor = 2
+    ScaleFactor = round(srand(CurSeed:reverse()))*0.2
     Indices = 1
     I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(3.251, 0.585, 0.5715), ang(0, 0, 90), vec(0.05, 0.05, 0.05), "models/pac/default.mdl", "models/debug/debugwhite", EyeColor, 1)
     I++, HN++, HT[HN,table] = table(I, Base, Base, 0, vec(0, 0, 0), ang(0, 0, 90), vec(0.55, 0.2, 0.25), "models/pac/default.mdl", "models/shadertest/envball_6", BodyColor, 0)
@@ -122,7 +121,7 @@ function spawnrat(Seed:string,Base:entity,Indices2){
 if(first() || dupefinished()){
     function init(SSeed:string){
         #entity():streamStart(1,"https://dl.dropboxusercontent.com/s/7ixvixrlrntzrhi/eradicationbell.mp3?dl=1",1)   
-        print(SSeed)
+        printColor(vec(111,200,255),"[SeedRat]",vec(255,211,111)," Current Seed:",vec(255,255,255), " ",vec(0,255,0),SSeed,vec(255,255,255),"")
         if(SSeed:explode(""):count() != 8){
             error("Seed has to be 8 places long.")
         }
@@ -133,7 +132,7 @@ if(first() || dupefinished()){
         spawnrat(SSeed,Rat,1)
         timer("sound",1)
     }
-    printColor(vec(222,200,255),"[SeedRat] Type \"!seed <your seed here>\" in chat to change seed. Each seed MUST have 8 places. Symbols and Alphanumerics work.\nType \"!randseed\" to randomize it.")
+    printColor(vec(111,200,255),"[SeedRat]",vec(155,255,200)," Type \"!seed <your seed here>\" in chat to change seed. Each seed MUST have 8 places. Symbols and Alphanumerics work.\nType \"!rand\" to randomize it.")
     init("51GF)PRD")
 }
 runOnChat(1)
@@ -144,7 +143,8 @@ if(chatClk(owner())){
         holoDeleteAll()
         init(NewSeed)
     }
-    if(owner():lastSaid():lower():sub(1,11) == "!randomseed"){
+    if(owner():lastSaid():lower():sub(1,owner():lastSaid():length()) == "!rand"){
+        hideChat(1)
         propDeleteAll()
         holoDeleteAll()
         init(randomseed())
@@ -166,8 +166,8 @@ rangerFilter(Rat)
 Ranger = rangerOffset(111,Rat:toWorld(vec(11,0,11)),vec(0,0,-1))
 rangerFilter(Rat)
 TRG = owner():toWorld(vec(0,11,0))
-Speed = round(srand(CurSeed))*0.2
-print(Speed)
+SpeedBase = round(srand(CurSeed))*0.03
+Speed = (1+SpeedBase)/(ScaleFactor*0.5)
 D = TRG:distance(Rat:pos())*0.09
 Rat:setAng((TRG-Rat:pos()):toAngle():setPitch(0))
 
